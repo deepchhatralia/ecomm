@@ -1,0 +1,115 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+}
+
+.grid-containers{
+  color: #fff;
+}
+
+.flex-container{
+  display: flex;
+  color: #fff;
+}
+
+.flex{
+  width: 50%;
+}
+
+.grid-item {
+  border-radius: 0.3rem;
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 200ms;
+  width: 50%;
+}
+
+.grid-item1 {
+  background-color: #d63031;
+  grid-row: 1 / span 2;
+}
+
+.grid-item1:hover {
+  background-color: #af3333;
+}
+
+.grid-item2 {
+  background-color: #96b2fb;
+}
+
+.grid-item2:hover {
+  background-color: #b2c5fa;
+}
+
+.grid-item3 {
+  background-color: #5050b2;
+}
+
+.grid-item3:hover {
+  background-color: #5c5cb4;
+}
+
+.grid-item4 {
+  background-color: #4c4aaa;
+}
+
+.grid-item4:hover {
+  background-color: #4e4d99;
+}
+
+.grid-item5 {
+  background-color: #f3797e;
+}
+
+.grid-item5:hover {
+  background-color: #c77375;
+}
+
+.purchase-grid{
+  background-color: #68375d;
+  margin: 0 5px;
+}
+
+.purchase-grid:hover{
+  background-color: #4b2843;
+}
+
+.orders-grid{
+  background-color: rgb(99, 100, 47);
+  margin: 0 5px;
+}
+
+.orders-grid:hover{
+  background-color: rgb(74, 75, 37);
+}
+
+@media screen and (max-width:750px) {
+  .main-flex{
+    flex-wrap: wrap;
+  }
+  .grid-item{
+    width: 100%;
+  }
+  .flex{
+    width: 100%;
+  }
+}
+
+@media screen and (max-width:500px) {
+  .flex-container{
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width:300px) {
+  
+}

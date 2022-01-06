@@ -1,0 +1,67 @@
+#mainImg {
+  height: 75vh;
+  width: 100%;
+  transform-origin: center center;
+}
+
+.main-image-container {
+  overflow: hidden;
+}
+
+.other-images-container .col-md-2 {
+  margin-right: 1rem;
+}
+
+.other-images-container div {
+  width: 48px;
+  height: 32px;
+  margin-bottom: 7px;
+}
+
+.other-images-container .col-md-2 div img {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+#mrp {
+  text-decoration: line-through;
+}
+
+.cod-container {
+  display: flex;
+  margin: 6vh 0;
+}
+
+#cod,
+#replacement {
+  height: 7vh;
+  width: 8vh;
+}
+
+.rate-icon{
+  cursor: pointer;
+}
+
+.rate-icon:hover{
+  background-color: yellow;
+}
+
+.feedback-container{
+  height: 80vh;
+  overflow: auto;
+}
+
+.feedback-container p{
+  font-size: 14px;
+}
+
+@media screen and (max-width: 768px) {
+  .fluid-two .container .row .col-md-6 {
+    display: flex;
+    justify-content: center;
+  }
+  .col-md-5 {
+    margin: 2rem auto;
+  }
+}
