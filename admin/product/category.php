@@ -114,7 +114,11 @@
                             category,
                             operation: "add"
                         },
+                        beforeSend: function() {
+                            $('#add_btn').html('<div class="spinner-border text-white" role="status">  <span class="visually-hidden">Loading...</span></div>')
+                        },
                         success(data) {
+                            $('#add_btn').text('Add')
                             if (data !== 'Added') {
                                 showNotification('Error', 'Please try again...')
                             } else {
@@ -153,6 +157,9 @@
             function showData() {
                 $.ajax({
                     url: "showData/showCategory.php",
+                    beforeSend: function() {
+                        $('tbody').html('<div class="spinner-border my-3" role="status">  <span class="visually-hidden">Loading...</span></div>')
+                    },
                     success(data) {
                         $('tbody').html(data)
                     }

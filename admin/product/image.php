@@ -142,6 +142,9 @@
                     data: {
                         operation: "select"
                     },
+                    beforeSend: function() {
+                        $('tbody').html('<div class="spinner-border my-3" role="status">  <span class="visually-hidden">Loading...</span></div>')
+                    },
                     success(data) {
                         $('tbody').html(data)
                     }
