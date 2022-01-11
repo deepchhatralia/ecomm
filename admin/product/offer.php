@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feature</title>
+    <title>Offer</title>
 
     <link rel="stylesheet" href="../../css/style.css">
 
@@ -29,34 +29,41 @@
             <div class="my-modal-header">
                 <i class="fas fa-times close-my-modal" id="close-my-modal"></i>
             </div>
-            <div>
-                <form>
-                    <div class="row">
-                        <input type="text" id="modal_product_feature_id" style="display: none;">
-                        <div class="col-md-12 mb-3">
-                            <label for="modal_feature_name">Feature</label>
-                            <input name="name" id="modal_feature_name" type="text" class="form-control input">
-                        </div>
-                        <div class="col-md-12 mb-2">
-                            <?php
-                            $result = $obj->select('*', 'product');
-                            if ($result->num_rows > 0) {
-                                echo '<select class="form-select modal_product_id my-2 input" id="modal_product_id" name="modal_product_id">';
-                                echo '<option disabled selected>Company</option>';
-                                while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row['product_id'] . '">' . $row['product_name'] . '</option>';
-                                }
-                                echo '</select>';
-                            }
-                            ?>
-                        </div>
+            <div class="containerr my-5">
+                <input type="text" id="modal-offer-id" style="display: none;">
+                <div class="row mb-3">
+                    <label for="modal-offer-name" class="col-sm-2 col-form-label">Offer Name :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="modal-offer-name">
                     </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <button class="w-100 btn btn-primary update-feature-btn">Update</button>
-                        </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="modal-offer_editor" class="col-sm-2 col-form-label">Offer Detail :</label>
+                    <div class="col-sm-10">
+                        <textarea name="content" id="modal-offer_editor"></textarea>
                     </div>
-                </form>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label for="modal-start-date" class="form-label">Start Date :</label>
+                        <input type="date" class="form-control" id="modal-start-date">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="modal-end-date" class="form-label">End Date :</label>
+                        <input type="date" class="form-control" id="modal-end-date">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="modal-discount" class="col-sm-2 col-form-label">Offer Discount :</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="modal-discount">
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100" id="update-offer-btn">Update</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -64,7 +71,7 @@
 
     <div class="main-panel container my-5">
         <?php
-        $result = $obj->select('*', 'product_feature');
+        $result = $obj->select('*', 'offer');
         if ($result->num_rows > 0) {
         ?>
             <div class="content-wrapper">
@@ -75,9 +82,12 @@
                                 <table style="text-align: center;" id="order-listing" class="table">
                                     <thead>
                                         <tr>
-                                            <th>Feature ID</th>
-                                            <th>Feature</th>
-                                            <th>Product</th>
+                                            <th>Offer ID</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Discount</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -91,40 +101,51 @@
 
         <?php
         } else {
-            echo '<div class="container my-5"><h4>No features</h4></div>';
+            echo '<div class="container my-5"><h4>No Offers</h4></div>';
         }
         ?>
     </div>
 
     <div class="container my-5">
         <div class="row mb-3">
-            <label for="feature" class="col-sm-2 col-form-label">Feature :</label>
+            <label for="offer-name" class="col-sm-2 col-form-label">Offer Name :</label>
             <div class="col-sm-10">
-                <textarea class="form-control" id="feature" rows="4"></textarea>
+                <input type="text" class="form-control" id="offer-name">
             </div>
         </div>
         <div class="row mb-3">
-            <label for="product" class="col-sm-2 col-form-label">Product :</label>
+            <label for="feature" class="col-sm-2 col-form-label">Offer Detail :</label>
             <div class="col-sm-10">
-                <?php
-                $result = $obj->select('*', 'product');
-                if ($result->num_rows > 0) {
-                    echo '<select class="form-select product my-2 input" id="product" name="product">';
-                    echo '<option disabled selected>Product</option>';
-                    while ($row = $result->fetch_assoc()) {
-                        echo '<option value="' . $row['product_id'] . '">' . $row['product_name'] . '</option>';
-                    }
-                    echo '</select>';
-                }
-                ?>
+                <textarea name="content" id="offer_editor"></textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+                <label for="start-date" class="form-label">Start Date :</label>
+                <input type="date" class="form-control" id="start-date">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="end-date" class="form-label">End Date :</label>
+                <input type="date" class="form-control" id="end-date">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="discount" class="col-sm-2 col-form-label">Offer Discount :</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="discount">
             </div>
         </div>
         <div class="row justify-content-end">
             <div class="col-md-2">
-                <button class="btn btn-primary w-100" id="add-feature-btn">Add</button>
+                <button class="btn btn-primary w-100" id="add-offer-btn">Add</button>
             </div>
         </div>
     </div>
+
+    <!-- CKEditor  -->
+    <!-- <script src="https://cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script> -->
+
 
 
     <script>
@@ -135,30 +156,76 @@
             showData();
             $('.my-modal').fadeOut(1)
 
+            var editor, modal_editor;
+            ClassicEditor
+                .create(document.getElementById('offer_editor'), {
+                    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+                    heading: {
+                        options: [{
+                                model: 'paragraph',
+                                title: 'Paragraph',
+                                class: 'ck-heading_paragraph'
+                            },
+                            {
+                                model: 'heading1',
+                                view: 'h1',
+                                title: 'Heading 1',
+                                class: 'ck-heading_heading1'
+                            },
+                            {
+                                model: 'heading2',
+                                view: 'h2',
+                                title: 'Heading 2',
+                                class: 'ck-heading_heading2'
+                            }
+                        ]
+                    }
+                })
+                .then(newEditor => {
+                    editor = newEditor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
             $('#alert-success').hide()
 
             var toastTrigger = document.getElementById('liveToastBtn')
             var toastLiveExample = document.getElementById('liveToast')
 
-            $('#add-feature-btn').click(() => {
-                const feature = $('#feature').val()
-                const product = $('#product').val()
+            $('#add-offer-btn').click(() => {
+                const name = $('#offer-name').val()
+                const desc = editor.getData()
+                const startDate = $('#start-date').val()
+                const endDate = $('#end-date').val()
+                const discount = $('#discount').val()
 
-                if (feature && product) {
+                if (name && desc && startDate && endDate && discount) {
                     $.ajax({
-                        url: "ajax/addfeature.php",
+                        url: "ajax/addOffer.php",
                         type: "POST",
                         data: {
-                            feature,
-                            product
+                            name,
+                            desc,
+                            startDate,
+                            endDate,
+                            discount
+                        },
+                        beforeSend() {
+                            console.log(name, startDate, endDate, discount);
                         },
                         success(data) {
                             if (data == 'Added') {
-                                $('#feature').val('')
-                                $('#product').val('Select product')
+                                $('#offer-name').val('')
+                                editor.setData(' ')
+                                $('#start-date').val('')
+                                $('#end-date').val('')
+                                $('#discount').val('')
+
                                 showData()
-                                showNotification('Success', 'Product feature added to database')
+                                showNotification('Success', 'Offer added to database')
                             } else {
+                                console.log(data);
                                 showNotification('Error', 'Please try again...')
                             }
                         }
@@ -174,79 +241,129 @@
                 if (e.target && e.target.id == 'fa-edit') {
                     const id = e.target.parentNode.parentNode.firstChild.nextSibling.innerText;
 
-                    $('.my-modal').fadeIn(600)
+                    if (id !== '0') {
+                        ClassicEditor
+                            .create(document.getElementById('modal-offer_editor'), {
+                                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+                                heading: {
+                                    options: [{
+                                            model: 'paragraph',
+                                            title: 'Paragraph',
+                                            class: 'ck-heading_paragraph'
+                                        },
+                                        {
+                                            model: 'heading1',
+                                            view: 'h1',
+                                            title: 'Heading 1',
+                                            class: 'ck-heading_heading1'
+                                        },
+                                        {
+                                            model: 'heading2',
+                                            view: 'h2',
+                                            title: 'Heading 2',
+                                            class: 'ck-heading_heading2'
+                                        }
+                                    ]
+                                }
+                            })
+                            .then(newEditor => {
+                                modal_editor = newEditor;
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });
 
-                    $.ajax({
-                        url: "showData/getFeature.php",
-                        type: "POST",
-                        data: {
-                            id,
-                            operation: 'select'
-                        },
-                        success(data) {
-                            const x = JSON.parse(data)
+                        $('.my-modal').fadeIn(600)
 
-                            $('#modal_product_feature_id').val(x[0])
-                            $('#modal_feature_name').val(x[1])
-                            $('.modal_product_id').val(x[2])
-                        }
-                    })
-                }
-
-                if (e.target && e.target.id == 'fa-trash-alt') {
-                    const id = e.target.parentNode.parentNode.firstChild.nextSibling.innerText;
-
-                    if (confirm('Are you sure you want to delete the record ???')) {
                         $.ajax({
-                            url: "showData/getFeature.php",
+                            url: "showData/getOffer.php",
                             type: "POST",
                             data: {
-                                id: id,
-                                operation: 'delete'
+                                id,
+                                operation: 'select'
                             },
                             success(data) {
-                                if (data) {
-                                    showNotification('Success', 'Product feature deleted from database')
-                                    showData()
-                                } else {
-                                    showNotification('Error', 'Please try again...')
-                                }
+                                const x = JSON.parse(data)
+
+                                $('#modal-offer-id').val(id)
+                                $('#modal-offer-name').val(x[1])
+                                modal_editor.setData(x[2])
+                                $('#modal-start-date').val(x[3])
+                                $('#modal-end-date').val(x[4])
+                                $('#modal-discount').val(x[5])
+                                console.log(x[0]);
                             }
                         })
                     }
                 }
 
+                if (e.target && e.target.id == 'fa-trash-alt') {
+                    const id = e.target.parentNode.parentNode.firstChild.nextSibling.innerText;
+                    if (id !== '0') {
+                        if (confirm('Are you sure you want to delete the record ???')) {
+                            $.ajax({
+                                url: "showData/getOffer.php",
+                                type: "POST",
+                                data: {
+                                    id: id,
+                                    operation: 'delete'
+                                },
+                                success(data) {
+                                    if (data) {
+                                        showNotification('Success', 'Offer deleted from database')
+                                        showData()
+                                    } else {
+                                        showNotification('Error', 'Please try again...')
+                                    }
+                                }
+                            })
+                        }
+                    } else {
+                        showNotification('Error', 'Sorry, can\'t delete')
+                    }
+                }
+
                 if (e.target && e.target.id == 'close-my-modal') {
                     $('.my-modal').fadeOut(600)
+                    modal_editor.destroy()
                 }
 
             })
 
-            $('.update-feature-btn').click((e) => {
+            $('#update-offer-btn').click((e) => {
                 e.preventDefault()
-                const id = $('#modal_product_feature_id').val()
-                const feature = $('#modal_feature_name').val()
-                const product_id = $('#modal_product_id').val()
+                const id = $('#modal-offer-id').val()
+                const name = $('#modal-offer-name').val()
+                const desc = modal_editor.getData()
+                const startDate = $('#modal-start-date').val()
+                const endDate = $('#modal-end-date').val()
+                const discount = $('#modal-discount').val()
 
-                $.ajax({
-                    url: "showData/getFeature.php",
-                    type: "POST",
-                    data: {
-                        id,
-                        feature,
-                        product_id,
-                        operation: 'update'
-                    },
-                    success(data) {
-                        if (data) {
-                            $('.my-modal').fadeOut(1)
-                            showData()
-                            showNotification('Success', 'Product details updated')
-                        } else {
-                            showNotification('Error', 'Try again...')
+                if (id && name && desc && startDate && endDate && discount) {
+                    $.ajax({
+                        url: "showData/getOffer.php",
+                        type: "POST",
+                        data: {
+                            id,
+                            name,
+                            desc,
+                            startDate,
+                            endDate,
+                            discount,
+                            operation: 'update'
+                        },
+                        success(data) {
+                            if (data) {
+                                $('.my-modal').fadeOut(1)
+                                modal_editor.destroy()
+                                showData()
+                                showNotification('Success', 'Product details updated')
+                            } else {
+                                showNotification('Error', 'Try again...')
+                            }
                         }
-                    }
-                })
+                    })
+                }
             })
 
             function showNotification(msgHeader, msgBody) {
@@ -269,7 +386,7 @@
 
             function showData() {
                 $.ajax({
-                    url: "showData/showFeature.php",
+                    url: "showData/showOffer.php",
                     success(data) {
                         $('tbody').html(data)
                     }
