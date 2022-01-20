@@ -5,7 +5,7 @@ $obj = new Database();
 
 if (isset($_POST['id']) && $_POST['operation'] == 'select') {
     $productId = $_POST['id'];
-    $result = $obj->select('*', 'product', "product_id='{$productId}'");
+    $result = $obj->select('*', 'productt', "product_id='{$productId}'");
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -29,7 +29,7 @@ if (isset($_POST['id']) && $_POST['operation'] == 'delete') {
     if ($_POST['operation'] == 'delete') {
         $productId = $_POST['id'];
 
-        echo $obj->delete('product', "product_id='{$productId}'");
+        echo $obj->delete('productt', "product_id='{$productId}'");
     }
 }
 
@@ -43,5 +43,5 @@ if (isset($_POST['operation']) && $_POST['operation'] == 'update') {
     $company = $_POST['company'];
     $offer = $_POST['offer'];
 
-    echo $obj->update('product', ['product_name' => $name, 'product_feature' => $feature, 'product_price' => $price, 'product_category' => $category, 'product_stock' => $stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer], "product_id='{$id}'");
+    echo $obj->update('productt', ['product_name' => $name, 'product_feature' => $feature, 'product_price' => $price, 'product_category' => $category, 'product_stock' => $stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer], "product_id='{$id}'");
 }

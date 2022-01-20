@@ -86,7 +86,7 @@
                     <select id="product" name="product" class="form-select">
                         <option selected disabled value="0">Select product</option>
                         <?php
-                        $result = $obj->select('*', 'product');
+                        $result = $obj->select('*', 'productt');
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 echo "<option value=" . $row['product_id'] . ">" . $row['product_name'] . "</option>";
@@ -110,7 +110,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="order-listing" class="table">
+                        <table id="order-listing" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <!-- <th>Image ID</th> -->
@@ -213,6 +213,7 @@
                         cache: false,
                         processData: false,
                         success: function(data) {
+                            console.log(data);
                             showNotification('Notification', data)
                             $('#fileToUpload').val('')
                             $('#product').val(0)

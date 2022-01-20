@@ -9,6 +9,8 @@
 
     <link rel="stylesheet" href="css/product.css">
 
+    <link rel="stylesheet" href="../modal.css">
+
 <body>
 
     <?php
@@ -21,102 +23,105 @@
     include '../../database.php';
     $obj = new Database();
 
-    $result = $obj->select('*', 'product');
+    $result = $obj->select('*', 'productt');
 
     ?>
 
-    <div class="my-modal">
-        <div class="my-modal-container">
-            <div class="my-modal-header">
-                <i class="fas fa-times close-my-modal" id="close-my-modal"></i>
-            </div>
-            <div>
-                <form>
-                    <div class="row">
-                        <input type="text" id="modal_product_id" style="display: none;">
-                        <div class="col-md-12 mb-3">
-                            <label for="modal_product_name">Product Name</label>
-                            <input name="name" id="modal_product_name" type="text" class="form-control input">
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <label for="modal_editor">Feature</label>
-                            <textarea name="content" id="modal_editor"></textarea>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <?php
-                            $result = $obj->select('*', 'product_category');
-                            if ($result->num_rows > 0) {
-                                echo '<select class="form-select modal_product_category input"  name="category">';
-                                echo '<option disabled selected>Select category</option>';
-                                while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row['category_id'] . '">' . $row['category_name'] . '</option>';
-                                }
-                                echo '</select>';
-                            }
-                            ?>
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <label for="product_mrp">MRP</label>
-                            <input name="mrp" id="modal_product_mrp" type="number" class="form-control input">
-                        </div>
-                        <div class="col-md-12 mb-3">
-                            <label for="product_stock">Stock</label>
-                            <input name="stock" id="modal_product_stock" type="number" class="form-control input">
-                        </div>
-                        <div class="col-md-12 mb-2">
-                            <?php
-                            $result = $obj->select('*', 'company_profile');
-                            if ($result->num_rows > 0) {
-                                echo '<select class="form-select modal_company_profile my-2 input" name="company_profile">';
-                                echo '<option disabled selected>Company</option>';
-                                while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row['idcompany_profile'] . '">' . $row['company_name'] . '</option>';
-                                }
-                                echo '</select>';
-                            }
-                            ?>
-                        </div>
-                        <div class="col-md-12 mb-2">
-                            <?php
-                            $result = $obj->select('*', 'offer');
-                            if ($result->num_rows > 0) {
-                                echo '<select id="modal_product_offer" class="form-select my-2 input" name="modal_product_offer">';
-                                echo '<option disabled selected>Offer</option>';
-                                while ($row = $result->fetch_assoc()) {
-                                    echo '<option value="' . $row['idoffer'] . '">' . $row['offer_name'] . '</option>';
-                                }
-                                echo '</select>';
-                            }
-                            ?>
-                        </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
+                    <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="modal_product_id" style="display: none;">
+                    <div class="col-md-12 mb-3">
+                        <label for="modal_product_name">Product Name</label>
+                        <input name="name" id="modal_product_name" type="text" class="form-control input">
                     </div>
-                    <div class="row upate-btn-container">
-                        <div class="col-md-3">
-                            <button class="w-100 btn btn-primary update-item-btn">Update</button>
-                        </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="modal_editor">Feature</label>
+                        <textarea name="content" id="modal_editor"></textarea>
                     </div>
-                </form>
+                    <div class="col-md-12 mb-3">
+                        <label for="modal-category">Category</label>
+                        <?php
+                        $result = $obj->select('*', 'product_category');
+                        if ($result->num_rows > 0) {
+                            echo '<select id="modal-category" class="form-select modal_product_category input"  name="category">';
+                            echo '<option disabled selected>Select category</option>';
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['category_id'] . '">' . $row['category_name'] . '</option>';
+                            }
+                            echo '</select>';
+                        }
+                        ?>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="product_mrp">MRP</label>
+                        <input name="mrp" id="modal_product_mrp" type="number" class="form-control input">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="product_stock">Stock</label>
+                        <input name="stock" id="modal_product_stock" type="number" class="form-control input">
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <label for="company_profile">Company</label>
+                        <?php
+                        $result = $obj->select('*', 'company_profile');
+                        if ($result->num_rows > 0) {
+                            echo '<select class="form-select modal_company_profile my-2 input" name="company_profile" id="company_profile">';
+                            echo '<option disabled selected>Company</option>';
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['idcompany_profile'] . '">' . $row['company_name'] . '</option>';
+                            }
+                            echo '</select>';
+                        }
+                        ?>
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <label for="modal_product_offer">Offer</label>
+                        <?php
+                        $result = $obj->select('*', 'offer');
+                        if ($result->num_rows > 0) {
+                            echo '<select id="modal_product_offer" class="form-select my-2 input" name="modal_product_offer">';
+                            echo '<option disabled selected>Offer</option>';
+                            while ($row = $result->fetch_assoc()) {
+                                echo '<option value="' . $row['idoffer'] . '">' . $row['offer_name'] . '</option>';
+                            }
+                            echo '</select>';
+                        }
+                        ?>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary modal-close" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="update-item-btn" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
         </div>
     </div>
+
 
     <div class="main-panel container my-5">
         <?php
         if ($result->num_rows > 0) {
         ?>
-
             <div class="content-wrapper">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table style="text-align: center;" id="order-listing" class="table">
+                                <table style="text-align: center;" id="order-listing" class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>Product ID</th>
                                             <th>Name</th>
                                             <th class="feature-col">Feature's</th>
                                             <th>Price</th>
+                                            <th>Offer Price</th>
                                             <th>Stock</th>
                                             <th>Category</th>
                                             <th>Company</th>
@@ -131,10 +136,9 @@
                     </div>
                 </div>
             </div>
-
         <?php
         } else {
-            echo '<div class="container my-5"><h4>Inventory Empty</h4></div>';
+            echo '<div class="container my-5"><h3>Inventory Empty</h3></div>';
         }
         ?>
     </div>
@@ -234,7 +238,6 @@
 
         $(document).ready(() => {
             showData();
-            $('.my-modal').fadeOut(1)
 
             var editor, modal_editor;
 
@@ -271,41 +274,46 @@
 
 
             $('.update-item-btn').click((e) => {
-                e.preventDefault()
                 const id = $('#modal_product_id').val()
                 const name = $('#modal_product_name').val()
                 const product_feature = modal_editor.getData()
-                const category = $('.modal_product_category').val()
+                const category = $('#modal-category').val()
                 const price = $('#modal_product_mrp').val()
                 const stock = $('#modal_product_stock').val()
                 const company = $('.modal_company_profile').val()
                 const offer = $('#modal_product_offer').val()
 
-                $.ajax({
-                    url: "showData/getData.php",
-                    type: "POST",
-                    data: {
-                        id,
-                        name,
-                        product_feature,
-                        category,
-                        price,
-                        stock,
-                        company,
-                        offer,
-                        operation: 'update'
-                    },
-                    success(data) {
-                        if (data) {
-                            $('.my-modal').fadeOut(1)
-                            showData()
-                            showNotification('Success', 'Product details updated')
-                            modal_editor.destroy()
-                        } else {
-                            showNotification('Error', 'Try again...')
+                if (name && product_feature && category && price && stock && company && offer) {
+                    $.ajax({
+                        url: "showData/getData.php",
+                        type: "POST",
+                        data: {
+                            id,
+                            name,
+                            product_feature,
+                            category,
+                            price,
+                            stock,
+                            company,
+                            offer,
+                            operation: 'update'
+                        },
+                        success(data) {
+                            if (data) {
+                                $('.modal-close').click()
+                                showData()
+                                showNotification('Success', 'Product details updated')
+                                modal_editor.destroy()
+                            } else {
+                                showNotification('Error', 'Try again...')
+                            }
                         }
-                    }
-                })
+                    })
+                }
+            })
+
+            $('.modal-close').on('click', () => {
+                modal_editor.destroy()
             })
 
             document.addEventListener('click', (e) => {
@@ -342,8 +350,6 @@
                         .catch(error => {
                             console.error(error);
                         });
-
-                    $('.my-modal').fadeIn(600)
 
                     $.ajax({
                         url: "showData/getData.php",
@@ -389,12 +395,6 @@
                         })
                     }
                 }
-
-                if (e.target && e.target.id == 'close-my-modal') {
-                    modal_editor.destroy()
-                    $('.my-modal').fadeOut(600)
-                }
-
             })
 
             function showNotification(msgHeader, msgBody) {

@@ -4,7 +4,7 @@ if (isset($_POST['operation']) && $_POST['operation'] == 'select') {
     include '../../../database.php';
     $obj = new Database();
 
-    $result = $obj->select('*', 'product');
+    $result = $obj->select('*', 'productt');
 
     if ($result->num_rows > 0) {
         $output = "";
@@ -13,7 +13,7 @@ if (isset($_POST['operation']) && $_POST['operation'] == 'select') {
             // $result2 = $obj->select('*', 'product', "product_id = " . $product);
             // $result2 = $result2->fetch_assoc();
             // <td>' . $row["idimage"] . '</td>
-            // $result4 = $obj->select('*', 'product');
+            // $result4 = $obj->select('*', 'productt');
 
             $id = $row['product_id'];
             $result2 = $obj->select('*', 'image', "product_product_id=" . $id);

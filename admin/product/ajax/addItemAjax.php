@@ -15,7 +15,7 @@ if (isset($_POST['product_name']) && isset($_POST['product_feature']) && isset($
 
     $uniqueId = uniqid("gdrs", true);
 
-    $result = $obj->insert('product', ['product_id' => $uniqueId, 'product_feature' => $product_feature, 'product_category' => $category_id, 'product_name' => $product_name, 'product_price' => $product_mrp, 'product_stock' => $product_stock, 'company_profile_idcompany_profile' => $company, 'product_feature_idproduct_feature' => 1, 'offer_idoffer' => $offer]);
+    $result = $obj->insert('productt', ['product_id' => $uniqueId, 'product_feature' => $product_feature, 'product_category' => $category_id, 'product_name' => $product_name, 'product_price' => $product_mrp, 'product_stock' => $product_stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer]);
 
     if ($result) {
         echo 'Added';

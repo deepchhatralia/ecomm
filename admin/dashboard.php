@@ -42,7 +42,7 @@ if (isset($_SESSION['admin_loggedin'])) {
         $totalDeliveredOrders = 0;
         $totalPendingOrders = 0;
 
-        $result = $obj->select('COUNT(*)', 'product');
+        $result = $obj->select('COUNT(*)', 'productt');
         $row = $result->fetch_assoc();
         $totalItems = $row['COUNT(*)'];
 
@@ -69,7 +69,7 @@ if (isset($_SESSION['admin_loggedin'])) {
                 $quantity = $row['quantity'];
                 $productId = $row['product_id'];
 
-                $result2 = $obj->select('*', 'product', "product_id='{$productId}'");
+                $result2 = $obj->select('*', 'productt', "product_id='{$productId}'");
                 $row2 = $result2->fetch_assoc();
                 $productPrice = $row2['product_price'];
 

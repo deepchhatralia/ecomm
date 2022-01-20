@@ -28,5 +28,13 @@ if (isset($_POST['id']) && $_POST['operation'] == 'update') {
 if (isset($_POST['id']) && $_POST['operation'] == 'delete') {
     $id = $_POST['id'];
 
-    echo $obj->delete('product_category', "category_id='{$id}'");
+    // $result = $obj->select('*','productt',)
+
+    $result = $obj->delete('product_category', "category_id='{$id}'");
+
+    if ($obj->connection()->error) {
+        echo "Can't delete. Product with this category available in stock";
+    } else {
+        echo "deleted";
+    }
 }

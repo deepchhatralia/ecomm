@@ -26,11 +26,21 @@ if (isset($_POST['id']) && $_POST['operation'] == 'update') {
     $end = $_POST['endDate'];
     $discount = $_POST['discount'];
 
-    echo $obj->update('offer', ['offer_name' => $name, 'offer_detail' => $desc, 'offer_startDate' => $start, 'offer_endDate' => $end, 'offer_discount' => $discount], "idoffer='{$id}'");
+    $result = $obj->update('offer', ['offer_name' => $name, 'offer_detail' => $desc, 'offer_startDate' => $start, 'offer_endDate' => $end, 'offer_discount' => $discount], "idoffer='{$id}'");
+
+    if ($result) {
+        echo "updated";
+    }
 }
 
 if (isset($_POST['id']) && $_POST['operation'] == 'delete') {
     $id = $_POST['id'];
 
-    echo $obj->delete('offer', "idoffer='{$id}'");
+    $result = $obj->delete('offer', "idoffer='{$id}'");
+
+    if ($obj->connection()->error) {
+        echo "Can't delete. Product with this offer available in stock";
+    } else {
+        echo "deleted";
+    }
 }

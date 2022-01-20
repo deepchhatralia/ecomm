@@ -7,7 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Category</title>
 
-    <link rel="stylesheet" href="css/category.css">
+    <link rel="stylesheet" href="../modal.css">
+
+    <style>
+        .container {
+            display: flex;
+        }
+    </style>
 </head>
 
 <body>
@@ -24,13 +30,15 @@
     $result = $obj->select('*', 'product_category');
     ?>
 
-    <div class="my-modal">
-        <div class="my-modal-container">
-            <div class="my-modal-header">
-                <i class="fas fa-times close-my-modal" id="close-my-modal"></i>
-            </div>
-            <div>
-                <form>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Category</h5>
+                    <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
                     <div class="row">
                         <input type="text" class="d-none" id="modal_category_id">
                         <div class="col-md-12 mb-3">
@@ -38,12 +46,10 @@
                             <input id="modal_category" type="text" class="form-control input">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button class="w-100 btn btn-primary update-item-btn">Update</button>
-                        </div>
-                    </div>
-                </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="w-100 btn btn-primary update-item-btn">Update</button>
+                </div>
             </div>
         </div>
     </div>
@@ -63,7 +69,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="order-listing" class="table">
+                        <table id="order-listing" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>Category ID</th>
@@ -79,15 +85,6 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-
     <script src="../jquery.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
@@ -101,7 +98,6 @@
 
         $(document).ready(() => {
             showData()
-            $('.my-modal').fadeOut(1)
 
             $('#add_btn').click(() => {
                 const category = $('#category').val()
@@ -171,31 +167,31 @@
                 const id = $('#modal_category_id').val()
                 const name = $('#modal_category').val()
 
-                $.ajax({
-                    url: "showData/getCategory.php",
-                    type: "POST",
-                    data: {
-                        id,
-                        name,
-                        operation: 'update'
-                    },
-                    success(data) {
-                        if (data) {
-                            $('.my-modal').fadeOut(1)
-                            showData()
-                            showNotification('Success', 'Category updated')
-                        } else {
-                            showNotification('Error', 'Try again...')
+                if (name) {
+                    $.ajax({
+                        url: "showData/getCategory.php",
+                        type: "POST",
+                        data: {
+                            id,
+                            name,
+                            operation: 'update'
+                        },
+                        success(data) {
+                            if (data) {
+                                $('.modal-close').click()
+                                showData()
+                                showNotification('Success', 'Category updated')
+                            } else {
+                                showNotification('Error', 'Try again...')
+                            }
                         }
-                    }
-                })
+                    })
+                }
             })
 
             document.addEventListener('click', (e) => {
                 if (e.target && e.target.id == 'fa-edit') {
                     const id = e.target.parentNode.parentNode.firstChild.nextSibling.innerText;
-
-                    $('.my-modal').fadeIn(600)
 
                     $.ajax({
                         url: "showData/getCategory.php",
@@ -225,21 +221,16 @@
                                 operation: 'delete'
                             },
                             success(data) {
-                                if (data) {
-                                    showNotification('Success', 'Product deleted from database')
+                                if (data == "deleted") {
+                                    showNotification('Success', 'Category deleted from database')
                                     showData()
                                 } else {
-                                    showNotification('Error', 'Please try again...')
+                                    showNotification('Error', data)
                                 }
                             }
                         })
                     }
                 }
-
-                if (e.target && e.target.id == 'close-my-modal') {
-                    $('.my-modal').fadeOut(600)
-                }
-
             })
         })
     </script>

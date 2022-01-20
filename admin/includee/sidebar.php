@@ -77,26 +77,14 @@
                     <span class="sidebar-item-name">Manage Products</span>
                 </div>
             </a>
-            <!-- <a href="http://localhost/ecomm/admin/product/addCategory.php">
-                <div class="sidebar-items">
-                    <span><i class="far fa-plus-square category"></i></span>
-                    <span class="sidebar-item-name">Add Category</span>
-                </div>
-            </a> -->
-            <a href="http://localhost/ecomm/admin/allItems.php">
+            <a href="http://localhost/ecomm/admin/company">
                 <div class="sidebar-items">
                     <span><i class="fas fa-box-open"></i></span>
-                    <span class="sidebar-item-name">All Items
+                    <span class="sidebar-item-name">Company Profile
                     </span>
                 </div>
             </a>
-            <a href="http://localhost/ecomm/admin/editDeleteItems.php">
-                <div class="sidebar-items">
-                    <span><i class="far fa-trash-alt"></i></span>
-                    <span class="sidebar-item-name">Edit/Delete</span>
-                </div>
-            </a>
-            <a href="http://localhost/ecomm/admin/orders.php">
+            <a href="http://localhost/ecomm/admin/order">
                 <div class="sidebar-items">
                     <span><i class="fas fa-sort-amount-up-alt"></i></span>
                     <span class="sidebar-item-name">Orders</span>

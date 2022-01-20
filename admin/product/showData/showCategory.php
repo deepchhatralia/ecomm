@@ -16,7 +16,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             <td>' . $row['category_id'] . '</td>
             <td>' . $row['category_name'] . '</td>
             <td style="font-size: 13px;">
-                <button id="fa-edit" class="my-btn bg-success edit-btn"><i class="far fa-edit mx-1"></i> Edit</button> 
+                <button id="fa-edit" data-bs-toggle="modal" data-bs-target="#exampleModal" class="my-btn bg-success edit-btn"><i class="far fa-edit mx-1"></i> Edit</button> 
                 <button id="fa-trash-alt" class="my-btn bg-danger delete-btn"><i class="fas fa-trash-alt mx-1"></i> Delete</button>
             </td>
         </tr>';
