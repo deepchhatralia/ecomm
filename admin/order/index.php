@@ -14,6 +14,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100% !important;
         }
     </style>
 </head>
@@ -127,7 +128,7 @@
                             operation: "select"
                         },
                         beforeSend() {
-                            $('#order-detail-table').html('Hello')
+                            console.log('hello');
                         },
                         success(data) {
                             $('#order-detail-table').html(data)
@@ -162,9 +163,11 @@
                         operation: "select"
                     },
                     beforeSend() {
-                        $('#order-table').html('Hello World')
+                        $('#order-table').html('<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>')
+                        $('#order-table').addClass('beforesend')
                     },
                     success(data) {
+                        $('#order-table').removeClass('beforesend')
                         $('#order-table').html(data)
                     }
                 })
