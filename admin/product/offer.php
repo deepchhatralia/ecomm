@@ -24,6 +24,7 @@
     ?>
 
 
+<<<<<<< HEAD
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -65,6 +66,47 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" id="update-offer-btn" class="btn btn-primary">Save changes</button>
+=======
+    <div class="my-modal">
+        <div class="my-modal-container">
+            <div class="my-modal-header">
+                <i class="fas fa-times close-my-modal" id="close-my-modal"></i>
+            </div>
+            <div class="containerr my-5">
+                <input type="text" id="modal-offer-id" style="display: none;">
+                <div class="row mb-3">
+                    <label for="modal-offer-name" class="col-sm-2 col-form-label">Offer Name :</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="modal-offer-name">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="modal-offer_editor" class="col-sm-2 col-form-label">Offer Detail :</label>
+                    <div class="col-sm-10">
+                        <textarea name="content" id="modal-offer_editor"></textarea>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label for="modal-start-date" class="form-label">Start Date :</label>
+                        <input type="date" class="form-control" id="modal-start-date">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="modal-end-date" class="form-label">End Date :</label>
+                        <input type="date" class="form-control" id="modal-end-date">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="modal-discount" class="col-sm-2 col-form-label">Offer Discount :</label>
+                    <div class="col-sm-10">
+                        <input type="number" class="form-control" id="modal-discount">
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100" id="update-offer-btn">Update</button>
+                    </div>
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
                 </div>
             </div>
         </div>
@@ -115,9 +157,15 @@
             </div>
         </div>
         <div class="row mb-3">
+<<<<<<< HEAD
             <label for="offer_editor" class="col-sm-2 col-form-label">Offer Detail :</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="offer-detail">
+=======
+            <label for="feature" class="col-sm-2 col-form-label">Offer Detail :</label>
+            <div class="col-sm-10">
+                <textarea name="content" id="offer_editor"></textarea>
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
             </div>
         </div>
         <div class="row mb-3">
@@ -133,10 +181,14 @@
         <div class="row mb-3">
             <label for="discount" class="col-sm-2 col-form-label">Offer Discount :</label>
             <div class="col-sm-10">
+<<<<<<< HEAD
                 <div class="input-group">
                     <input type="number" minlength="0" maxlength="100" class="form-control" id="discount">
                     <div class="input-group-text">%</div>
                 </div>
+=======
+                <input type="number" class="form-control" id="discount">
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
             </div>
         </div>
         <div class="row justify-content-end">
@@ -168,6 +220,38 @@
 
             showData();
 
+            var editor, modal_editor;
+            ClassicEditor
+                .create(document.getElementById('offer_editor'), {
+                    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+                    heading: {
+                        options: [{
+                                model: 'paragraph',
+                                title: 'Paragraph',
+                                class: 'ck-heading_paragraph'
+                            },
+                            {
+                                model: 'heading1',
+                                view: 'h1',
+                                title: 'Heading 1',
+                                class: 'ck-heading_heading1'
+                            },
+                            {
+                                model: 'heading2',
+                                view: 'h2',
+                                title: 'Heading 2',
+                                class: 'ck-heading_heading2'
+                            }
+                        ]
+                    }
+                })
+                .then(newEditor => {
+                    editor = newEditor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
             $('#alert-success').hide()
 
             var toastTrigger = document.getElementById('liveToastBtn')
@@ -175,7 +259,11 @@
 
             $('#add-offer-btn').click(() => {
                 const name = $('#offer-name').val()
+<<<<<<< HEAD
                 const desc = $('#offer-detail').val()
+=======
+                const desc = editor.getData()
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
                 const startDate = $('#start-date').val()
                 const endDate = $('#end-date').val()
                 const discount = $('#discount').val()
@@ -192,12 +280,20 @@
                             discount
                         },
                         beforeSend() {
+<<<<<<< HEAD
                             console.log('hello world');
+=======
+                            console.log(name, startDate, endDate, discount);
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
                         },
                         success(data) {
                             if (data == 'Added') {
                                 $('#offer-name').val('')
+<<<<<<< HEAD
                                 $('#offer-detail').val('')
+=======
+                                editor.setData(' ')
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
                                 $('#start-date').val('')
                                 $('#end-date').val('')
                                 $('#discount').val('')
@@ -205,6 +301,7 @@
                                 showData()
                                 showNotification('Success', 'Offer added to database')
                             } else {
+                                console.log(data);
                                 showNotification('Error', 'Please try again...')
                             }
                         }
@@ -221,6 +318,42 @@
                     const id = e.target.parentNode.parentNode.firstChild.nextSibling.innerText;
 
                     if (id !== '0') {
+<<<<<<< HEAD
+=======
+                        ClassicEditor
+                            .create(document.getElementById('modal-offer_editor'), {
+                                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+                                heading: {
+                                    options: [{
+                                            model: 'paragraph',
+                                            title: 'Paragraph',
+                                            class: 'ck-heading_paragraph'
+                                        },
+                                        {
+                                            model: 'heading1',
+                                            view: 'h1',
+                                            title: 'Heading 1',
+                                            class: 'ck-heading_heading1'
+                                        },
+                                        {
+                                            model: 'heading2',
+                                            view: 'h2',
+                                            title: 'Heading 2',
+                                            class: 'ck-heading_heading2'
+                                        }
+                                    ]
+                                }
+                            })
+                            .then(newEditor => {
+                                modal_editor = newEditor;
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });
+
+                        $('.my-modal').fadeIn(600)
+
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
                         $.ajax({
                             url: "showData/getOffer.php",
                             type: "POST",
@@ -233,10 +366,18 @@
 
                                 $('#modal-offer-id').val(id)
                                 $('#modal-offer-name').val(x[1])
+<<<<<<< HEAD
                                 $('#modal-offer-detail').val(x[2])
                                 $('#modal-start-date').val(x[3])
                                 $('#modal-end-date').val(x[4])
                                 $('#modal-discount').val(x[5])
+=======
+                                modal_editor.setData(x[2])
+                                $('#modal-start-date').val(x[3])
+                                $('#modal-end-date').val(x[4])
+                                $('#modal-discount').val(x[5])
+                                console.log(x[0]);
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
                             }
                         })
                     }
@@ -254,11 +395,19 @@
                                     operation: 'delete'
                                 },
                                 success(data) {
+<<<<<<< HEAD
                                     if (data == "deleted") {
                                         showNotification('Success', 'Offer deleted from database')
                                         showData()
                                     } else {
                                         showNotification('Error', data)
+=======
+                                    if (data) {
+                                        showNotification('Success', 'Offer deleted from database')
+                                        showData()
+                                    } else {
+                                        showNotification('Error', 'Please try again...')
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
                                     }
                                 }
                             })
@@ -270,6 +419,7 @@
 
                 if (e.target && e.target.id == 'close-my-modal') {
                     $('.my-modal').fadeOut(600)
+                    modal_editor.destroy()
                 }
                 return () => {}
             })
@@ -278,7 +428,11 @@
                 e.preventDefault()
                 const id = $('#modal-offer-id').val()
                 const name = $('#modal-offer-name').val()
+<<<<<<< HEAD
                 const desc = $('#modal-offer-detail').val()
+=======
+                const desc = modal_editor.getData()
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
                 const startDate = $('#modal-start-date').val()
                 const endDate = $('#modal-end-date').val()
                 const discount = $('#modal-discount').val()
@@ -297,8 +451,14 @@
                             operation: 'update'
                         },
                         success(data) {
+<<<<<<< HEAD
                             if (data == "updated") {
                                 $('.modal-close').click()
+=======
+                            if (data) {
+                                $('.my-modal').fadeOut(1)
+                                modal_editor.destroy()
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
                                 showData()
                                 showNotification('Success', 'Product details updated')
                             } else {
@@ -326,6 +486,18 @@
                     toast.hide()
                 }, 3000);
             }
+<<<<<<< HEAD
+=======
+
+            function showData() {
+                $.ajax({
+                    url: "showData/showOffer.php",
+                    success(data) {
+                        $('tbody').html(data)
+                    }
+                })
+            }
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
         })
     </script>
 </body>

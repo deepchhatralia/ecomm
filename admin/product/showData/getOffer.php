@@ -26,16 +26,21 @@ if (isset($_POST['id']) && $_POST['operation'] == 'update') {
     $end = $_POST['endDate'];
     $discount = $_POST['discount'];
 
+<<<<<<< HEAD
     $result = $obj->update('offer', ['offer_name' => $name, 'offer_detail' => $desc, 'offer_startDate' => $start, 'offer_endDate' => $end, 'offer_discount' => $discount], "idoffer='{$id}'");
 
     if ($result) {
         echo "updated";
     }
+=======
+    echo $obj->update('offer', ['offer_name' => $name, 'offer_detail' => $desc, 'offer_startDate' => $start, 'offer_endDate' => $end, 'offer_discount' => $discount], "idoffer='{$id}'");
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
 }
 
 if (isset($_POST['id']) && $_POST['operation'] == 'delete') {
     $id = $_POST['id'];
 
+<<<<<<< HEAD
     $result = $obj->delete('offer', "idoffer='{$id}'");
 
     if ($obj->connection()->error) {
@@ -44,3 +49,9 @@ if (isset($_POST['id']) && $_POST['operation'] == 'delete') {
         echo "deleted";
     }
 }
+=======
+    echo $obj->delete('offer', "idoffer='{$id}'");
+}
+
+?>
+>>>>>>> 5a218efe0ea7cfceb1e4e5085043af652d001297
