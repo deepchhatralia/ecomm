@@ -4,10 +4,11 @@ if (isset($_POST['operation']) && $_POST['operation'] == 'select') {
     include '../../../database.php';
     $obj = new Database();
 
-    $output = "";
     $result = $obj->select('*', 'order');
 
     if ($result->num_rows > 0) {
+        $output = "";
+
         while ($row = $result->fetch_assoc()) {
             $user = $obj->select('*', 'userlogin', "userid=" . $row['userlogin_userid']);
             $user = $user->fetch_assoc();

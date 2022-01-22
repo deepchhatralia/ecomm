@@ -48,6 +48,7 @@ class Database
 
             if ($query) {
                 return $query;
+                // return $sql;
             }
             return false;
         } else {

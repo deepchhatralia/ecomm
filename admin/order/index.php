@@ -94,6 +94,11 @@
                             </thead>
                             <tbody id="order-detail-table"></tbody>
                         </table>
+                        <div class="d-flex align-items-center justify-content-end">
+                            <strong id="totalAmount">
+                                Total : 0
+                            </strong>
+                        </div>
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
@@ -131,7 +136,9 @@
                             console.log('hello');
                         },
                         success(data) {
-                            $('#order-detail-table').html(data)
+                            const x = JSON.parse(data)
+                            $('#order-detail-table').html(x[0])
+                            $('#totalAmount').text('Total : Rs ' + x[1])
                         }
                     })
                 }

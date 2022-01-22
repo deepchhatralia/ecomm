@@ -4,12 +4,14 @@ include '../../../database.php';
 $obj = new Database();
 
 if (isset($_POST['id']) && $_POST['operation'] == "select") {
-    $output = "";
     $id = $_POST['id'];
 
     $result = $obj->select('*', 'order_detail', "order_order_id=" . $id);
 
     if ($result->num_rows > 0) {
+        $output = "";
+        $total = 0;
+
         while ($row = $result->fetch_assoc()) {
             $productId = $row['product_id'];
             $resultt = $obj->select('*', 'productt', "product_id=" . $productId);
@@ -34,7 +36,10 @@ if (isset($_POST['id']) && $_POST['operation'] == "select") {
                 <td>' . $row['order_quantity'] . '</td>
                 <td>Rs ' . $offerPrice * $row['order_quantity'] . '</td>
             </tr>';
+
+            $total += $offerPrice * $row['order_quantity'];
         }
-        echo $output;
+        $arr = json_encode(array($output, $total));
+        echo $arr;
     }
 }

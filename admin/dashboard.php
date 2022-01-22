@@ -24,6 +24,7 @@ if (isset($_SESSION['admin_loggedin'])) {
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+
     </head>
 
     <body>
@@ -136,7 +137,69 @@ if (isset($_SESSION['admin_loggedin'])) {
         </div>
 
 
+        <div class="chart-container" style="position: relative; height:50vh; width:40vw">
+            <canvas id="myChart"></canvas>
+        </div>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script>
+            $(document).ready(() => {
+
+                $.ajax({
+                    url: "getChartData.php",
+                    type: "POST",
+                    data: {
+                        operation: "total sales get month"
+                    },
+                    success(dataa) {
+                        const x = JSON.parse(dataa)
+
+                        let myData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+                        $.ajax({
+                            url: "getChartData.php",
+                            type: "POST",
+                            data: {
+                                operation: "total sales"
+                            },
+                            success(dataa) {
+                                const y = JSON.parse(dataa)
+
+                                for (let i = 0; i < x.length; i++) {
+                                    const temp = parseInt(x[i])
+                                    myData[temp - 1] = y[i]
+                                }
+
+                                const ctx = document.getElementById('myChart');
+                                const myChart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                                        datasets: [{
+                                            label: 'Sales',
+                                            data: [...myData],
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        })
+                    }
+                })
+
+
+            })
+        </script>
 
 
         <!-- Bootstrap JS  -->
