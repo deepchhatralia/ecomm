@@ -14,16 +14,8 @@ if (isset($_SESSION['admin_loggedin'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Dashboard</title>
 
-        <!-- Bootstrap  -->
-        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-
         <!-- Dashboard CSS  -->
         <link rel="stylesheet" href="dashboard.css">
-
-        <!-- Google fonts  -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
     </head>
 
     <body>
@@ -135,13 +127,28 @@ if (isset($_SESSION['admin_loggedin'])) {
         </div>
 
 
-        <div class="d-flex align-items-center justify-content-evenly">
-            <div class="chart-container" style="position: relative; height:50vh; width:40vw">
-                <canvas id="Sales"></canvas>
+        <div class="my-5">
+            <div class="d-flex align-items-center justify-content-evenly">
+                <div class="chart-container" style="position: relative; height:50vh; width:40vw">
+                    <canvas id="Sales"></canvas>
+                </div>
+
+                <div class="chart-container" style="position: relative; height:50vh; width:40vw">
+                    <canvas id="Purchase"></canvas>
+                </div>
             </div>
 
+            <div class="d-flex align-items-center justify-content-evenly">
+                <div class="chart-container" style="position: relative; height:50vh; width:40vw">
+                    <canvas id="numberOfOrders"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-evenly flex-column my-1">
+            <h3>Top 5 Selling Products</h3>
             <div class="chart-container" style="position: relative; height:50vh; width:40vw">
-                <canvas id="Purchase"></canvas>
+                <canvas id="topSelling"></canvas>
             </div>
         </div>
 
@@ -151,65 +158,132 @@ if (isset($_SESSION['admin_loggedin'])) {
 
         <script>
             $(document).ready(() => {
-                const arr = ['Sales', 'Purchase']
+                function drawGraph(canvasId, x, y, graphType, graphLabel, graphBorderColor) {
+                    let myData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-                for (let i = 0; i < arr.length; i++) {
-                    let hello = "total " + arr[i] + " get month"
+                    for (let i = 0; i < x.length; i++) {
+                        const temp = parseInt(x[i])
+                        myData[temp - 1] = parseInt(y[i])
+                    }
+
+                    const myChart = new Chart(document.getElementById(canvasId), {
+                        type: graphType,
+                        data: {
+                            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                            datasets: [{
+                                label: graphLabel,
+                                data: [...myData],
+                                borderWidth: 1,
+                                borderColor: graphBorderColor
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+
+                function loadConstants() {
+                    const arr = ['Sales', 'Purchase']
 
                     $.ajax({
                         url: "getChartData.php",
                         type: "POST",
                         data: {
-                            what: arr[i].toLocaleLowerCase(),
-                            operation: hello
+                            operation: "topSellingProduct"
                         },
                         success(dataa) {
                             const x = JSON.parse(dataa)
 
-                            hello = "total " + arr[i]
+                            // Chart declaration:
+                            var myBarChart = new Chart(document.getElementById("topSelling"), {
+                                type: 'pie',
+                                data: {
+                                    labels: Object.keys(x),
+                                    datasets: [{
+                                        fill: true,
+                                        backgroundColor: [
+                                            'rgb(255, 99, 132)',
+                                            'rgb(54, 162, 235)',
+                                            'rgb(255, 205, 86)'
+                                        ],
+                                        data: Object.values(x),
+                                        borderWidth: [2, 2],
+                                        hoverOffset: 4
+                                    }]
+                                },
+                                options: {
+                                    title: {
+                                        display: true,
+                                        text: 'Top 5 Selling Products',
+                                        position: 'top'
+                                    }
+                                }
+                            });
+                        }
+                    })
+
+                    $.ajax({
+                        url: "getChartData.php",
+                        type: "POST",
+                        data: {
+                            operation: "getOrderMonth"
+                        },
+                        success(dataa) {
+                            const x = JSON.parse(dataa)
 
                             $.ajax({
                                 url: "getChartData.php",
                                 type: "POST",
                                 data: {
-                                    what: arr[i].toLocaleLowerCase(),
-                                    operation: hello
+                                    operation: "getNumberOfOrders"
                                 },
                                 success(dataa) {
                                     const y = JSON.parse(dataa)
-                                    let myData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-                                    for (let i = 0; i < x.length; i++) {
-                                        const temp = parseInt(x[i])
-                                        myData[temp - 1] = y[i]
-                                    }
-
-
-                                    const ctx = document.getElementById(arr[i]);
-
-                                    const myChart = new Chart(ctx, {
-                                        type: 'bar',
-                                        data: {
-                                            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-                                            datasets: [{
-                                                label: arr[i],
-                                                data: [...myData],
-                                                borderWidth: 1
-                                            }]
-                                        },
-                                        options: {
-                                            scales: {
-                                                y: {
-                                                    beginAtZero: true
-                                                }
-                                            }
-                                        }
-                                    });
+                                    drawGraph("numberOfOrders", x, y, "line", "Number of Orders", "rgba(255, 99, 132, 1)")
                                 }
                             })
                         }
                     })
+
+                    for (let i = 0; i < arr.length; i++) {
+                        let hello = "total " + arr[i] + " get month"
+
+                        $.ajax({
+                            url: "getChartData.php",
+                            type: "POST",
+                            data: {
+                                what: arr[i].toLocaleLowerCase(),
+                                operation: hello
+                            },
+                            success(dataa) {
+                                const x = JSON.parse(dataa)
+
+                                hello = "total " + arr[i]
+
+                                $.ajax({
+                                    url: "getChartData.php",
+                                    type: "POST",
+                                    data: {
+                                        what: arr[i].toLocaleLowerCase(),
+                                        operation: hello
+                                    },
+                                    success(dataa) {
+                                        const y = JSON.parse(dataa)
+
+                                        drawGraph(arr[i], x, y, "bar", arr[i], "rgba(153, 102, 255, 1)")
+                                    }
+                                })
+                            }
+                        })
+                    }
                 }
+
+                loadConstants()
 
 
             })
