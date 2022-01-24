@@ -24,7 +24,6 @@ if (isset($_SESSION['admin_loggedin'])) {
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
-
     </head>
 
     <body>
@@ -36,9 +35,9 @@ if (isset($_SESSION['admin_loggedin'])) {
         include '../database.php';
         $obj = new Database();
 
-        $quantity = 0;
-        $productPrice = 0;
-        $revenue = 0;
+        $sales = 0;
+        $purchase = 0;
+
         $totalItems = 0;
         $totalDeliveredOrders = 0;
         $totalPendingOrders = 0;
@@ -51,31 +50,29 @@ if (isset($_SESSION['admin_loggedin'])) {
         $row = $result->fetch_assoc();
         $totalOrders = $row['COUNT(*)'];
 
-        $result = $obj->select('COUNT(*)', 'order', "status='Ordered'");
+        $result = $obj->select('COUNT(*)', 'order', "isCancel=0");
 
         if ($result) {
             $row = $result->fetch_assoc();
             $totalPendingOrders = $row['COUNT(*)'];
         }
 
-        $result = $obj->select('COUNT(*)', 'order', "status='Delivered'");
-        if ($result) {
-            $row = $result->fetch_assoc();
-            $totalDeliveredOrders = $row['COUNT(*)'];
+        // $result = $obj->select('COUNT(*)', 'order', "isCancel=0");
+        // if ($result) {
+        //     $row = $result->fetch_assoc();
+        //     $totalDeliveredOrders = $row['COUNT(*)'];
+        // }
+
+        $result = $obj->select('SUM(total)', 'order', "isCancel=0");
+        if ($result->num_rows > 0) {
+            $result = $result->fetch_assoc();
+            $sales = $result['SUM(total)'];
         }
 
-        $result = $obj->select('*', 'order', "status='Delivered'");
-        if ($result) {
-            while ($row = $result->fetch_assoc()) {
-                $quantity = $row['quantity'];
-                $productId = $row['product_id'];
-
-                $result2 = $obj->select('*', 'productt', "product_id='{$productId}'");
-                $row2 = $result2->fetch_assoc();
-                $productPrice = $row2['product_price'];
-
-                $revenue += ($productPrice * $quantity);
-            }
+        $result = $obj->select('SUM(total)', 'purchasee', "isCancel=0");
+        if ($result->num_rows > 0) {
+            $result = $result->fetch_assoc();
+            $purchase = $result['SUM(total)'];
         }
         ?>
 
@@ -90,8 +87,8 @@ if (isset($_SESSION['admin_loggedin'])) {
             <div class="row my-4 grid-containers">
                 <div class="col-md-12 flex-container main-flex">
                     <div class="d-flex mx-2 mb-1 grid-item1 grid-item flex">
-                        <h2>Total Revenue</h2>
-                        <h1><?php echo 'Rs ' . $revenue; ?></h1>
+                        <h2>Total Profit</h2>
+                        <h1><?php echo 'Rs ' . $sales - $purchase; ?></h1>
                     </div>
 
                     <div class="flex-container flex-column flex">
@@ -122,23 +119,30 @@ if (isset($_SESSION['admin_loggedin'])) {
             <div class="row my-5">
                 <div class="col-md-12">
                     <div class="flex-container">
-                        <div class="purchase-grid mb-1 grid-item">
-                            <h4>Purchase</h4>
-                            <h4>Rs 10000</h4>
+                        <div class="orders-grid mb-1 grid-item">
+                            <h4>Sales</h4>
+                            <h4>Rs <?php echo $sales; ?></h4>
                         </div>
 
-                        <div class="orders-grid mb-1 grid-item">
-                            <h4>Orders</h4>
-                            <h4>Rs 20000</h4>
+                        <div class="purchase-grid mb-1 grid-item">
+                            <h4>Purchase</h4>
+                            <h4>Rs <?php echo $purchase; ?></h4>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
 
 
-        <div class="chart-container" style="position: relative; height:50vh; width:40vw">
-            <canvas id="myChart"></canvas>
+        <div class="d-flex align-items-center justify-content-evenly">
+            <div class="chart-container" style="position: relative; height:50vh; width:40vw">
+                <canvas id="Sales"></canvas>
+            </div>
+
+            <div class="chart-container" style="position: relative; height:50vh; width:40vw">
+                <canvas id="Purchase"></canvas>
+            </div>
         </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -147,55 +151,65 @@ if (isset($_SESSION['admin_loggedin'])) {
 
         <script>
             $(document).ready(() => {
+                const arr = ['Sales', 'Purchase']
 
-                $.ajax({
-                    url: "getChartData.php",
-                    type: "POST",
-                    data: {
-                        operation: "total sales get month"
-                    },
-                    success(dataa) {
-                        const x = JSON.parse(dataa)
+                for (let i = 0; i < arr.length; i++) {
+                    let hello = "total " + arr[i] + " get month"
 
-                        let myData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    $.ajax({
+                        url: "getChartData.php",
+                        type: "POST",
+                        data: {
+                            what: arr[i].toLocaleLowerCase(),
+                            operation: hello
+                        },
+                        success(dataa) {
+                            const x = JSON.parse(dataa)
 
-                        $.ajax({
-                            url: "getChartData.php",
-                            type: "POST",
-                            data: {
-                                operation: "total sales"
-                            },
-                            success(dataa) {
-                                const y = JSON.parse(dataa)
+                            hello = "total " + arr[i]
 
-                                for (let i = 0; i < x.length; i++) {
-                                    const temp = parseInt(x[i])
-                                    myData[temp - 1] = y[i]
-                                }
+                            $.ajax({
+                                url: "getChartData.php",
+                                type: "POST",
+                                data: {
+                                    what: arr[i].toLocaleLowerCase(),
+                                    operation: hello
+                                },
+                                success(dataa) {
+                                    const y = JSON.parse(dataa)
+                                    let myData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-                                const ctx = document.getElementById('myChart');
-                                const myChart = new Chart(ctx, {
-                                    type: 'bar',
-                                    data: {
-                                        labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-                                        datasets: [{
-                                            label: 'Sales',
-                                            data: [...myData],
-                                            borderWidth: 1
-                                        }]
-                                    },
-                                    options: {
-                                        scales: {
-                                            y: {
-                                                beginAtZero: true
+                                    for (let i = 0; i < x.length; i++) {
+                                        const temp = parseInt(x[i])
+                                        myData[temp - 1] = y[i]
+                                    }
+
+
+                                    const ctx = document.getElementById(arr[i]);
+
+                                    const myChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                                            datasets: [{
+                                                label: arr[i],
+                                                data: [...myData],
+                                                borderWidth: 1
+                                            }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true
+                                                }
                                             }
                                         }
-                                    }
-                                });
-                            }
-                        })
-                    }
-                })
+                                    });
+                                }
+                            })
+                        }
+                    })
+                }
 
 
             })

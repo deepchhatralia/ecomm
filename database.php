@@ -51,6 +51,7 @@ class Database
                 // return $sql;
             }
             return false;
+            // return $sql;
         } else {
             echo 'Table does not exist';
         }
