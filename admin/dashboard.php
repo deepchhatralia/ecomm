@@ -209,7 +209,9 @@ if (isset($_SESSION['admin_loggedin'])) {
                                         backgroundColor: [
                                             'rgb(255, 99, 132)',
                                             'rgb(54, 162, 235)',
-                                            'rgb(255, 205, 86)'
+                                            'rgb(255, 205, 86)',
+                                            'rgba(153, 102, 255, 0.2)',
+                                            'rgba(255, 55, 130)'
                                         ],
                                         data: Object.values(x),
                                         borderWidth: [2, 2],
