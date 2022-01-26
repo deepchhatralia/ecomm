@@ -37,13 +37,11 @@
           </li>
           <?php
           include 'config.php';
-          $sql = "SELECT * FROM `product_category`";
-          $result = mysqli_query($conn, $sql);
+          $sql = $obj->select('*', "product_category");
           if ($_SERVER['REQUEST_URI'] == '/ecomm/') {
-            if (mysqli_num_rows($result) > 0) {
-              $sql2 = "SELECT * FROM `product`";
-              $result2 = mysqli_query($conn, $sql2);
-              if (mysqli_num_rows($result2) > 0) {
+            if ($sql->num_rows > 0) {
+              $result2 = $obj->select('*', "productt");
+              if ($result2->num_rows > 0) {
           ?>
                 <li class="dropdown nav-item mx-1">
                   <a class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,7 +50,7 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" data-id="0" href="#">All</a>
                     <?php
-                    while ($row = mysqli_fetch_assoc($result)) {
+                    while ($row = $sql->fetch_assoc()) {
                       echo '<a class="dropdown-item" data-id="' . $row['category_id'] . '" href="#">' . $row['category_name'] . '</a>';
                     }
                     ?>
