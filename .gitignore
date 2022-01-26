@@ -1,7 +1,9 @@
 /node_modules
-/upload_img
+/admin/product/category_uploads
 /css
 /.idea
 /pdoExample.php
 /jquery.js
 /admin/product/uploads
+/js
+/images
