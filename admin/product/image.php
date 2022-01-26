@@ -213,7 +213,6 @@
                         cache: false,
                         processData: false,
                         success: function(data) {
-                            console.log(data);
                             showNotification('Notification', data)
                             $('#fileToUpload').val('')
                             $('#product').val(0)

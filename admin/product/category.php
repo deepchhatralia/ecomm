@@ -13,6 +13,18 @@
         .container {
             display: flex;
         }
+
+        .category-img {
+            width: 100%;
+            height: auto;
+        }
+
+        @media screen and (max-width:995px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
     </style>
 </head>
 
@@ -34,35 +46,52 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Update Category</h5>
-                    <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <input type="text" class="d-none" id="modal_category_id">
-                        <div class="col-md-12 mb-3">
-                            <label for="modal_category">Category</label>
-                            <input id="modal_category" type="text" class="form-control input">
+                <form id="modal-form" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update Category</h5>
+                        <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <input type="text" class="d-none" id="modal_category_id" name="modal_category_id">
+                            <div class=" col-md-12 mb-3">
+                                <label for="modal_category">Category</label>
+                                <input id="modal_category" name="modal_category" type=" text" class="form-control input">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type="text" style="display: none;" id="modal_category_image" name="modal_category_image">
+
+                            <div class=" col-md-12 mb-3">
+                                <label for="modal_category_img">Category Image</label>
+                                <input type="file" id="modal_category_img" name="modal_category_img" class="form-control input">
+                                <span class="error" style="font-size: 12px; color: red; font-style: italic;">Only select an image if you want to upload new one</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="w-100 btn btn-primary update-item-btn">Update</button>
-                </div>
+                    <div class="modal-footer">
+                        <button class="w-100 btn btn-primary update-item-btn">Update</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <div class="container my-5 content-wrapper">
         <div class="col-md-6 mb-4">
-            <div class="col-md-10 col-sm-12 mb-3">
-                <label for="category">Category</label>
-                <input type="text" id="category" class="form-control input">
-            </div>
-            <div class="col-md-2 col-sm-12">
-                <button class="btn btn-primary w-100" id="add_btn">Add</button>
-            </div>
+            <form id="my-form" method="post" enctype="multipart/form-data">
+                <div class="col-lg-10 col-sm-12 mb-3">
+                    <label for="category">Category</label>
+                    <input type="text" id="category" class="form-control input" name="category">
+                </div>
+                <div class="col-lg-10 col-sm-12 mb-3">
+                    <label for="fileToUpload">Category Image</label>
+                    <input type="file" name="fileToUpload" class="form-control" id="fileToUpload">
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <button class="btn btn-primary w-100" name="submit" id="add_btn">Add</button>
+                </div>
+            </form>
         </div>
 
         <div class="col-md-6 mb-4">
@@ -74,6 +103,7 @@
                                 <tr>
                                     <th>Category ID</th>
                                     <th>Name</th>
+                                    <th>Category Image</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -99,32 +129,29 @@
         $(document).ready(() => {
             showData()
 
-            $('#add_btn').click(() => {
+            $('#my-form').on('submit', (e) => {
+                e.preventDefault();
                 const category = $('#category').val()
+                const file = $('#fileToUpload').val()
 
-                if (category) {
+                if (category && file) {
                     $.ajax({
                         url: "ajax/addCategoryAjax.php",
                         type: "POST",
-                        data: {
-                            category,
-                            operation: "add"
-                        },
+                        data: new FormData(document.getElementById('my-form')),
+                        contentType: false,
+                        cache: false,
+                        processData: false,
                         beforeSend: function() {
                             $('#add_btn').html('<div class="spinner-border text-white" role="status">  <span class="visually-hidden">Loading...</span></div>')
                         },
                         success(data) {
+                            $('#fileToUpload').val('')
                             $('#add_btn').text('Add')
-                            if (data !== 'Added') {
-                                showNotification('Error', 'Please try again...')
-                            } else {
-                                showData()
-                                $('.my-modal').fadeOut(600)
 
-                                $('#category').val('')
+                            showNotification('Notification', data)
 
-                                showNotification('Success', 'Category added to database')
-                            }
+                            showData()
                         }
                     })
                 } else {
@@ -162,30 +189,47 @@
                 })
             }
 
-            $('.update-item-btn').click((e) => {
+            $('#modal-form').on('submit', (e) => {
                 e.preventDefault()
                 const id = $('#modal_category_id').val()
                 const name = $('#modal_category').val()
+                const img = $('#modal_category_img').val()
 
                 if (name) {
-                    $.ajax({
-                        url: "showData/getCategory.php",
-                        type: "POST",
-                        data: {
-                            id,
-                            name,
-                            operation: 'update'
-                        },
-                        success(data) {
-                            if (data) {
+                    if (img) {
+                        $.ajax({
+                            url: "showData/getCategory.php",
+                            type: "POST",
+                            data: new FormData(document.getElementById('modal-form')),
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success(data) {
                                 $('.modal-close').click()
                                 showData()
-                                showNotification('Success', 'Category updated')
-                            } else {
-                                showNotification('Error', 'Try again...')
+                                showNotification('Notification', data)
                             }
-                        }
-                    })
+                        })
+                    } else {
+                        $.ajax({
+                            url: "showData/getCategory.php",
+                            type: "POST",
+                            data: {
+                                id,
+                                name,
+                                operation: 'update'
+                            },
+                            success(data) {
+                                if (data) {
+                                    $('.modal-close').click()
+                                    showData()
+                                    showNotification('Success', 'Category updated')
+                                } else {
+                                    showNotification('Error', 'Try again...')
+                                }
+                            }
+                        })
+                    }
                 }
             })
 
@@ -205,6 +249,7 @@
 
                             $('#modal_category_id').val(x[0])
                             $('#modal_category').val(x[1])
+                            $('#modal_category_image').val(x[2])
                         }
                     })
                 }
