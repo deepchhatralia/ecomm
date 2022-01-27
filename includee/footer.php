@@ -75,103 +75,105 @@
     </style>
 </head>
 
-<!-- info section -->
-<section class="info_section ">
-    <div class="container">
-        <div class="row d-flex justify-content-between">
-            <div class="col-md-4">
-                <div class="info_contact">
-                    <h5>
-                        <a href="" class="navbar-brand">
-                            <span>
-                                GDRS
-                            </span>
-                        </a>
-                    </h5>
-                    <p class="mb-2">
-                        <i class="fa fa-map-marker" aria-hidden="true"></i>
-                        A/29, Bapukrupa Society, Near Chinmay Tower, Opp. Upganda Park, Memnagar, Ahmedabad
-                    </p>
-                    <p class="mb-2">
-                        <i class="fa fa-phone" aria-hidden="true"></i>
-                        <a href="tel: 9328324955">+91 9328324955</a>
-                    </p>
-                    <p class="mb-2">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                        <a href="mailto: gdstream@gmail.com">gdstream@gmail.com</a>
-                    </p>
+<div class="footer-container">
+    <!-- info section -->
+    <section class="info_section ">
+        <div class="container">
+            <div class="row d-flex justify-content-between">
+                <div class="col-md-4">
+                    <div class="info_contact">
+                        <h5>
+                            <a href="" class="navbar-brand">
+                                <span>
+                                    GDRS
+                                </span>
+                            </a>
+                        </h5>
+                        <p class="mb-2">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            A/29, Bapukrupa Society, Near Chinmay Tower, Opp. Upganda Park, Memnagar, Ahmedabad
+                        </p>
+                        <p class="mb-2">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <a href="tel: 9328324955">+91 9328324955</a>
+                        </p>
+                        <p class="mb-2">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <a href="mailto: gdstream@gmail.com">gdstream@gmail.com</a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="info_links">
-                    <h5>
-                        Useful Links
-                    </h5>
-                    <ul>
-                        <li>
-                            <a href="http://localhost/ecomm">
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://localhost/ecomm/product">
-                                Products
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://localhost/ecomm/product/category">
-                                Category
-                            </a>
-                        </li>
-                        <li>
-                            <a href="about.html">
-                                About
-                            </a>
-                        </li>
-                    </ul>
+                <div class="col-md-4">
+                    <div class="info_links">
+                        <h5>
+                            Useful Links
+                        </h5>
+                        <ul>
+                            <li>
+                                <a href="http://localhost/ecomm">
+                                    Home
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://localhost/ecomm/product">
+                                    Products
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://localhost/ecomm/product/category">
+                                    Category
+                                </a>
+                            </li>
+                            <li>
+                                <a href="about.html">
+                                    About
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="info_form ">
-                    <h5>
-                        Newsletter
-                    </h5>
-                    <form action="">
-                        <input type="email" placeholder="Enter your email">
-                        <button>
-                            Subscribe
-                        </button>
-                    </form>
-                    <div class="social_box">
-                        <a href="">
-                            <i class="fab fa-facebook" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fab fa-twitter" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fab fa-instagram" aria-hidden="true"></i>
-                        </a>
-                        <a href="">
-                            <i class="fab fa-youtube" aria-hidden="true"></i>
-                        </a>
+                <div class="col-md-4">
+                    <div class="info_form ">
+                        <h5>
+                            Newsletter
+                        </h5>
+                        <form action="">
+                            <input type="email" placeholder="Enter your email">
+                            <button>
+                                Subscribe
+                            </button>
+                        </form>
+                        <div class="social_box">
+                            <a href="">
+                                <i class="fab fa-facebook" aria-hidden="true"></i>
+                            </a>
+                            <a href="">
+                                <i class="fab fa-twitter" aria-hidden="true"></i>
+                            </a>
+                            <a href="">
+                                <i class="fab fa-instagram" aria-hidden="true"></i>
+                            </a>
+                            <a href="">
+                                <i class="fab fa-youtube" aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- end info_section -->
+    <!-- end info_section -->
 
 
-<!-- footer section -->
-<footer class="footer_section">
-    <div class="container">
-        <p>
-            &copy; <span id="displayYear"></span> All Rights Reserved By
-            <a href="http://localhost/ecomm">GDRS</a>
-        </p>
-    </div>
-</footer>
-<!-- footer section -->
+    <!-- footer section -->
+    <footer class="footer_section">
+        <div class="container">
+            <p>
+                &copy; <span id="displayYear"></span> All Rights Reserved By
+                <a href="http://localhost/ecomm">GDRS</a>
+            </p>
+        </div>
+    </footer>
+    <!-- footer section -->
+</div>

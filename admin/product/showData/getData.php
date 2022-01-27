@@ -11,6 +11,7 @@ if (isset($_POST['id']) && $_POST['operation'] == 'select') {
         $row = $result->fetch_assoc();
 
         $name = $row['product_name'];
+        $desc = $row['product_desc'];
         $feature = $row['product_feature'];
         $price = $row['product_price'];
         $category = $row['product_category'];
@@ -18,10 +19,9 @@ if (isset($_POST['id']) && $_POST['operation'] == 'select') {
         $company = $row['company_profile_idcompany_profile'];
         $offer = $row['offer_idoffer'];
 
-        $arr = array($name, $price, $category, $stock, $company, $productId, $offer, $feature);
+        $arr = array($name, $price, $category, $stock, $company, $productId, $offer, $desc, $feature);
 
-        $x = json_encode($arr);
-        echo $x;
+        echo json_encode($arr);
     }
 }
 
@@ -36,12 +36,13 @@ if (isset($_POST['id']) && $_POST['operation'] == 'delete') {
 if (isset($_POST['operation']) && $_POST['operation'] == 'update') {
     $id = $_POST['id'];
     $name = $_POST['name'];
-    $feature = $_POST['product_feature'];
+    $desc = $_POST['desc'];
+    $feature = $_POST['feature'];
     $price = $_POST['price'];
     $category = $_POST['category'];
     $stock = $_POST['stock'];
     $company = $_POST['company'];
     $offer = $_POST['offer'];
 
-    echo $obj->update('productt', ['product_name' => $name, 'product_feature' => $feature, 'product_price' => $price, 'product_category' => $category, 'product_stock' => $stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer], "product_id='{$id}'");
+    echo $obj->update('productt', ['product_name' => $name, 'product_desc' => $desc, 'product_feature' => $feature, 'product_price' => $price, 'product_category' => $category, 'product_stock' => $stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer], "product_id='{$id}'");
 }

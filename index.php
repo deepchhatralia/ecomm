@@ -147,44 +147,43 @@
                 ?>
 
                         <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div class="img-box">
-                                    <img src="admin/product/uploads/<?php echo $row2['img_path']; ?>" alt="">
-                                    <a href="" class="add_cart_btn">
-                                        <span>
-                                            Add To Cart
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="detail-box">
-                                    <h5>
-                                        <?php echo $row['product_name']; ?>
-                                    </h5>
-                                    <div class="product_info">
+                            <a class="product-box-a" href="http://localhost/ecomm/product/product.php?id=<?php echo $productId; ?>">
+                                <div class="box">
+                                    <div class="img-box">
+                                        <img src="admin/product/uploads/<?php echo $row2['img_path']; ?>" alt="">
+                                    </div>
+                                    <div class="detail-box">
                                         <h5>
-                                            <span>$</span> <?php echo '₹ ' . $row['product_price']; ?>
+                                            <?php echo $row['product_name']; ?>
                                         </h5>
-                                        <div class="star_container">
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
-                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        <div class="product_info">
+                                            <h5>
+                                                <span>$</span> <?php echo '₹ ' . $row['product_price']; ?>
+                                            </h5>
+                                            <div class="star_container">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
-                <?php
+                    <?php
                     }
                 }
-                ?>
+                if ($result->num_rows > 5) {
+                    ?>
 
-            </div>
-            <div class="btn_box">
-                <a href="" class="view_more-link">
-                    View More
-                </a>
+                    <div class="btn_box">
+                        <a href="" class="view_more-link">
+                            View More
+                        </a>
+                    </div>
+                <?php } ?>
             </div>
         </div>
     </section>

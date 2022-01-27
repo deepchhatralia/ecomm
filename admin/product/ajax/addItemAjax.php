@@ -1,12 +1,17 @@
 <?php
 session_start();
 
-if (isset($_POST['product_name']) && isset($_POST['product_feature']) && isset($_POST['product_mrp']) && isset($_POST['product_stock']) && isset($_POST['product_category']) && isset($_POST['company_profile']) && isset($_POST['offer'])) {
+if (isset($_POST['product_name']) && isset($_POST['desc']) && isset($_POST['feature']) && isset($_POST['product_mrp']) && isset($_POST['product_stock']) && isset($_POST['product_category']) && isset($_POST['company_profile']) && isset($_POST['offer'])) {
     include '../../../database.php';
     $obj = new Database();
 
+    $feature = "";
+    foreach ($_POST['feature'] as $val) {
+        $feature .= "<li>" . $val . "</li>";
+    }
+
     $product_name = mysqli_real_escape_string($obj->connection(), $_POST['product_name']);
-    $product_feature = $_POST['product_feature'];
+    $desc = mysqli_real_escape_string($obj->connection(), $_POST['desc']);
     $category_id = mysqli_real_escape_string($obj->connection(), $_POST['product_category']);
     $product_mrp = mysqli_real_escape_string($obj->connection(), $_POST['product_mrp']);
     $product_stock = mysqli_real_escape_string($obj->connection(), $_POST['product_stock']);
@@ -15,7 +20,7 @@ if (isset($_POST['product_name']) && isset($_POST['product_feature']) && isset($
 
     $uniqueId = uniqid("gdrs", true);
 
-    $result = $obj->insert('productt', ['product_id' => $uniqueId, 'product_feature' => $product_feature, 'product_category' => $category_id, 'product_name' => $product_name, 'product_price' => $product_mrp, 'product_stock' => $product_stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer]);
+    $result = $obj->insert('productt', ['product_id' => $uniqueId, 'product_desc' => $desc, 'product_feature' => $feature, 'product_category' => $category_id, 'product_name' => $product_name, 'product_price' => $product_mrp, 'product_stock' => $product_stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer]);
 
     if ($result) {
         echo 'Added';

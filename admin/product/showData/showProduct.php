@@ -34,7 +34,8 @@ while ($row = mysqli_fetch_assoc($result)) {
     $output .= '<tr class="border-b border-gray-200 hover:bg-gray-100">
         <td>' . $row['product_id'] . '</td>
         <td>' . $row['product_name'] . '</td>
-        <td>' . substr($row['product_feature'], 0, 40) . '...</td>
+        <td>' . substr($row['product_desc'], 0, 40) . '...</td>
+        <td>' . substr($row['product_feature'], 0, 40) . '</td>
         <td>' . $row['product_price'] . '</td>
         <td>' . $offerPrice . '</td>
         <td>' . $row['product_stock'] . '</td>
@@ -42,8 +43,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         <td>' . $company['company_name'] . '</td>
         <td>' . $offerName . '</td>
         <td style="font-size: 13px;">
-            <button id="fa-edit" data-bs-toggle="modal" data-bs-target="#exampleModal" class="my-btn bg-success edit-btn mb-1"><i class="far fa-edit mx-1"></i> Edit</button> 
-            <button id="fa-trash-alt" class="my-btn bg-danger delete-btn"><i class="fas fa-trash-alt mx-1"></i> Delete</button>
+            <button id="fa-edit" data-bs-toggle="modal" data-bs-target="#exampleModal" class="mb-1 my-btn bg-success edit-btn"><i class="far fa-edit mx-1"></i> Edit</button> 
+            <button id="fa-trash-alt" class="mb-1 my-btn bg-danger delete-btn"><i class="fas fa-trash-alt mx-1"></i> Delete</button>
         </td>
     </tr>';
 }

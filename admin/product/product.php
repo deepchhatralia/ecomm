@@ -42,8 +42,17 @@
                         <input name="name" id="modal_product_name" type="text" class="form-control input">
                     </div>
                     <div class="col-md-12 mb-3">
-                        <label for="modal_editor">Feature</label>
-                        <textarea name="content" id="modal_editor"></textarea>
+                        <label for="modal_product_desc">Description</label>
+                        <input name="desc" id="modal_product_desc" type="text" class="form-control input">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="modal_product_feature">Feature</label>
+                        <!-- <div class="modal-product-feature">
+                            <input name="desc" id="modal_product_feature" type="text" class="form-control input">
+                        </div> -->
+                        <div class="col-sm-10">
+                            <textarea name="content" class="modal-product-feature"></textarea>
+                        </div>
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="modal-category">Category</label>
@@ -117,9 +126,10 @@
                                 <table style="text-align: center;" id="order-listing" class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Product ID</th>
+                                            <th>ID</th>
                                             <th>Name</th>
-                                            <th class="feature-col">Feature's</th>
+                                            <th>Description</th>
+                                            <th>Feature</th>
                                             <th>Price</th>
                                             <th>Offer Price</th>
                                             <th>Stock</th>
@@ -152,12 +162,22 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="feature" class="col-sm-2 col-form-label">Feature</label>
-                <!-- <div class="col-sm-10">
-                    <textarea class="form-control" id="editor" rows="4"></textarea>
-                </div> -->
+                <label for="product_desc" class="col-sm-2 col-form-label">Description</label>
                 <div class="col-sm-10">
-                    <textarea name="content" id="editor"></textarea>
+                    <textarea rows="4" name="desc" id="product_desc" type="text" class="form-control input"></textarea>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="product_feature" class="col-sm-2 col-form-label">Feature</label>
+                <div class="col-sm-10">
+                    <div class="product-feature-container">
+                        <input id="product_feature" type="text" class="mb-1 form-control input product_feature">
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="btn btn-success" id="add-more-feature">
+                            <h3 class="m-0">+</h3>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row mb-3">
@@ -232,38 +252,27 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 
+    <!-- CKEditor  -->
+    <script src="https://cdn.ckeditor.com/4.17.1/standard/ckeditor.js"></script>
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script> -->
+
     <script>
+        var editor;
+
         document.querySelector('.fa-tachometer-alt').parentNode.parentNode.classList.remove('active')
         document.querySelector('.fa-plus-square').parentNode.parentNode.classList.add('active')
 
+
+        var toastTrigger = document.getElementById('liveToastBtn')
+        var toastLiveExample = document.getElementById('liveToast')
+
         $(document).ready(() => {
+            $('#alert-success').hide()
             showData();
 
-            var editor, modal_editor;
-
             ClassicEditor
-                .create(document.getElementById('editor'), {
-                    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
-                    heading: {
-                        options: [{
-                                model: 'paragraph',
-                                title: 'Paragraph',
-                                class: 'ck-heading_paragraph'
-                            },
-                            {
-                                model: 'heading1',
-                                view: 'h1',
-                                title: 'Heading 1',
-                                class: 'ck-heading_heading1'
-                            },
-                            {
-                                model: 'heading2',
-                                view: 'h2',
-                                title: 'Heading 2',
-                                class: 'ck-heading_heading2'
-                            }
-                        ]
-                    }
+                .create(document.querySelector('.modal-product-feature'), {
+                    toolbar: ['bulletedList'],
                 })
                 .then(newEditor => {
                     editor = newEditor;
@@ -272,25 +281,42 @@
                     console.error(error);
                 });
 
+            $('#add-more-feature').click(() => {
+                let featureContainer = "";
+                let arr = $('.product_feature').map((i, e) => e.value).get();
 
-            $('.update-item-btn').click((e) => {
+                for (let i = 0; i < arr.length; i++) {
+                    featureContainer += '<input id="product_feature" type="text" class="mb-1 form-control input product_feature" value="' + arr[i] + '">';
+                }
+
+                $('.product-feature-container').html(featureContainer + '<input type="text" class="mb-1 form-control input product_feature">')
+
+            })
+
+            // $('.modal-close').on('click', () => {
+            //     editor.destroy()
+            // })
+
+            $('#update-item-btn').click((e) => {
                 const id = $('#modal_product_id').val()
                 const name = $('#modal_product_name').val()
-                const product_feature = modal_editor.getData()
+                const desc = $('#modal_product_desc').val()
+                const feature = editor.getData()
                 const category = $('#modal-category').val()
                 const price = $('#modal_product_mrp').val()
                 const stock = $('#modal_product_stock').val()
                 const company = $('.modal_company_profile').val()
                 const offer = $('#modal_product_offer').val()
 
-                if (name && product_feature && category && price && stock && company && offer) {
+                if (name && desc && feature && category && price && stock && company && offer) {
                     $.ajax({
                         url: "showData/getData.php",
                         type: "POST",
                         data: {
                             id,
                             name,
-                            product_feature,
+                            desc,
+                            feature,
                             category,
                             price,
                             stock,
@@ -301,9 +327,9 @@
                         success(data) {
                             if (data) {
                                 $('.modal-close').click()
+                                // editor.destroy()
                                 showData()
                                 showNotification('Success', 'Product details updated')
-                                modal_editor.destroy()
                             } else {
                                 showNotification('Error', 'Try again...')
                             }
@@ -312,44 +338,9 @@
                 }
             })
 
-            $('.modal-close').on('click', () => {
-                modal_editor.destroy()
-            })
-
             document.addEventListener('click', (e) => {
                 if (e.target && e.target.id == 'fa-edit') {
                     const id = e.target.parentNode.parentNode.firstChild.nextSibling.innerText;
-
-                    ClassicEditor
-                        .create(document.getElementById('modal_editor'), {
-                            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
-                            heading: {
-                                options: [{
-                                        model: 'paragraph',
-                                        title: 'Paragraph',
-                                        class: 'ck-heading_paragraph'
-                                    },
-                                    {
-                                        model: 'heading1',
-                                        view: 'h1',
-                                        title: 'Heading 1',
-                                        class: 'ck-heading_heading1'
-                                    },
-                                    {
-                                        model: 'heading2',
-                                        view: 'h2',
-                                        title: 'Heading 2',
-                                        class: 'ck-heading_heading2'
-                                    }
-                                ]
-                            }
-                        })
-                        .then(newEditor => {
-                            modal_editor = newEditor;
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        });
 
                     $.ajax({
                         url: "showData/getData.php",
@@ -361,6 +352,7 @@
                         success(data) {
                             const x = JSON.parse(data)
 
+
                             $('#modal_product_id').val(x[5])
                             $('#modal_product_name').val(x[0])
                             $('#modal_product_mrp').val(x[1])
@@ -368,7 +360,8 @@
                             $('#modal_product_stock').val(x[3])
                             $('.modal_company_profile').val(x[4])
                             $('#modal_product_offer').val(x[6])
-                            modal_editor.setData(x[7])
+                            $('#modal_product_desc').val(x[7])
+                            editor.setData(x[8])
                         }
                     })
                 }
@@ -425,29 +418,27 @@
                 })
             }
 
-            $('#alert-success').hide()
-
-            var toastTrigger = document.getElementById('liveToastBtn')
-            var toastLiveExample = document.getElementById('liveToast')
-
             $('#myForm').on('submit', (e) => {
                 e.preventDefault();
                 const input = $('.input')
                 const product_name = $('#product_name').val()
-                const product_feature = editor.getData();
+                const desc = $('#product_desc').val();
+                const feature = $('.product_feature').map((i, e) => e.value).get()
                 const product_category = $('.product_category').val()
                 const product_mrp = $('#product_mrp').val()
                 const product_stock = $('#product_stock').val()
                 const company_profile = $('.company_profile').val()
                 const offer = $('#product_offer').val()
 
-                if (product_name && product_feature !== '<p?><br></p>' && product_category && product_mrp && product_stock && company_profile && offer) {
+                if (product_name && feature.length >= 1 && desc && product_category && product_mrp && product_stock && company_profile && offer) {
+
                     $.ajax({
                         url: 'ajax/addItemAjax.php',
                         type: 'POST',
                         data: {
                             product_name,
-                            product_feature,
+                            desc,
+                            feature,
                             product_mrp,
                             product_stock,
                             product_category,
@@ -459,8 +450,9 @@
                                 showNotification('Error', 'Please try again...')
                             } else {
                                 showData();
-                                editor.setData('')
                                 $('#product_name').val('')
+                                $('#product_desc').val('')
+                                $('.product-feature-container').html('<input type="text" id="product_feature" class="mb-1 form-control input product_feature">')
                                 $('#product_mrp').val('')
                                 $('.product_category').val('Select category')
                                 $('#product_stock').val('')

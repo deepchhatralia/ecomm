@@ -1,31 +1,39 @@
 <?php
 
-include '../../../database.php';
-include '../../../includee/config.php';
+if (isset($_POST['operation']) && $_POST['operation'] == "select") {
 
-$obj = new Database();
 
-$sql = "SELECT * FROM `offer`";
+    include '../../../database.php';
+    include '../../../includee/config.php';
 
-$result = mysqli_query($conn, $sql);
+    $obj = new Database();
 
-$output = "";
+    $sql = "SELECT * FROM `offer`";
 
-while ($row = mysqli_fetch_assoc($result)) {
-    $output .= '<tr class="border-b border-gray-200 hover:bg-gray-100">
+    $result = mysqli_query($conn, $sql);
+
+    $output = "";
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $buttonGroup = '<td style="font-size: 13px;">
+                <button id="fa-edit" data-bs-toggle="modal" data-bs-target="#exampleModal" class="mb-1 my-btn bg-success edit-btn"><i class="far fa-edit mx-1"></i> Edit</button> 
+                <button id="fa-trash-alt" class="mb-1 my-btn bg-danger delete-btn"><i class="fas fa-trash-alt mx-1"></i> Delete</button>
+            </td>';
+        if ($row['idoffer'] == '0') {
+            $buttonGroup = "";
+        }
+        $output .= '<tr class="border-b border-gray-200 hover:bg-gray-100">
             <td>' . $row['idoffer'] . '</td>
             <td>' . $row['offer_name'] . '</td>
             <td>' . $row['offer_detail'] . '</td>
             <td>' . $row['offer_startDate'] . '</td>
             <td>' . $row['offer_endDate'] . '</td>
             <td>' . $row['offer_discount'] . '</td>
-            <td style="font-size: 13px;">
-                <button id="fa-edit" class="my-btn bg-success edit-btn"><i class="far fa-edit mx-1"></i> Edit</button> 
-                <button id="fa-trash-alt" class="my-btn bg-danger delete-btn"><i class="fas fa-trash-alt mx-1"></i> Delete</button>
-            </td>
+            ' . $buttonGroup . '
         </tr>';
+    }
+
+    echo $output;
+} else {
+    include '../../../pagenotfound.php';
 }
-
-echo $output;
-
-?>
