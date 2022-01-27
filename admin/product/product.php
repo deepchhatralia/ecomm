@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="modal_product_desc">Description</label>
-                        <input name="desc" id="modal_product_desc" type="text" class="form-control input">
+                        <textarea rows="5" name="desc" id="modal_product_desc" type="text" class="form-control input"></textarea>
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="modal_product_feature">Feature</label>

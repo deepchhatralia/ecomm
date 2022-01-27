@@ -158,7 +158,7 @@
                                         </h5>
                                         <div class="product_info">
                                             <h5>
-                                                <span>$</span> <?php echo '₹ ' . $row['product_price']; ?>
+                                                <span>₹</span> <?php echo $row['product_price']; ?>
                                             </h5>
                                             <div class="star_container">
                                                 <i class="fa fa-star" aria-hidden="true"></i>
