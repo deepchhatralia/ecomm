@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if (isset($_SESSION['userlogin']) && isset($_POST['username'])) {
+if (isset($_SESSION['userlogin'])) {
     $_SESSION = array();
     session_unset();
     session_destroy();
