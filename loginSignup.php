@@ -46,9 +46,9 @@ if (isset($_POST['operation']) && $_POST['operation'] == "login") {
             $result = $obj->insert('userlogin', ['user_name' => $username, 'user_password' => $password, 'user_firstname' => $fname, 'user_lastname' => $lname, 'user_email' => $email, 'security_question' => $squestion, 'security_answer' => $sanswer, 'user_contact_number' => $contact, 'area_idarea' => 1]);
 
             if ($result) {
-                echo 'success';
+                echo "success";
             } else {
-                echo "Try again";
+                echo "Try again...";
             }
         }
     }
