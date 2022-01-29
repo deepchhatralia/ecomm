@@ -50,9 +50,9 @@ class Database
                 return $query;
                 // return $sql;
             }
-            // return false;
+            return false;
             // return $sql;
-            return mysqli_error($this->connection());
+            // return mysqli_error($this->connection());
         } else {
             echo 'Table does not exist';
         }
@@ -82,8 +82,8 @@ class Database
             if ($this->conn->query($sql)) {
                 return true;
             }
-            // return false;
-            return mysqli_error($this->connection());
+            return false;
+            // return mysqli_error($this->connection());
         } else {
             echo 'Table does not exist';
         }
