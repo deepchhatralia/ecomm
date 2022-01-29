@@ -132,16 +132,15 @@
                             id,
                             operation: "select"
                         },
-                        beforeSend() {
-                            console.log('hello');
-                        },
                         success(data) {
                             const x = JSON.parse(data)
                             $('#order-detail-table').html(x[0])
                             $('#totalAmount').text('Total : Rs ' + x[1])
+
                         }
                     })
                 }
+                return () => {}
             })
 
             function showNotification(msgHeader, msgBody) {

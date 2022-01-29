@@ -106,35 +106,38 @@
 
 
     <div class="container my-5">
-        <div class="row mb-3">
-            <label for="company-id" class="col-sm-2 col-form-label">Company ID :</label>
-            <div class="col-sm-10">
-                <input type="number" class="form-control" id="company-id">
+        <form id="my-form">
+            <div class="row mb-3">
+                <label for="company-id" class="col-sm-2 col-form-label">Company ID :</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="company-id">
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <label for="company-name" class="col-sm-2 col-form-label">Company Name :</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="company-name">
+            <div class="row mb-3">
+                <label for="company-name" class="col-sm-2 col-form-label">Company Name :</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="company-name">
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <label for="company-address" class="col-sm-2 col-form-label">Company Address :</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="company-address">
+            <div class="row mb-3">
+                <label for="company-address" class="col-sm-2 col-form-label">Company Address :</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="company-address">
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <label for="company-contact" class="col-sm-2 col-form-label">Company Contact :</label>
-            <div class="col-sm-10">
-                <input type="number" class="form-control" id="company-contact">
+            <div class="row mb-3">
+                <label for="company-contact" class="col-sm-2 col-form-label">Company Contact :</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="company-contact">
+                </div>
             </div>
-        </div>
-        <div class="row justify-content-end">
-            <div class="col-md-2">
-                <button class="btn btn-primary w-100" id="add-company-btn">Add</button>
+            <div class="row justify-content-end">
+                <div class="col-md-4 d-flex justify-content-end">
+                    <input type="reset" class="btn btn-secondary mx-2" id="reset">
+                    <button class="btn btn-primary" id="add-company-btn">Add</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <!-- <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script> -->
@@ -149,13 +152,13 @@
         var toastLiveExample = document.getElementById('liveToast')
 
         $(document).ready(() => {
-            $('#table_id').DataTable({
-                ordering: false,
-                keys: true,
-                search: {
-                    return: true
-                }
-            })
+            // $('#table_id').DataTable({
+            //     ordering: false,
+            //     keys: true,
+            //     search: {
+            //         return: true
+            //     }
+            // })
 
             showData()
             $('.my-modal').fadeOut(1)
@@ -277,7 +280,8 @@
                 return () => {}
             })
 
-            $('#add-company-btn').click(() => {
+            $('#my-form').on('submit', (e) => {
+                e.preventDefault()
                 const id = $('#company-id').val()
                 const name = $('#company-name').val()
                 const address = $('#company-address').val()
@@ -298,10 +302,7 @@
                         },
                         success(data) {
                             if (data == 'Added') {
-                                $('#company-id').val('')
-                                $('#company-name').val('')
-                                $('#company-address').val('')
-                                $('#company-contact').val('')
+                                $('#reset').click()
 
                                 showData()
                                 showNotification('Success', 'Company added to database')

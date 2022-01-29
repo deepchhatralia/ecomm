@@ -126,6 +126,7 @@
         </div>
     </div>
 
+
     <script>
         document.querySelector('.fa-tachometer-alt').parentNode.parentNode.classList.remove('active')
         document.querySelector('.fa-plus-square').parentNode.parentNode.classList.add('active')

@@ -3,7 +3,7 @@
 include '../../../database.php';
 $obj = new Database();
 
-if (isset($_POST['id']) && $_POST['operation'] == "select") {
+if (isset($_POST['id']) &&  $_POST['operation'] == "select") {
     $id = $_POST['id'];
 
     $result = $obj->select('*', 'order_detail', "order_order_id=" . $id);
@@ -39,7 +39,6 @@ if (isset($_POST['id']) && $_POST['operation'] == "select") {
 
             $total += $offerPrice * $row['order_quantity'];
         }
-        $arr = json_encode(array($output, $total));
-        echo $arr;
+        echo json_encode(array($output, $total));
     }
 }

@@ -88,8 +88,9 @@
                     <label for="fileToUpload">Category Image</label>
                     <input type="file" name="fileToUpload" class="form-control" id="fileToUpload">
                 </div>
-                <div class="col-md-2 col-sm-12">
+                <div class="col-md-4 d-flex justify-content-end">
                     <button class="btn btn-primary w-100" name="submit" id="add_btn">Add</button>
+                    <input type="reset" class="btn btn-secondary mx-2" id="reset">
                 </div>
             </form>
         </div>
@@ -146,7 +147,7 @@
                             $('#add_btn').html('<div class="spinner-border text-white" role="status">  <span class="visually-hidden">Loading...</span></div>')
                         },
                         success(data) {
-                            $('#fileToUpload').val('')
+                            $('#reset').click()
                             $('#add_btn').text('Add')
 
                             showNotification('Notification', data)

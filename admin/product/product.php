@@ -241,8 +241,9 @@
                 </div>
             </div>
             <div class="row justify-content-end">
-                <div class="col-md-2">
-                    <button class="btn btn-primary add-item-btn w-100">Add</button>
+                <div class="col-md-4 d-flex justify-content-end">
+                    <input type="reset" value="Reset" id="reset" class="mx-2 btn btn-secondary" />
+                    <button class="btn btn-primary add-item-btn">Add</button>
                 </div>
             </div>
         </form>
@@ -450,14 +451,8 @@
                                 showNotification('Error', 'Please try again...')
                             } else {
                                 showData();
-                                $('#product_name').val('')
-                                $('#product_desc').val('')
                                 $('.product-feature-container').html('<input type="text" id="product_feature" class="mb-1 form-control input product_feature">')
-                                $('#product_mrp').val('')
-                                $('.product_category').val('Select category')
-                                $('#product_stock').val('')
-                                $('.company_profile').val('Company')
-                                $('#product_offer').val('Select offer')
+                                $('#reset').click()
 
                                 showNotification('Success', 'Product added to database')
                             }

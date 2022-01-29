@@ -243,18 +243,43 @@
                         </button>
                     </from>
                     <div class="user_option_box">
-                        <a href="" class="account-link">
+                        <?php
+                        if (isset($_SESSION['userlogin'])) {
+                        ?>
+                            <a href="http://localhost/ecomm/account" class="account-link">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span>
+                                    My Account
+                                </span>
+                            </a>
+                            <a href="" id="logout-btn" class="account-link">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                                <span>
+                                    Logout
+                                </span>
+                            </a>
+                            <a href="http://localhost/ecomm/cart" class="cart-link">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                                <span>
+                                    Cart
+                                </span>
+                            </a>
+                        <?php
+                        } else {
+                            echo '<a href="http://localhost/ecomm/login.php" id="login-btn" class="account-link">
                             <i class="fa fa-user" aria-hidden="true"></i>
                             <span>
-                                My Account
+                                Login
                             </span>
                         </a>
-                        <a href="" class="cart-link">
-                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        <a href="http://localhost/ecomm/signup.php" id="login-btn" class="account-link">
+                            <i class="fa fa-user" aria-hidden="true"></i>
                             <span>
-                                Cart
+                                Signup
                             </span>
-                        </a>
+                        </a>';
+                        }
+                        ?>
                     </div>
                 </div>
 
@@ -296,3 +321,11 @@
     <!-- end header section -->
 
 </div>
+
+<script>
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        if (confirm('Are you sure to logout ???')) {
+            window.location.href = "http://localhost/ecomm/logout.php";
+        }
+    })
+</script>

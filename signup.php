@@ -1,183 +1,248 @@
 <?php
-
-include 'includee/config.php';
-
+session_start();
+if (!isset($_SESSION['userlogin'])) {
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Signup</title>
 
-    <!-- Bootstrap  -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <!-- Bootstrap  -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <!-- Navbar Css -->
-    <link rel="stylesheet" href="style.css">
+        <!-- Navbar Css -->
+        <link rel="stylesheet" href="style.css">
 
 
-    <style>
-        input {
-            width: 100%;
-            border-radius: 4px;
-            border: 1px solid #d0d0d0;
-            box-shadow: 0 1px 0 rgb(255 255 255 / 50%), 0 1px 0 rgb(0 0 0 / 7%) inset;
-            padding: 3px 7px;
-            outline: none;
-            border-top: 1px solid #bbb;
-        }
-
-        .popup-msg {
-            position: fixed;
-            top: 5rem;
-            right: 2rem;
-            background-color: #c0392b;
-            color: #ecf0f1;
-            padding: 0.5rem 1rem 0.5rem;
-            border-radius: 4px;
-        }
-
-        .popup-msg p {
-            margin: 0;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        @media screen and (max-width:270px) {
-            .signupBtn {
+        <style>
+            input {
                 width: 100%;
+                border-radius: 4px;
+                border: 1px solid #d0d0d0;
+                box-shadow: 0 1px 0 rgb(255 255 255 / 50%), 0 1px 0 rgb(0 0 0 / 7%) inset;
+                padding: 3px 7px;
+                outline: none;
+                border-top: 1px solid #bbb;
             }
-        }
-    </style>
-</head>
 
-<body>
+            .popup-msg {
+                position: fixed;
+                top: 5rem;
+                right: 2rem;
+                background-color: #c0392b;
+                color: #ecf0f1;
+                padding: 0.5rem 1rem 0.5rem;
+                border-radius: 4px;
+            }
 
-    <div class="popup-msg hidden">
-        <p>Please fill all details</p>
-    </div>
+            .popup-msg p {
+                margin: 0;
+            }
 
-    <?php include 'includee/navbar.php'; ?>
+            .hidden {
+                display: none;
+            }
+
+            #liveAlertPlaceholder {
+                position: sticky;
+                top: 0;
+                left: 0;
+                right: 0;
+            }
+        </style>
+
+        <link rel="stylesheet" href="css/index/style.css">
+        <link rel="stylesheet" href="css/index/responsive.css">
+    </head>
+
+    <body>
 
 
-    <div class="container signup-container my-5">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="mb-3">
-                    <div>
-                        <h6><span>Full Name</span></h6>
-                    </div>
-                    <div><input type="text" name="fullname" id="fullname"></div>
-                </div>
-                <div class="mb-3">
-                    <div>
-                        <h6><span>Email</span></h6>
-                    </div>
-                    <div><input type="email" name="email" id="email"></div>
-                </div>
-                <div class="mb-3">
-                    <div>
-                        <h6><span>Username</span></h6>
-                    </div>
-                    <div><input type="text" name="username" id="username"></div>
-                </div>
-                <div class="mb-3">
-                    <div>
-                        <h6><span>Password</span></h6>
-                    </div>
-                    <div><input type="password" name="password" id="password"></div>
-                </div>
-                <div class="mb-3">
-                    <div>
-                        <h6><span>Confirm password</span></h6>
-                    </div>
-                    <div><input type="password" name="cpassword" id="cpassword"></div>
-                </div>
-                <div class="mb-3">
-                    <div>
-                        <button class="btn btn-primary signupBtn">Sign up</button>
-                    </div>
+
+        <?php
+        include 'admin/includee/cdn.php';
+        include 'database.php';
+        $obj = new Database();
+
+        include 'includee/navbar1.php';
+        ?>
+
+        <div id="liveAlertPlaceholder"></div>
+
+
+        <div class="container signup-container my-5">
+            <div class="row d-flex align-items-center justify-content-center">
+                <h3 class="h3 mb-4 text-center">SIGNUP</h3>
+
+                <div class="col-md-5">
+                    <form action="" id="my-form">
+                        <div class="mb-3 row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstname" class="h6">First Name</label>
+                                <input type="text" id="firstname" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div>
+                                    <label for="lastname" class="h6">Last Name</label>
+                                </div>
+                                <div>
+                                    <input type="text" id="lastname" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="h6">Email</label>
+                            <input type="email" required id="email" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="contact" class="h6">Contact</label>
+                            <input type="number" id="contact" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="h6">Username</label>
+                            <input type="text" id="username" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="h6">Password</label>
+                            <input type="password" id="password" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cpassword" class="h6">Confirm Password</label>
+                            <input type="password" id="cpassword" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="squestion" class="h6">Security Question</label>
+                            <select id="squestion" class="form-select">
+                                <option disabled selected>----------</option>
+                                <option value="What city were you born in?">What city were you born in?</option>
+                                <option value="In what city or town did your parents meet?">In what city or town did your parents meet?</option>
+                                <option value="What was the make and model of your first car?">What was the make and model of your first car?</option>
+                                <option value="What was the first concert you attended?">What was the first concert you attended?</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sanswer" class="h6">Security Answer</label>
+                            <input type="text" id="sanswer" class="form-control">
+                        </div>
+                        <div class="mt-4 d-flex justify-content-end">
+                            <div class="col-md-3 col-12">
+                                <button type="reset" class="d-none" id="reset">Reset</button>
+                                <button type="submit" class="w-100 btn btn-primary signupBtn">
+                                    <h6 class="h6 m-0">Sign up</h6>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="jquery.js"></script>
+        <script src="jquery.js"></script>
 
-    <script>
-        $(document).ready(() => {
-            $('.signupBtn').click((e) => {
-                var name = $('#fullname').val();
-                var email = $('#email').val();
-                var username = $('#username').val();
-                var password = $('#password').val();
-                var cpassword = $('#cpassword').val();
+        <script>
+            $(document).ready(() => {
+                var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 
-                if (name == '' || email == '' || username == '' || password == '' || cpassword == '') {
-                    $('.popup-msg').removeClass('hidden');
-                    setTimeout(() => {
-                        $('.popup-msg').addClass('hidden');
-                    }, 2000);
-                } else {
-                    if (password.length < 8) {
-                        $('.popup-msg p').html('Password must be minimum 8 characters long');
-                        $('.popup-msg').removeClass('hidden');
-                        setTimeout(() => {
-                            $('.popup-msg').addClass('hidden');
-                        }, 2000);
-                    } else {
-                        if (password !== cpassword) {
-                            $('.popup-msg p').html('Password does not match ');
-                            $('.popup-msg').removeClass('hidden');
-                            setTimeout(() => {
-                                $('.popup-msg').addClass('hidden');
-                            }, 2500);
-                        } else {
-                            $.ajax({
-                                url: "signupAjax.php",
-                                type: "POST",
-                                data: {
-                                    name,
-                                    email,
-                                    username,
-                                    password
-                                },
-                                beforeSend: function() {
-                                    $('.signupBtn').html('<i class="fa fa-circle-o-notch fa-spin"></i>')
-                                    $('.signupBtn').css('opacity', 0.5)
-                                },
-                                success: function(data) {
-                                    $('.signupBtn').html('Login')
-                                    $('.signupBtn').css('opacity', 1)
-                                    if (data == 'Signed up') {
-                                        $('#fullname').val('');
-                                        $('#email').val('');
-                                        $('#username').val('');
-                                        $('#password').val('');
-                                        $('#cpassword').val('');
-                                        window.location.href = 'login.php';
-                                    }
+                function alert(message, type) {
+                    var wrapper = document.createElement('div')
+                    wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close alert-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
 
-                                    $('.popup-msg p').html(data);
-                                    $('.popup-msg').removeClass('hidden');
-
-                                    setTimeout(() => {
-                                        $('.popup-msg').addClass('hidden');
-                                    }, 2500);
-                                }
-                            });
-                        }
-                    }
+                    alertPlaceholder.append(wrapper)
                 }
-            });
-        });
-    </script>
-</body>
 
-</html>
+                $('#my-form').on('submit', (e) => {
+                    e.preventDefault()
+                    const fname = $('#firstname').val();
+                    const lname = $('#lastname').val();
+                    const email = $('#email').val();
+                    const contact = $('#contact').val()
+                    const username = $('#username').val();
+                    const password = $('#password').val();
+                    const cpassword = $('#cpassword').val();
+                    const squestion = $('#squestion').val();
+                    const sanswer = $('#sanswer').val();
+
+                    if (fname && lname && email && contact && username && password && cpassword && squestion && sanswer) {
+                        if (password.length < 8) {
+                            $('.signupBtn').addClass('disabled')
+                            setTimeout(() => {
+                                $('.signupBtn').removeClass('disabled')
+                                $('#liveAlertPlaceholder').html('')
+                            }, 3000);
+                            alert('Password must be 8 characters long', 'danger')
+                        } else {
+                            if (password !== cpassword) {
+                                $('.signupBtn').addClass('disabled')
+                                alert('Password does not match', 'danger')
+
+
+                                setTimeout(() => {
+                                    $('.signupBtn').removeClass('disabled')
+                                    $('#liveAlertPlaceholder').html('')
+                                }, 3000);
+                            } else {
+                                $.ajax({
+                                    url: "loginSignup.php",
+                                    type: "POST",
+                                    data: {
+                                        fname,
+                                        lname,
+                                        email,
+                                        contact,
+                                        username,
+                                        password,
+                                        squestion,
+                                        sanswer,
+                                        operation: "signup"
+                                    },
+                                    beforeSend: function() {
+                                        $('.signupBtn').addClass('disabled')
+                                    },
+                                    success: function(data) {
+                                        if (data == 'success') {
+                                            $('#reset').click()
+
+                                            $('.signupBtn').removeClass('disabled')
+                                            $('#liveAlertPlaceholder').html('')
+                                            window.location.href = 'login.php';
+                                        } else {
+                                            alert(data, 'danger')
+                                            setTimeout(() => {
+                                                $('.signupBtn').removeClass('disabled')
+                                                $('#liveAlertPlaceholder').html('')
+                                            }, 3000);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    } else {
+                        alert('Please fill all details', 'danger')
+
+                        $('.signupBtn').addClass('disabled')
+                        setTimeout(() => {
+                            $('.signupBtn').removeClass('disabled')
+                            $('#liveAlertPlaceholder').html('')
+                        }, 3000);
+                    }
+                });
+            });
+        </script>
+
+        <?php
+        include 'includee/footer.php';
+        ?>
+    </body>
+
+    </html>
+
+<?php
+} else {
+    include 'pagenotfound.php';
+}
+?>

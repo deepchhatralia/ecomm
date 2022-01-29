@@ -109,44 +109,47 @@
     </div>
 
     <div class="container my-5">
-        <div class="row mb-3">
-            <label for="offer-name" class="col-sm-2 col-form-label">Offer Name :</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="offer-name">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="offer-detail" class="col-sm-2 col-form-label">Offer Detail :</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="offer-detail">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-6 mb-3">
-                <label for="start-date" class="form-label">Start Date :</label>
-                <input type="date" class="form-control" id="start-date">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="end-date" class="form-label">End Date :</label>
-                <input type="date" class="form-control" id="end-date">
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="discount" class="col-sm-2 col-form-label">Offer Discount :</label>
-            <div class="col-sm-10">
-                <div class="input-group">
-                    <input type="number" minlength="0" maxlength="100" class="form-control" id="discount">
-                    <div class="input-group-text">%</div>
+        <form id="my-form">
+            <div class="row mb-3">
+                <label for="offer-name" class="col-sm-2 col-form-label">Offer Name :</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="offer-name">
                 </div>
             </div>
-        </div>
-        <div class="row justify-content-end">
-            <div class="col-md-2">
-                <button class="btn btn-primary w-100" id="add-offer-btn">Add</button>
+            <div class="row mb-3">
+                <label for="offer-detail" class="col-sm-2 col-form-label">Offer Detail :</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="offer-detail">
+                </div>
             </div>
-        </div>
+            <div class="row mb-3">
+                <div class="col-md-6 mb-3">
+                    <label for="start-date" class="form-label">Start Date :</label>
+                    <input type="date" class="form-control" id="start-date">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="end-date" class="form-label">End Date :</label>
+                    <input type="date" class="form-control" id="end-date">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="discount" class="col-sm-2 col-form-label">Offer Discount :</label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <input type="number" minlength="0" maxlength="100" class="form-control" id="discount">
+                        <div class="input-group-text">%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-md-4 d-flex justify-content-end">
+                    <input type="reset" class="btn btn-secondary mx-2" id="reset">
+                    <button class="btn btn-primary" id="add-offer-btn">Add</button>
+                </div>
+            </div>
+        </form>
     </div>
-    </div>
+
 
     <script>
         document.querySelector('.fa-tachometer-alt').parentNode.parentNode.classList.remove('active')
@@ -173,7 +176,8 @@
 
             showData();
 
-            $('#add-offer-btn').click(() => {
+            $('#my-form').on('submit', (e) => {
+                e.preventDefault()
                 const name = $('#offer-name').val()
                 const desc = $('#offer-detail').val()
                 // const desc = editor.getData()
@@ -194,12 +198,7 @@
                         },
                         success(data) {
                             if (data == 'Added') {
-                                $('#offer-name').val('')
-                                $('#offer-detail').val('')
-                                // editor.setData(' ')
-                                $('#start-date').val('')
-                                $('#end-date').val('')
-                                $('#discount').val('')
+                                $('#reset').click()
 
                                 showData()
                                 showNotification('Success', 'Offer added to database')
