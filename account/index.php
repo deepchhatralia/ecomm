@@ -24,7 +24,7 @@ if (isset($_SESSION['userlogin'])) {
 
         include '../includee/navbar1.php';
         ?>
-
+        <h1 class="h1">Welcome, <?php echo $_SESSION['username']; ?></h1>
 
         <?php
         include '../includee/footer.php';
