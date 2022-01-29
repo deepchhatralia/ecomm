@@ -13,7 +13,7 @@ if (isset($_SESSION['userlogin'])) {
         if ($result) {
             echo "Removed";
         } else {
-            echo 'Try again';
+            echo 'Try again...';
         }
     } else {
         include '../pagenotfound.php';

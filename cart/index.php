@@ -166,9 +166,9 @@ if (isset($_SESSION['userlogin'])) {
                             },
                             success(data) {
                                 if (data) {
-                                    window.location.reload()
+                                    window.location.reload();
                                 } else {
-                                    alert('Please try again')
+                                    alert('Please try again');
                                 }
                             }
                         })

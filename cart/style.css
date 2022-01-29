@@ -32,11 +32,11 @@ body {
 }
 
 .text-muted {
-    color: #969696 !important
+    color: #969696 !important;
 }
 
 a {
-    text-decoration: none !important
+    text-decoration: none !important;
 }
 
 .card {
