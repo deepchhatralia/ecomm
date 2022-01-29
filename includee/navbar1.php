@@ -2,7 +2,6 @@
     <style>
         .hero_area {
             position: relative;
-            /* min-height: 100vh; */
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
