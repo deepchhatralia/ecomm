@@ -1,5 +1,13 @@
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+
     <style>
+        body {
+            font-family: 'Rubik', sans-serif !important;
+        }
+
         .hero_area {
             position: relative;
             display: -webkit-box;
@@ -300,7 +308,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ">
                             <li class="nav-item active">
-                                <a class="nav-link" href="http://localhost/ecomm/">Home <span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="http://localhost/ecomm/">Home</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="http://localhost/ecomm/product">Products </a>
@@ -308,6 +316,15 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="http://localhost/ecomm/product/category">Category</a>
                             </li>
+                            <?php
+                            if (isset($_SESSION['userlogin'])) {
+                            ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="http://localhost/ecomm/orders/">Orders</a>
+                                </li>
+                            <?php
+                            }
+                            ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="about.html"> About</a>
                             </li>
