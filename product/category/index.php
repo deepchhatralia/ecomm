@@ -41,16 +41,18 @@
                 ?>
 
                         <div class="col-sm-6 col-lg-4">
-                            <div class="box">
-                                <div class="img-box">
-                                    <img src="../../admin/product/category_uploads/<?php echo $row['category_img']; ?>" alt="">
+                            <a href="http://localhost/ecomm/product/category/category.php?id=<?php echo $row['category_id']; ?>">
+                                <div class="box" data-id="<?php echo $row['category_id']; ?>">
+                                    <div class="img-box" data-id="<?php echo $row['category_id']; ?>">
+                                        <img src="../../admin/product/category_uploads/<?php echo $row['category_img']; ?>" alt="">
+                                    </div>
+                                    <div class="detail-box" data-id="<?php echo $row['category_id']; ?>">
+                                        <h5>
+                                            <?php echo $row['category_name']; ?>
+                                        </h5>
+                                    </div>
                                 </div>
-                                <div class="detail-box">
-                                    <h5>
-                                        <?php echo $row['category_name']; ?>
-                                    </h5>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                 <?php
                     }
@@ -70,9 +72,9 @@
     <!-- end product section -->
 
     <!-- jQery -->
-    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/jquery-3.4.1.min.js"></script>
     <!-- bootstrap js -->
-    <!-- <script src="../js/bootstrap.js"></script> -->
+    <script src="../../js/bootstrap.js"></script>
 </body>
 
 </html>

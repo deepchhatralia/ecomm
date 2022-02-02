@@ -50,9 +50,9 @@ class Database
                 return $query;
                 // return $sql;
             }
-            return false;
+            // return false;
             // return $sql;
-            // return mysqli_error($this->connection());
+            return mysqli_error($this->connection());
         } else {
             echo 'Table does not exist';
         }
@@ -63,11 +63,12 @@ class Database
     {
         $query = $this->conn->query($sql);
         if ($query) {
-            $x = array();
-            $x = $query->fetch_all(MYSQLI_ASSOC);
-            echo '<pre>';
-            print_r($x);
-            echo '</pre>';
+            return $query;
+            // $x = array();
+            // $x = $query->fetch_all(MYSQLI_ASSOC);
+            // echo '<pre>';
+            // print_r($x);
+            // echo '</pre>';
         }
     }
 

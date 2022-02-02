@@ -271,6 +271,12 @@
                                     Cart
                                 </span>
                             </a>
+                            <a href="http://localhost/ecomm/product/wishlist.php" class="cart-link">
+                                <i class="fas fa-heart" aria-hidden="true"></i>
+                                <span>
+                                    Wishlist
+                                </span>
+                            </a>
                         <?php
                         } else {
                             echo '<a href="http://localhost/ecomm/login.php" id="login-btn" class="account-link">
@@ -325,9 +331,9 @@
                             <?php
                             }
                             ?>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" href="about.html"> About</a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </nav>

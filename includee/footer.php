@@ -11,10 +11,6 @@
             font-size: 24px;
         }
 
-        .info_section .info_links ul {
-            padding: 0;
-        }
-
         .info_section .info_links ul li {
             list-style-type: none;
         }
@@ -72,6 +68,11 @@
         .footer_section p a {
             color: inherit;
         }
+
+        .footer-gdrs:hover {
+            color: skyblue !important;
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -90,7 +91,7 @@
                             </a>
                         </h5>
                         <p class="mb-2">
-                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <i class="fas fa-map-marker-alt"></i>
                             A/29, Bapukrupa Society, Near Chinmay Tower, Opp. Upganda Park, Memnagar, Ahmedabad
                         </p>
                         <p class="mb-2">
@@ -108,13 +109,13 @@
                         <h5>
                             Useful Links
                         </h5>
-                        <ul>
+                        <ul class="p-0">
                             <li>
                                 <a href="http://localhost/ecomm">
                                     Home
                                 </a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="http://localhost/ecomm/product">
                                     Products
                                 </a>
@@ -123,11 +124,14 @@
                                 <a href="http://localhost/ecomm/product/category">
                                     Category
                                 </a>
-                            </li>
+                            </li> -->
                             <li>
                                 <a href="about.html">
                                     About
                                 </a>
+                            </li>
+                            <li>
+                                <a href="http://localhost/ecomm/enquiry.php"> Enquiry</a>
                             </li>
                         </ul>
                     </div>
@@ -171,9 +175,13 @@
         <div class="container">
             <p>
                 &copy; <span id="displayYear"></span> All Rights Reserved By
-                <a href="http://localhost/ecomm">GDRS</a>
+                <a href="http://localhost/ecomm" class="footer-gdrs">GDRS</a>
             </p>
         </div>
     </footer>
     <!-- footer section -->
 </div>
+
+<script>
+    document.getElementById("displayYear").innerHTML = new Date().getFullYear();
+</script>

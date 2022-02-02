@@ -128,6 +128,32 @@ if (!isset($_GET['id'])) {
             right: 0;
             margin-bottom: 20px;
         }
+
+        .feedback-input {
+            border-bottom: 1px solid gray;
+            padding: 10px 7px;
+            margin-bottom: 10px;
+        }
+
+        .feedback-input:focus {
+            outline: none;
+        }
+
+        .feedback-input::placeholder {
+            color: gray;
+        }
+
+        #submit-feedback {
+            margin-bottom: 10px;
+            padding: 0 10px;
+            border-bottom: 1px solid gray;
+        }
+
+        #submit-feedback:hover {
+            background-color: lightgray;
+            transition: all 600ms ease;
+            font-weight: 800;
+        }
     </style>
 
     <link type="text/css" rel="stylesheet" href="../magiczoomplus-trial/magiczoomplus/magiczoomplus.css" />
@@ -163,10 +189,20 @@ if (!isset($_GET['id'])) {
 
         $img = $obj->select('*', 'image', "product_product_id=" . $id);
 
+        $company = $obj->select('*', 'company_profile', "idcompany_profile=" . $row['company_profile_idcompany_profile']);
+        if ($company->num_rows > 0) {
+            $companyRow = $company->fetch_assoc();
+            $company = $companyRow['company_name'];
+        } else {
+            $company = "";
+        }
+
         $arr = [];
+        $imgId = [];
         if ($img->num_rows > 0) {
 
             while ($imgrow = $img->fetch_assoc()) {
+                array_push($imgId, $imgrow['idimage']);
                 array_push($arr, $imgrow['img_path']);
             }
         }
@@ -179,11 +215,7 @@ if (!isset($_GET['id'])) {
             <div class="row">
                 <div class="col-md-6">
                     <div class="main-product-img my-3 d-flex align-items-center justify-content-center">
-                        <img src="../admin/product/uploads/<?php echo $arr[0]; ?>" alt="">
-                        <!-- <a href="" class="MagicZoom">
-                            <img src="../admin/product/uploads/<?php //echo $arr[0]; 
-                                                                ?>" />
-                        </a> -->
+                        <img data-id="<?php echo $imgId[0]; ?>" class="other-img" src="../admin/product/uploads/<?php echo $arr[0]; ?>" alt="">
                     </div>
 
                     <?php
@@ -193,7 +225,7 @@ if (!isset($_GET['id'])) {
                             <?php
                             for ($i = 1; $i < count($arr); $i++) {
                             ?>
-                                <img src="../admin/product/uploads/<?php echo $arr[$i]; ?>" alt="">
+                                <img data-id="<?php echo $imgId[$i]; ?>" class="other-img" src="../admin/product/uploads/<?php echo $arr[$i]; ?>" alt="">
                             <?php
                             }
                             ?>
@@ -204,8 +236,23 @@ if (!isset($_GET['id'])) {
                 </div>
 
                 <div class="col-md">
-                    <h2 class="h2 my-3"><?php echo $row['product_name']; ?> <span class="h6">by GDRS</span>
-                    </h2>
+                    <div class="d-flex align-items-center justify-content-between">
+
+                        <h2 class="h2 my-3">
+                            <?php echo $row['product_name']; ?> <span class="h6"><?php echo "by " . $company; ?></span>
+                        </h2>
+                        <?php
+                        if (isset($_SESSION['userlogin'])) {
+                            $wishlist = $obj->select('*', 'wishlist', 'product_id=' . $row['product_id'] . ' AND userlogin_userid=' . $_SESSION['userlogin']);
+
+                            if ($wishlist->num_rows > 0) {
+                                echo '<h5 data-id="' . $row['product_id'] . '" class="h5 fs-3 m-0 heart-container"><i id="full-heart" class="fas fa-heart m-0 cursor-pointer"></i></h5>';
+                            } else {
+                                echo '<h5 data-id="' . $row['product_id'] . '" class="h5 fs-3 m-0 heart-container"><i id="empty-heart" class="far fa-heart m-0 cursor-pointer"></i></h5>';
+                            }
+                        }
+                        ?>
+                    </div>
 
                     <div class="price-container">
                         <h1 class="h1">Rs. <?php echo $price; ?></h1>
@@ -375,23 +422,49 @@ if (!isset($_GET['id'])) {
                 </div>
 
                 <div class="col-md-6">
-                    <h2 class="h2 mb-5">Feedback</h2>
-                    <div class="row feedback-container">
+                    <h2 class="h2 mb-4">Feedback</h2>
 
-                        <?php
-                        $result3 = $obj->select('*', 'feedback', "product_id=" . $id);
-                        if ($result3->num_rows > 0) {
+                    <?php
+                    if (isset($_SESSION['userlogin'])) {
+                        $result = $obj->select('*', 'feedback', "userlogin_userid=" . $_SESSION['userlogin'] . " AND product_id=" . $id);
+
+                        if ($result->num_rows == 0) {
+                            $result = mysqli_query($obj->connection(), "SELECT * from `order` JOIN `order_detail` ON `order`.`order_id`=`order_detail`.`order_order_id` WHERE `order_detail`.`product_id` = " . $id . " AND `order`.`userlogin_userid` = " . $_SESSION['userlogin']);
+
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    if ($row['status'] == "Delivered") {
+                    ?>
+                                        <div class="d-flex">
+                                            <input type="text" class="w-100 feedback-input" placeholder="Write feedback" />
+                                            <button id="submit-feedback">SUBMIT</button>
+                                        </div>
+                    <?php
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    ?>
+
+                    <?php
+                    $result3 = $obj->select('*', 'feedback', "product_id=" . $id);
+                    if ($result3->num_rows > 0) {
+                    ?>
+                        <div class="row feedback-container">
+                            <?php
                             while ($row3 = $result3->fetch_assoc()) {
                                 $user = $obj->select('*', 'userlogin', "userid=" . $row3['userlogin_userid']);
                                 $user = $user->fetch_assoc();
-                        ?>
+                            ?>
                                 <div class="col-md-12 mb-2 d-flex">
                                     <div class="mr-3">
                                         <i class="fas fa-user"></i>
                                     </div>
                                     <div>
                                         <div class="d-flex">
-                                            <h6 class="h6 m-0"><?php echo $user['user_firstname'] . " " . $user['user_lastname']; ?></h6>
+                                            <h6 class="h6 fw-bold m-0" style="letter-spacing: 1px;"><?php echo $user['user_firstname'] . " " . $user['user_lastname']; ?></h6>
                                             <span class="feedback-date ml-4 text-muted"><?php echo $row3['date']; ?></span>
                                         </div>
                                         <p style="font-size: 15px;"><?php echo $row3['feedback']; ?></p>
@@ -403,7 +476,7 @@ if (!isset($_GET['id'])) {
                             echo '<h6 class="h6">No feedbacks yet</h6>';
                         }
                         ?>
-                    </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -414,23 +487,81 @@ if (!isset($_GET['id'])) {
         include '../includee/footer.php';
         ?>
 
-        <script src="../js/jquery-3.4.1.min.js"></script>
-        <script type="text/javascript" src="../magiczoomplus-trial/magiczoomplus/magiczoomplus.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+        <!-- jQery -->
+        <script src="../js/jquery-3.4.1.min.js"></script>
+        <!-- bootstrap js -->
+        <script src="../js/bootstrap.js"></script>
 
 
         <script>
             $(document).ready(() => {
-
                 var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-                var alertTrigger = document.getElementById('liveAlertBtn')
 
                 function alert(message, type) {
                     var wrapper = document.createElement('div')
                     wrapper.innerHTML = '<div class="h6 m-0 alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close close-alert" data-bs-dismiss="alert" aria-label="Close"></button></div>'
 
                     alertPlaceholder.append(wrapper)
+
+                    setTimeout(() => {
+                        $('#liveAlertPlaceholder').html('')
+                    }, 3000);
                 }
+
+
+                function addRemoveWishlist(id, operationn) {
+                    $.ajax({
+                        url: "ajax/wishlist.php",
+                        type: "POST",
+                        data: {
+                            id,
+                            operation: operationn
+                        },
+                        success(data) {
+                            alert(data, 'success')
+                        }
+                    })
+                }
+
+                $('.other-img').on('click', (e) => {
+                    const id = e.target.getAttribute('data-id');
+                    const mainImgId = $('.main-product-img img').attr("data-id");
+                    const mainImg = $('.main-product-img img').attr("src")
+
+                    e.target.setAttribute("src", mainImg)
+                    e.target.setAttribute("data-id", mainImgId)
+
+                    $.ajax({
+                        url: "ajax/getImage.php",
+                        type: "POST",
+                        data: {
+                            id,
+                            operation: "select image"
+                        },
+                        success(data) {
+                            $('.main-product-img').html(data);
+                            // console.log(data);
+                        }
+                    })
+                })
+
+                document.addEventListener('click', (e) => {
+                    if (e.target && e.target.id == "empty-heart") {
+                        const id = e.target.parentElement.getAttribute("data-id");
+                        $('.heart-container').html('<i id="full-heart" class="m-0 fas fa-heart cursor-pointer"></i>');
+
+                        addRemoveWishlist(id, "addToWishlist");
+                    }
+                    if (e.target && e.target.id == "full-heart") {
+                        const id = e.target.parentElement.getAttribute("data-id");
+                        $('.heart-container').html('<i id="empty-heart" class="m-0 far fa-heart cursor-pointer"></i>');
+
+                        addRemoveWishlist(id, "removeFromWishlist");
+                    }
+                    return () => {}
+                })
 
                 $('.view-more-less').click(() => {
 
@@ -467,14 +598,8 @@ if (!isset($_GET['id'])) {
                         success(data) {
                             if (data) {
                                 alert(data, 'success')
-                                setTimeout(() => {
-                                    alertPlaceholder.innerHTML = '';
-                                }, 3000);
                             } else {
                                 alert('Please login to continue', 'danger')
-                                setTimeout(() => {
-                                    alertPlaceholder.innerHTML = '';
-                                }, 3000);
                             }
                         }
                     })

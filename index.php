@@ -28,9 +28,7 @@
     include 'admin/includee/cdn.php';
     include 'database.php';
     $obj = new Database();
-    ?>
 
-    <?php
     include 'includee/navbar1.php';
     ?>
 
@@ -132,7 +130,7 @@
             </div>
             <div class="row">
                 <?php
-                $result = $obj->select('*', 'productt', 'product_stock >= 1');
+                $result = $obj->select('*', 'productt', 'product_stock >= 1', null, 6);
 
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
@@ -169,16 +167,16 @@
                         </div>
                     <?php
                     }
-                }
-                if ($result->num_rows > 5) {
+                    if ($result->num_rows > 6) {
                     ?>
-
-                    <div class="btn_box">
-                        <a href="" class="view_more-link">
-                            View More
-                        </a>
-                    </div>
-                <?php } ?>
+                        <div class="btn_box">
+                            <a href="http://localhost/ecomm/product" class="view_more-link">
+                                View More
+                            </a>
+                        </div>
+                <?php }
+                }
+                ?>
             </div>
         </div>
     </section>

@@ -38,7 +38,7 @@
 
         .my-container {
             position: relative;
-            width: 20%;
+            width: 15%;
             display: inline-block;
         }
 
