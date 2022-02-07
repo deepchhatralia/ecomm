@@ -33,14 +33,41 @@
     ?>
 
     <section class="slider_section ">
-        <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+        <!-- add 'l' in carousel if you want to create a slider  -->
+        <div id="customCarousel1" class="carouse slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="container ">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="detail-box">
-                                    <h1>
+                                    <h1 class="h1">
+                                        WELCOME TO OUR SHOP
+                                    </h1>
+                                    <!-- <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste quam velit saepe dolorem deserunt quo quidem ad optio.
+                                    </p>
+                                    <a href="">
+                                        Read More
+                                    </a> -->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="img-box">
+                                    <!-- <img src="images/slider-img.png" alt=""> -->
+                                    <img src="images/laptopPNG.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Uncomment this if you want to enable carousel  -->
+                <!-- <div class="carousel-item">
+                    <div class="container ">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="detail-box">
+                                    <h1 class="h1">
                                         Welcome to our shop
                                     </h1>
                                     <p>
@@ -58,8 +85,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="carousel-item">
+                </div> -->
+                <!-- Uncomment this if you want to enable carousel  -->
+                <!-- <div class="carousel-item">
                     <div class="container ">
                         <div class="row">
                             <div class="col-md-6">
@@ -82,33 +110,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="container ">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="detail-box">
-                                    <h1>
-                                        Welcome to our shop
-                                    </h1>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste quam velit saepe dolorem deserunt quo quidem ad optio.
-                                    </p>
-                                    <a href="">
-                                        Read More
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="img-box">
-                                    <img src="images/slider-img.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </div> -->
             </div>
-            <div class="carousel_btn_box">
+            <!-- Uncomment this if you want buttons for carousel  -->
+            <!-- <div class="carousel_btn_box">
                 <a class="carousel-control-prev" href="#customCarousel1" role="button" data-slide="prev">
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="sr-only">Previous</span>
@@ -117,7 +122,7 @@
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                     <span class="sr-only">Next</span>
                 </a>
-            </div>
+            </div> -->
         </div>
     </section>
 
