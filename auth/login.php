@@ -59,17 +59,17 @@ if (!isset($_SESSION['userlogin'])) {
             }
         </style>
 
-        <link rel="stylesheet" href="css/index/style.css">
-        <link rel="stylesheet" href="css/index/responsive.css">
+        <link rel="stylesheet" href="../css/index/style.css">
+        <link rel="stylesheet" href="../css/index/responsive.css">
     </head>
 
     <body>
         <?php
-        include 'admin/includee/cdn.php';
-        include 'database.php';
+        include '../admin/includee/cdn.php';
+        include '../database.php';
         $obj = new Database();
 
-        include 'includee/navbar1.php';
+        include '../includee/navbar1.php';
         ?>
 
         <div id="liveAlertPlaceholder"></div>
@@ -107,13 +107,13 @@ if (!isset($_SESSION['userlogin'])) {
 
 
         <?php
-        include 'includee/footer.php';
+        include '../includee/footer.php';
         ?>
 
 
 
         <!-- Jquery  -->
-        <script src="jquery.js"></script>
+        <script src="../jquery.js"></script>
 
         <script>
             $(document).ready(() => {
@@ -171,6 +171,6 @@ if (!isset($_SESSION['userlogin'])) {
     </html>
 <?php
 } else {
-    include 'pagenotfound.php';
+    include '../pagenotfound.php';
 }
 ?>

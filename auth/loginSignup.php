@@ -3,7 +3,7 @@ session_start();
 if (isset($_POST['operation']) && $_POST['operation'] == "login") {
     $username = $_POST['username'];
 
-    include 'database.php';
+    include '../database.php';
     $obj = new Database();
 
     $result = $obj->select('*', 'userlogin', "user_name='{$username}'");
@@ -21,7 +21,7 @@ if (isset($_POST['operation']) && $_POST['operation'] == "login") {
         echo false;
     }
 } else if (isset($_POST['operation']) && $_POST['operation'] == "signup") {
-    include 'database.php';
+    include '../database.php';
     $obj = new Database();
 
     $fname = mysqli_real_escape_string($obj->connection(), $_POST['fname']);
@@ -53,5 +53,5 @@ if (isset($_POST['operation']) && $_POST['operation'] == "login") {
         }
     }
 } else {
-    include 'pagenotfound.php';
+    include '../pagenotfound.php';
 }

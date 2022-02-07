@@ -259,7 +259,7 @@
                                     My Account
                                 </span>
                             </a>
-                            <a href="" id="logout-btn" class="account-link">
+                            <a href="http://localhost/ecomm/auth/logout.php" id="logout-btn" class="account-link">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 <span>
                                     Logout
@@ -279,13 +279,13 @@
                             </a>
                         <?php
                         } else {
-                            echo '<a href="http://localhost/ecomm/login.php" id="login-btn" class="account-link">
+                            echo '<a href="http://localhost/ecomm/auth/login.php" id="login-btn" class="account-link">
                             <i class="fa fa-user" aria-hidden="true"></i>
                             <span>
                                 Login
                             </span>
                         </a>
-                        <a href="http://localhost/ecomm/signup.php" id="login-btn" class="account-link">
+                        <a href="http://localhost/ecomm/auth/signup.php" id="login-btn" class="account-link">
                             <i class="fa fa-user" aria-hidden="true"></i>
                             <span>
                                 Signup
