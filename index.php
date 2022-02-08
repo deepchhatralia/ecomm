@@ -142,6 +142,16 @@
                         $productId = $row["product_id"];
                         $row2 = $obj->select('*', 'image', 'product_product_id = ' . $productId);
                         $row2 = $row2->fetch_assoc();
+
+                        $offerId = $row['offer_idoffer'];
+
+                        $price = $row['product_price'];
+                        if ($offerId != 0) {
+                            $resultt = $obj->select('*', 'offer', "idoffer=" . $offerId);
+                            $roww = $resultt->fetch_assoc();
+
+                            $price = round($row['product_price'] - ($row['product_price'] * $roww['offer_discount'] / 100));
+                        }
                 ?>
 
                         <div class="col-sm-6 col-lg-4">
@@ -156,7 +166,7 @@
                                         </h5>
                                         <div class="product_info">
                                             <h5>
-                                                <span>₹</span> <?php echo $row['product_price']; ?>
+                                                <span>₹</span> <?php echo $price; ?>
                                             </h5>
                                             <div class="star_container">
                                                 <i class="fa fa-star" aria-hidden="true"></i>
@@ -191,7 +201,7 @@
 
     <!-- about section -->
 
-    <section class="about_section">
+    <!-- <section class="about_section">
         <div class="container-fluid  ">
             <div class="row">
                 <div class="col-md-5 ml-auto">
@@ -217,7 +227,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- end about section -->
 
