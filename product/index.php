@@ -58,20 +58,13 @@
                                         <img src="../admin/product/uploads/<?php echo $row2['img_path']; ?>" alt="">
                                     </div>
                                     <div class="detail-box">
-                                        <h5>
+                                        <h5 class="font-bold m-0">
                                             <?php echo $row['product_name']; ?>
                                         </h5>
                                         <div class="product_info">
                                             <h5>
                                                 <span>₹</span> <?php echo $price; ?>
                                             </h5>
-                                            <div class="star_container">
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

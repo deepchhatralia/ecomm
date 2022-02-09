@@ -244,7 +244,7 @@
                         </a>
                     </div>
                     <from class="search_form">
-                        <input type="text" class="form-control" placeholder="Search here...">
+                        <input type="text" id="search" onkeyup="onKeyUp()" class="form-control" placeholder="Search here...">
                         <button class="" type="submit">
                             <i class="fa fa-search" aria-hidden="true"></i>
                         </button>
@@ -350,4 +350,12 @@
             window.location.href = "http://localhost/ecomm/logout.php";
         }
     })
+
+    function onKeyUp() {
+        const value = document.getElementById('search').value;
+
+        // $.ajax({
+        //     url:""
+        // })
+    }
 </script>

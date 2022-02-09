@@ -77,13 +77,22 @@ if (isset($_SESSION['userlogin'])) {
                                                         <div class="aside">
                                                             <img src="../admin/product/uploads/<?php echo $image['img_path']; ?>" class="img-sm">
                                                         </div>
-                                                        <figcaption class="info"> <a href="#" class="title text-dark" data-abc="true"><?php echo $row2['product_name']; ?></a>
+                                                        <figcaption class="info">
+                                                            <a href="http://localhost/ecomm/product/product.php?id=<?php echo $productId; ?>" class="title text-dark" data-abc="true"><?php echo $row2['product_name']; ?></a>
                                                         </figcaption>
                                                     </figure>
                                                 </td>
                                                 <td>
-                                                    <select class="form-control">
-                                                        <option selected value="<?php echo $row['cart_quantity']; ?>"><?php echo $row['cart_quantity']; ?></option>
+                                                    <select class="form-control" class="product-cart-qty">
+                                                        <?php
+                                                        for ($i = 1; $i <= $row['cart_quantity']; $i++) {
+                                                            $selected = false;
+                                                            if ($i == $row['cart_quantity']) {
+                                                                $selected = true;
+                                                            }
+                                                            echo '<option selected="' . $selected . '" value="' . $row['cart_quantity'] . '">' . $i . '</option>';
+                                                        }
+                                                        ?>
                                                     </select>
                                                 </td>
                                                 <td>
@@ -156,16 +165,18 @@ if (isset($_SESSION['userlogin'])) {
                 $('.btn-remove').on('click', (e) => {
                     const id = e.target.parentElement.parentElement.getAttribute('data-id');
 
+                    const qty = e.target.parentElement.previousElementSibling.previousElementSibling.childNodes[1].value;
+
                     if (confirm('Are you sure ???')) {
-                        $.ajax({
+                        $.post({
                             url: "getData.php",
-                            type: "POST",
                             data: {
                                 id,
+                                qty,
                                 operation: "removeItem"
                             },
                             success(data) {
-                                if (data) {
+                                if (data == "Removed") {
                                     window.location.reload();
                                 } else {
                                     alert('Please try again');
@@ -173,6 +184,12 @@ if (isset($_SESSION['userlogin'])) {
                             }
                         })
                     }
+                })
+
+                $('.product-cart-qty').on('change', (e) => {
+                    const qty = e.currentTarget;
+
+                    console.log(qty);
                 })
             })
         </script>
