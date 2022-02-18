@@ -17,6 +17,7 @@ if (isset($_SESSION['userlogin'])) {
             echo "Added to wishlist";
         } else {
             echo "Try again...";
+            // echo mysqli_error($obj->connection());
         }
     } else if (isset($_POST['id']) && $_POST['operation'] == "removeFromWishlist") {
         $id = $_POST['id'];
@@ -27,12 +28,14 @@ if (isset($_SESSION['userlogin'])) {
             echo "Removed from wishlist";
         } else {
             echo "Try again...";
+            // echo mysqli_error($obj->connection());
         }
     } else if (isset($_POST['id']) && $_POST['operation'] == "removeItem") {
         $id = $_POST['id'];
 
         $result = $obj->delete('wishlist', 'userlogin_userid=' . $userId . ' AND product_id=' . $id);
 
+        // echo mysqli_error($obj->connection());
         if ($result) {
             echo "Removed from wishlist";
         } else {

@@ -76,7 +76,9 @@
         </form>
     </div>
 
-    <script src="../jquery.js"></script>
+
+
+    <script src="../js/jquery-3.4.1.min.js"></script>
 
     <script>
         $(document).ready(() => {

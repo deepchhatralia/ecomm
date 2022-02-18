@@ -115,16 +115,6 @@
                                     Home
                                 </a>
                             </li>
-                            <!-- <li>
-                                <a href="http://localhost/ecomm/product">
-                                    Products
-                                </a>
-                            </li>
-                            <li>
-                                <a href="http://localhost/ecomm/product/category">
-                                    Category
-                                </a>
-                            </li> -->
                             <li>
                                 <a href="about.html">
                                     About
@@ -137,31 +127,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="info_form ">
-                        <h5>
-                            Newsletter
-                        </h5>
-                        <form action="">
-                            <input type="email" placeholder="Enter your email">
-                            <button>
-                                Subscribe
-                            </button>
-                        </form>
-                        <div class="social_box">
-                            <a href="">
-                                <i class="fab fa-facebook" aria-hidden="true"></i>
-                            </a>
-                            <a href="">
-                                <i class="fab fa-twitter" aria-hidden="true"></i>
-                            </a>
-                            <a href="">
-                                <i class="fab fa-instagram" aria-hidden="true"></i>
-                            </a>
-                            <a href="">
-                                <i class="fab fa-youtube" aria-hidden="true"></i>
-                            </a>
-                        </div>
-                    </div>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.1901922627185!2d72.533745!3d23.0534878!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e853d37e44497%3A0xf934b7373bbbb74e!2sG.D.R.S.!5e0!3m2!1sen!2sin!4v1644848508380!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
         </div>

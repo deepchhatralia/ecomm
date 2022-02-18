@@ -46,6 +46,13 @@ if (!isset($_SESSION['userlogin'])) {
                 display: none;
             }
 
+            #liveAlertPlaceholder {
+                position: sticky;
+                top: 0;
+                left: 0;
+                right: 0;
+            }
+
             @media screen and (max-width:560px) {
                 .col-md-5 {
                     margin: 1rem auto;
@@ -58,9 +65,9 @@ if (!isset($_SESSION['userlogin'])) {
                 }
             }
         </style>
-
+        <!-- 
         <link rel="stylesheet" href="../css/index/style.css">
-        <link rel="stylesheet" href="../css/index/responsive.css">
+        <link rel="stylesheet" href="../css/index/responsive.css"> -->
     </head>
 
     <body>
@@ -77,29 +84,19 @@ if (!isset($_SESSION['userlogin'])) {
         <div class="container login-container my-5">
             <div class="row d-flex align-items-center justify-content-center">
                 <div class="col-md-4">
-                    <h2 class="h2 mb-3 text-center">LOGIN</h2>
+                    <h2 class="h2 mb-3 text-center font-bold">LOGIN</h2>
                     <div class="mb-3">
-                        <div>
-                            <h6 class="h6">Username</h6>
-                        </div>
-                        <div>
-                            <input type="text" class="form-control" name="username" id="username">
-                        </div>
+                        <h6 class="h6">Username</h6>
+                        <input type="text" class="form-control" name="username" id="username">
                     </div>
                     <div class="mb-3">
-                        <div>
-                            <h6 class="h6">Password</h6>
-                        </div>
-                        <div>
-                            <input type="password" class="form-control" name="password" id="password">
-                        </div>
+                        <h6 class="h6">Password</h6>
+                        <input type="password" class="form-control" name="password" id="password">
                     </div>
-                    <div class="mb-3">
-                        <div style="width: 100%;">
-                            <button class="btn btn-primary loginBtn" name="loginBtn">
-                                <h6 class="h6 m-0">Login</h6>
-                            </button>
-                        </div>
+                    <div class="mt-4">
+                        <button class="btn btn-primary loginBtn w-100" name="loginBtn">
+                            <h6 class="h6 m-0">Login</h6>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -126,42 +123,46 @@ if (!isset($_SESSION['userlogin'])) {
                     alertPlaceholder.append(wrapper)
                 }
 
+                function callAlert(msg, type) {
+                    $('.loginBtn').addClass('disabled')
+                    alert(msg, type)
+                    setTimeout(() => {
+                        $('.loginBtn').removeClass('disabled')
+                        $('#liveAlertPlaceholder').html('')
+                    }, 3000);
+                }
+
                 $('.loginBtn').click(() => {
                     var username = $('#username').val();
                     var password = $('#password').val();
 
                     if (username && password) {
-                        $.ajax({
-                            url: "loginSignup.php",
-                            type: "POST",
-                            data: {
-                                username,
-                                password,
-                                operation: "login"
-                            },
-                            beforeSend: function() {
-                                $('.loginBtn').addClass('disabled')
-                            },
-                            success: function(data) {
-                                if (data == "Successfull") {
-                                    $('.loginBtn').removeClass('disabled')
-                                    window.location.href = 'http://localhost/ecomm/';
-                                } else {
-                                    alert('Incorrect username or password', 'danger')
-
-                                    setTimeout(() => {
-                                        $('#liveAlertPlaceholder').html('')
+                        if (password.length < 8 && password !== "deep") {
+                            callAlert('Incorrect username or password', 'danger')
+                        } else {
+                            $.ajax({
+                                url: "loginSignup.php",
+                                type: "POST",
+                                data: {
+                                    username,
+                                    password,
+                                    operation: "login"
+                                },
+                                beforeSend: function() {
+                                    $('.loginBtn').addClass('disabled')
+                                },
+                                success: function(data) {
+                                    if (data == "Successfull") {
                                         $('.loginBtn').removeClass('disabled')
-                                    }, 3000);
+                                        window.location.href = 'http://localhost/ecomm/';
+                                    } else {
+                                        callAlert('Incorrect username or password', 'danger')
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     } else {
-                        alert('Please fill all details', 'error')
-
-                        setTimeout(() => {
-                            $('#liveAlertPlaceholder').html('')
-                        }, 3000);
+                        callAlert('Please fill all details', 'danger')
                     }
                 });
             });

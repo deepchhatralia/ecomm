@@ -16,7 +16,7 @@ if (isset($_POST['operation']) && $_POST['operation'] == 'select') {
                 <td>' . $row['company_address'] . '</td>
                 <td>' . $row['company_contact_number'] . '</td>
                 <td style="font-size: 13px;">
-                    <button id="fa-edit" class="mb-1 my-btn bg-success edit-btn" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="far fa-edit mx-1"></i> Edit</button> 
+                    <button id="fa-edit" class="mb-1 my-btn bg-success edit-btn"><i class="far fa-edit mx-1"></i> Edit</button> 
                     <button id="fa-trash-alt" class="mb-1 my-btn bg-danger delete-btn"><i class="fas fa-trash-alt mx-1"></i> Delete</button>
                 </td>
             </tr>';

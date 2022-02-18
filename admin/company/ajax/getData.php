@@ -37,7 +37,11 @@ if (isset($_POST['id']) && isset($_POST['operation']) && $_POST['operation'] == 
         if ($result) {
             echo "updated";
         } else {
-            echo "Please try again...";
+            if (mysqli_errno($obj->connection()) == 1062) {
+                echo "ID already exist";
+            } else {
+                echo "Please try again...";
+            }
         }
     }
 } else if (isset($_POST['id']) && $_POST['operation'] == "delete") {
@@ -45,7 +49,7 @@ if (isset($_POST['id']) && isset($_POST['operation']) && $_POST['operation'] == 
 
     $result = $obj->delete('company_profile', "idcompany_profile={$id}");
 
-    if ($obj->connection()->error) {
+    if (mysqli_errno($obj->connection()) == 1451) {
         echo "Can't delete. Product of this company available in stock";
     } else {
         echo "deleted";

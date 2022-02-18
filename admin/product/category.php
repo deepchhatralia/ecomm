@@ -42,6 +42,7 @@
     $result = $obj->select('*', 'product_category');
     ?>
 
+    <button id="openModalBtn" class="d-none" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -90,7 +91,7 @@
                 </div>
                 <div class="col-md-4 d-flex justify-content-end">
                     <button class="btn btn-primary w-100" name="submit" id="add_btn">Add</button>
-                    <input type="reset" class="btn btn-secondary mx-2" id="reset">
+                    <input type="reset" class="btn btn-secondary mx-2 d-none" id="reset">
                 </div>
             </form>
         </div>
@@ -116,13 +117,13 @@
         </div>
     </div>
 
-    <script src="../jquery.js"></script>
+    <script src="../../js/jquery-3.4.1.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 
     <script>
         document.querySelector('.fa-tachometer-alt').parentNode.parentNode.classList.remove('active')
-        document.querySelector('.fa-plus-square').parentNode.parentNode.classList.add('active')
+        document.querySelector('.categorySidebarIcon').parentNode.parentNode.classList.add('active')
 
         var toastTrigger = document.getElementById('liveToastBtn')
         var toastLiveExample = document.getElementById('liveToast')
@@ -251,6 +252,8 @@
                             $('#modal_category_id').val(x[0])
                             $('#modal_category').val(x[1])
                             $('#modal_category_image').val(x[2])
+
+                            $('#openModalBtn').click()
                         }
                     })
                 }
@@ -258,7 +261,7 @@
                 if (e.target && e.target.id == 'fa-trash-alt') {
                     const id = e.target.parentNode.parentNode.firstChild.nextSibling.innerText;
 
-                    if (confirm('Are you sure you want to delete the record ???')) {
+                    if (confirm('Are you sure you want to delete the category ???')) {
                         $.ajax({
                             url: "showData/getCategory.php",
                             type: "POST",

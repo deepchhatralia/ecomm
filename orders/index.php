@@ -82,7 +82,7 @@ if (isset($_SESSION['userlogin'])) {
         </div>
 
 
-        <div class="container mt-3">
+        <div class="container mt-3 d-none">
             <div class="d-flex align-items-center justify-content-end">
                 <h6 class="h5 m-0"><button class="btn btn-danger" id="order-return-redirect">Order Returns</button></h6>
             </div>
@@ -104,10 +104,9 @@ if (isset($_SESSION['userlogin'])) {
                     <tbody>
                         <!-- SELECT * FROM `image` JOIN `productt` ON `image`.`product_product_id`=`productt`.`product_id` -->
                         <?php
-                        $result = $obj->select('*', 'order', "userlogin_userid=" . $_SESSION['userlogin']);
+                        $result = $obj->select('*', 'order', "userlogin_userid=" . $_SESSION['userlogin'], 'order_id DESC');
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-
                         ?>
                                 <tr data-bs-toggle="modal" data-bs-target="#exampleModal" class="table-row text-center" data-orderId="<?php echo $row['order_id']; ?>">
                                     <th scope="row"><?php echo $row['order_id']; ?></th>
@@ -129,7 +128,7 @@ if (isset($_SESSION['userlogin'])) {
                                         $date2 = strtotime(date("Y/m/d"));
                                         $days = round(abs($date2 - $date1) / (60 * 60 * 24), 0);
 
-                                        if ($row['status'] !== "Delivered" && $days <= 2) {
+                                        if ($row['status'] !== "Delivered" && $days <= 2 && $row['isCancel'] == 0) {
                                             echo '<button data-id="' . $row['order_id'] . '" class="cancel-order-btn btn btn-danger">Cancel</button></td>';
                                         } else {
                                             echo 'Not Applicable';
@@ -238,6 +237,26 @@ if (isset($_SESSION['userlogin'])) {
                         })
                     } else {
                         $('#return-reason').css('border-color', '#ff707e')
+                    }
+                })
+
+                // cancel order button 
+                $('.cancel-order-btn').on('click', (e) => {
+                    const id = e.target.getAttribute('data-id');
+
+                    if (confirm('Are you sure to cancel your order???')) {
+                        $.post({
+                            url: "getData.php",
+                            data: {
+                                id,
+                                operation: "cancel order"
+                            },
+                            success(data) {
+                                if (data == "Cancelled") {
+                                    window.location.reload();
+                                }
+                            }
+                        })
                     }
                 })
 

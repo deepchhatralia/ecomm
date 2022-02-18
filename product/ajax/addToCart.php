@@ -2,40 +2,49 @@
 
 session_start();
 
-if (isset($_SESSION['userlogin']) && isset($_POST['id'])) {
-    $userid = $_SESSION['userlogin'];
-    $productId = $_POST['id'];
-    $howmany = 1;
+if (isset($_POST['id']) && $_POST['operation'] == "addtocart") {
+    if (isset($_SESSION['userlogin'])) {
+        $userid = $_SESSION['userlogin'];
+        $productId = $_POST['id'];
+        $howmany = 1;
 
-    include '../../database.php';
-    $obj = new Database();
+        include '../../database.php';
+        $obj = new Database();
 
-    $result = $obj->select('*', 'productt');
-    $row = $result->fetch_assoc();
+        $result = $obj->select('*', 'productt', 'product_id=' . $productId);
+        $row = $result->fetch_assoc();
 
-    if ($row['product_stock'] > 0) {
         $result = $obj->update('productt', ["product_stock" => $row['product_stock'] - 1], 'product_id=' . $productId);
 
-        $result = $obj->select('*', 'cart', "userlogin_userid=" . $userid . " AND product_product_id=" . $productId);
+        if ($row['product_stock'] > 0) {
+            $result = $obj->select('*', 'cart', "userlogin_userid=" . $userid . " AND product_product_id=" . $productId);
 
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $howmany = $row['cart_quantity'] + 1;
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                if ($row['cart_quantity'] >= 10) {
+                    echo "Maximum 10 quantity allowed";
+                } else {
+                    $howmany = $row['cart_quantity'] + 1;
 
-            $result = $obj->update('cart', ['cart_quantity' => $howmany, 'product_product_id' => $productId, 'userlogin_userid' => $userid], "userlogin_userid=" . $userid . " AND product_product_id=" . $productId);
+                    $result = $obj->update('cart', ['cart_quantity' => $howmany, 'product_product_id' => $productId, 'userlogin_userid' => $userid], "userlogin_userid=" . $userid . " AND product_product_id=" . $productId);
+                }
+            } else {
+                $result = $obj->update('productt', ["product_stock" => $row['product_stock'] - 1], 'product_id=' . $productId);
+
+                $result = $obj->insert('cart', ['cart_quantity' => $howmany, 'product_product_id' => $productId, 'userlogin_userid' => $userid]);
+            }
+
+            if ($result) {
+                echo "Added to Cart";
+            } else {
+                echo "Please try again";
+            }
         } else {
-            $result = $obj->insert('cart', ['cart_quantity' => $howmany, 'product_product_id' => $productId, 'userlogin_userid' => $userid]);
-        }
-
-
-        if ($result) {
-            echo "Added to Cart";
-        } else {
-            echo "Please try again";
+            echo "Out of stock";
         }
     } else {
-        echo "Out of stock";
+        echo "Please login";
     }
 } else {
-    echo false;
+    include '../../pagenotfound.php';
 }

@@ -30,6 +30,9 @@ if (isset($_POST['operation']) && $_POST['operation'] == "login") {
     $contact = mysqli_real_escape_string($obj->connection(), $_POST['contact']);
     $username = mysqli_real_escape_string($obj->connection(), $_POST['username']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $areaId = $_POST['areaId'];
+    $pincode = mysqli_real_escape_string($obj->connection(), $_POST['pincode']);
+    $address = mysqli_real_escape_string($obj->connection(), $_POST['address']);
     $squestion = mysqli_real_escape_string($obj->connection(), $_POST['squestion']);
     $sanswer = mysqli_real_escape_string($obj->connection(), $_POST['sanswer']);
 
@@ -43,7 +46,7 @@ if (isset($_POST['operation']) && $_POST['operation'] == "login") {
         if ($result->num_rows > 0) {
             echo "Email already exist";
         } else {
-            $result = $obj->insert('userlogin', ['user_name' => $username, 'user_password' => $password, 'user_firstname' => $fname, 'user_lastname' => $lname, 'user_email' => $email, 'security_question' => $squestion, 'security_answer' => $sanswer, 'user_contact_number' => $contact, 'area_idarea' => 1]);
+            $result = $obj->insert('userlogin', ['user_name' => $username, 'user_password' => $password, 'user_firstname' => $fname, 'user_lastname' => $lname, 'area_idarea' => $areaId, 'address' => $address, 'pincode' => $_POST['pincode'], 'user_email' => $email, 'security_question' => $squestion, 'security_answer' => $sanswer, 'user_contact_number' => $contact, 'area_idarea' => 1]);
 
             if ($result) {
                 echo "success";

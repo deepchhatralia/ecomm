@@ -51,6 +51,15 @@ if (!isset($_SESSION['userlogin'])) {
                 left: 0;
                 right: 0;
             }
+
+            /* .afterBorder:after {
+                content: "";
+                display: block;
+                width: 3.6em;
+                max-width: 70%;
+                border-bottom: 0.15em solid #2C3A47;
+                margin: 0 auto;
+            } */
         </style>
 
         <link rel="stylesheet" href="../css/index/style.css">
@@ -74,27 +83,23 @@ if (!isset($_SESSION['userlogin'])) {
 
         <div class="container signup-container my-5">
             <div class="row d-flex align-items-center justify-content-center">
-                <h3 class="h3 mb-4 text-center">SIGNUP</h3>
+                <h3 class="h3 mb-4 text-center afterBorder font-bold">SIGNUP</h3>
 
                 <div class="col-md-5">
                     <form action="" id="my-form">
                         <div class="mb-3 row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6">
                                 <label for="firstname" class="h6">First Name</label>
                                 <input type="text" id="firstname" class="form-control">
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <div>
-                                    <label for="lastname" class="h6">Last Name</label>
-                                </div>
-                                <div>
-                                    <input type="text" id="lastname" class="form-control">
-                                </div>
+                            <div class="col-md-6">
+                                <label for="lastname" class="h6">Last Name</label>
+                                <input type="text" id="lastname" class="form-control">
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="h6">Email</label>
-                            <input type="email" required id="email" class="form-control">
+                            <input type="email" id="email" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label for="contact" class="h6">Contact</label>
@@ -104,13 +109,53 @@ if (!isset($_SESSION['userlogin'])) {
                             <label for="username" class="h6">Username</label>
                             <input type="text" id="username" class="form-control">
                         </div>
-                        <div class="mb-3">
-                            <label for="password" class="h6">Password</label>
-                            <input type="password" id="password" class="form-control">
+                        <div class="mb-3 row">
+                            <div class="col-md-6">
+                                <label for="password" class="h6">Password</label>
+                                <input type="password" id="password" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cpassword" class="h6">Confirm Password</label>
+                                <input type="password" id="cpassword" class="form-control">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <div class="col-md-6">
+                                <label for="state">State</label>
+                                <select class="custom-select d-block w-100 form-select" id="state" required>
+                                    <option value="0" selected disabled>Choose...</option>
+                                    <?php
+                                    $result = $obj->select('*', 'state');
+                                    if ($result->num_rows > 0) {
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo '<option value="' . $row['idstate'] . '">' . $row['state_name'] . '</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="city">City</label>
+                                <select class="custom-select d-block w-100 form-select" id="city" required>
+                                    <option value="0" selected disabled>Choose...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <div class="col-md-6">
+                                <label for="area">Area</label>
+                                <select class="custom-select d-block w-100 form-select" id="area" required>
+                                    <option value="0" selected disabled>Choose...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="pincode">Pincode</label>
+                                <input type="number" id="pincode" class="form-control">
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label for="cpassword" class="h6">Confirm Password</label>
-                            <input type="password" id="cpassword" class="form-control">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label for="squestion" class="h6">Security Question</label>
@@ -126,13 +171,33 @@ if (!isset($_SESSION['userlogin'])) {
                             <label for="sanswer" class="h6">Security Answer</label>
                             <input type="text" id="sanswer" class="form-control">
                         </div>
-                        <div class="mt-4 d-flex justify-content-end">
-                            <div class="col-md-3 col-12">
-                                <button type="reset" class="d-none" id="reset">Reset</button>
-                                <button type="submit" class="w-100 btn btn-primary signupBtn">
-                                    <h6 class="h6 m-0">Sign up</h6>
-                                </button>
+                        <!-- <div class="mb-3 row">
+                            <div class="col-md-6 mb-3">
+                                <label for="state" class="h6">State</label>
+                                <select id="state" class="form-select">
+                                    <option selected disabled value="0">----------</option> -->
+                        <?php
+                        // $result = $obj->select('*', 'state');
+                        // if ($result->num_rows > 0) {
+                        //     while ($row = $result->fetch_assoc()) {
+                        //         echo '<option value="' . $row['idstate'] . '">' . $row['state_name'] . '</option>';
+                        //     }
+                        // }
+                        ?>
+                        <!-- </select>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="city" class="h6">City</label>
+                                <select class="form-select" id="city">
+                                    <option selected disabled value="0">----------</option>
+                                </select>
+                            </div>
+                        </div> -->
+                        <button type="reset" class="d-none" id="reset">Reset</button>
+                        <div class="mt-4 d-flex justify-content-end">
+                            <button type="submit" class="w-100 btn btn-primary signupBtn">
+                                <h6 class="h6 m-0">Sign up</h6>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -156,6 +221,15 @@ if (!isset($_SESSION['userlogin'])) {
                     alertPlaceholder.append(wrapper)
                 }
 
+                function callAlert(msg, type) {
+                    $('.signupBtn').addClass('disabled')
+                    alert(msg, type)
+                    setTimeout(() => {
+                        $('.signupBtn').removeClass('disabled')
+                        $('#liveAlertPlaceholder').html('')
+                    }, 3000);
+                }
+
                 $('#my-form').on('submit', (e) => {
                     e.preventDefault()
                     const fname = $('#firstname').val();
@@ -165,73 +239,89 @@ if (!isset($_SESSION['userlogin'])) {
                     const username = $('#username').val();
                     const password = $('#password').val();
                     const cpassword = $('#cpassword').val();
+                    const areaId = $('#area').val()
+                    const pincode = $('#pincode').val()
+                    const address = $('#address').val()
                     const squestion = $('#squestion').val();
                     const sanswer = $('#sanswer').val();
 
-                    if (fname && lname && email && contact && username && password && cpassword && squestion && sanswer) {
-                        if (password.length < 8) {
-                            $('.signupBtn').addClass('disabled')
-                            setTimeout(() => {
-                                $('.signupBtn').removeClass('disabled')
-                                $('#liveAlertPlaceholder').html('')
-                            }, 3000);
-                            alert('Password must be 8 characters long', 'danger')
+                    if (fname && lname && email && contact && username && password && cpassword && areaId && address && squestion && sanswer) {
+                        if (password.length < 8 || password.length > 20) {
+                            callAlert('Password must be 8-20 characters long', 'danger')
+                        } else if (password !== cpassword) {
+                            callAlert('Password does not match', 'danger')
+                        } else if (contact.length < 10 || contact.length > 10) {
+                            alert('Enter valid contact number', 'danger')
                         } else {
-                            if (password !== cpassword) {
-                                $('.signupBtn').addClass('disabled')
-                                alert('Password does not match', 'danger')
+                            $.ajax({
+                                url: "loginSignup.php",
+                                type: "POST",
+                                data: {
+                                    fname,
+                                    lname,
+                                    email,
+                                    contact,
+                                    username,
+                                    password,
+                                    areaId,
+                                    address,
+                                    squestion,
+                                    sanswer,
+                                    operation: "signup"
+                                },
+                                beforeSend: function() {
+                                    $('.signupBtn').addClass('disabled')
+                                },
+                                success: function(data) {
+                                    if (data == 'success') {
+                                        $('#reset').click()
 
-
-                                setTimeout(() => {
-                                    $('.signupBtn').removeClass('disabled')
-                                    $('#liveAlertPlaceholder').html('')
-                                }, 3000);
-                            } else {
-                                $.ajax({
-                                    url: "loginSignup.php",
-                                    type: "POST",
-                                    data: {
-                                        fname,
-                                        lname,
-                                        email,
-                                        contact,
-                                        username,
-                                        password,
-                                        squestion,
-                                        sanswer,
-                                        operation: "signup"
-                                    },
-                                    beforeSend: function() {
-                                        $('.signupBtn').addClass('disabled')
-                                    },
-                                    success: function(data) {
-                                        if (data == 'success') {
-                                            $('#reset').click()
-
-                                            $('.signupBtn').removeClass('disabled')
-                                            $('#liveAlertPlaceholder').html('')
-                                            window.location.href = 'login.php';
-                                        } else {
-                                            alert(data, 'danger')
-                                            setTimeout(() => {
-                                                $('.signupBtn').removeClass('disabled')
-                                                $('#liveAlertPlaceholder').html('')
-                                            }, 3000);
-                                        }
+                                        $('.signupBtn').removeClass('disabled')
+                                        $('#liveAlertPlaceholder').html('')
+                                        window.location.href = 'login.php';
+                                    } else {
+                                        callAlert(data, 'danger')
                                     }
-                                });
-                            }
+                                }
+                            });
                         }
                     } else {
-                        alert('Please fill all details', 'danger')
-
-                        $('.signupBtn').addClass('disabled')
-                        setTimeout(() => {
-                            $('.signupBtn').removeClass('disabled')
-                            $('#liveAlertPlaceholder').html('')
-                        }, 3000);
+                        callAlert('Please fill all details', 'danger')
                     }
                 });
+
+                $('#state').on('change', () => {
+                    const stateId = $('#state').val();
+                    $('#area').html('<option value="0" selected disabled>Choose...</option>');
+
+                    $.ajax({
+                        url: "../cart/getCityArea.php",
+                        type: "POST",
+                        data: {
+                            stateId,
+                            operation: "get city"
+                        },
+                        success(data) {
+                            $('#city').html(data);
+                        }
+                    });
+                })
+
+                $('#city').on('change', () => {
+                    const cityId = $('#city').val();
+
+                    $.ajax({
+                        url: "../cart/getCityArea.php",
+                        type: "POST",
+                        data: {
+                            cityId,
+                            operation: "get area"
+                        },
+                        success(data) {
+                            $('#area').html(data);
+                        }
+                    });
+                })
             });
         </script>
     </body>

@@ -129,15 +129,6 @@ if (!isset($_GET['id'])) {
                 margin-bottom: 20px;
             }
 
-            /* .section-title::after {
-                content: "";
-                display: block;
-                width: 100%;
-                height: 2px;
-                color: black;
-                background-color: black;
-            } */
-
             .feedback-input {
                 border-bottom: 1px solid gray;
                 padding: 10px 7px;
@@ -165,9 +156,7 @@ if (!isset($_GET['id'])) {
             }
         </style>
 
-        <link type="text/css" rel="stylesheet" href="../magiczoomplus-trial/magiczoomplus/magiczoomplus.css" />
-
-        <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+        <!-- <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" /> -->
     </head>
 
     <body>
@@ -186,6 +175,7 @@ if (!isset($_GET['id'])) {
 
             $row = $result->fetch_assoc();
 
+            $productDesc = $row['product_desc'];
             $offerId = $row['offer_idoffer'];
 
             $price = $row['product_price'];
@@ -218,7 +208,6 @@ if (!isset($_GET['id'])) {
         ?>
 
             <div id="liveAlertPlaceholder"></div>
-
 
             <div class="container mt-4" style="margin-bottom: 20vh;">
                 <div class="row">
@@ -270,7 +259,7 @@ if (!isset($_GET['id'])) {
                         <div class="rating-container my-3">
                             <?php
                             $result2 = $obj->select('*', 'rating', 'product_id=' . $id);
-
+                            $totalRatings = $result2->num_rows;
                             if ($result2->num_rows > 0) {
                                 $rating = 0;
                                 while ($row2 = $result2->fetch_assoc()) {
@@ -294,10 +283,6 @@ if (!isset($_GET['id'])) {
                             ?>
                         </div>
 
-                        <div class="d-flex align-items-center justify-content-between">
-
-                        </div>
-
                         <div>
                             <p class="product-feature"><?php echo $row['product_feature'] ?><br /></p>
                         </div>
@@ -306,31 +291,21 @@ if (!isset($_GET['id'])) {
                             <?php
                             if ($row['product_stock'] < 8 && $row['product_stock'] > 0) {
                             ?>
-                                <h5 class="h5 text-danger">Hurry ! Only <?php echo $row['product_stock']; ?> left in stock</h5>
+                                <h5 id="howManyLeft" class="h5 text-danger">Hurry ! Only <?php echo $row['product_stock']; ?> left in stock</h5>
                             <?php
                             }
+                            $addOut = "ADD TO CART";
+                            $disabled = false;
                             if ($row['product_stock'] == 0) {
                                 echo '<h5 class="h5 text-danger">Out of Stock</h5>';
+                                $disabled = true;
+                                $addOut = "OUT OF STOCK";
                             }
                             ?>
 
-                            <div class="d-flex align-items-center justify-content-center py-2 my-3" id="addToCart">
-                                <h4 class="h4 m-0">ADD TO CART</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row my-5">
-                    <div class="col-md-12 desc-container">
-                        <h2 class="section-title" class="h2">Description</h2>
-
-                        <div class="description">
-                            <p><?php echo $row['product_desc']; ?></p>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-center my-2">
-                            <h6 class="h6 view-more-less view-more">MORE <i class="fas fa-arrow-down"></i></h6>
+                            <button type="button" class="w-100 d-flex align-items-center justify-content-center py-2 my-3" id="addToCart">
+                                <h4 class="h4 m-0"><?php echo $addOut; ?></h4>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -374,136 +349,180 @@ if (!isset($_GET['id'])) {
                 // echo $five . "<br/>" . $four . "<br/>" . $three . "<br/>" . $two . "<br/>" . $one;
                 ?>
                 <div class="row">
-                    <div class="col-md-6">
-                        <h2 class="h2 mb-4 section-title">Rating</h2>
-                        <div class="well well-sm">
-                            <?php
-                            if ($result3->num_rows > 0) {
-                            ?>
-                                <div class="row mb-5">
-                                    <div class="col-xs-12 col-md-6">
-                                        <div class="row rating-desc mx-1">
+
+                </div>
+            </div>
+
+
+            <div class="container" style="margin-bottom: 100px;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="full">
+                            <div class="tab_bar_section">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#description">
+                                            <h5 class="h5 m-0">Description</h5>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#reviews">
+                                            <h5 class="h5 m-0">Reviews (2)</h5>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#ratings">
+                                            <h5 class="h5 m-0">Ratings (5)</h5>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div id="description" class="tab-pane active p-3">
+                                        <div class="product_desc">
+                                            <p><?php echo $productDesc; ?></p>
+                                        </div>
+                                    </div>
+                                    <div id="reviews" class="tab-pane fade p-3">
+                                        <div class="product_review">
                                             <?php
-                                            for ($val = 0; $val < count($ratingArr); $val++) {
+                                            $result3 = $obj->select('*', 'feedback', "product_id=" . $id);
+
+                                            if (isset($_SESSION['userlogin'])) {
+                                                $result = $obj->select('*', 'feedback', "userlogin_userid=" . $_SESSION['userlogin'] . " AND product_id=" . $id);
+
+                                                if ($result->num_rows == 0) {
+                                                    $result = mysqli_query($obj->connection(), "SELECT * from `order` JOIN `order_detail` ON `order`.`order_id`=`order_detail`.`order_order_id` WHERE `order_detail`.`product_id` = " . $id . " AND `order`.`userlogin_userid` = " . $_SESSION['userlogin']);
+
+                                                    if ($result->num_rows > 0) {
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            if ($row['status'] == "Delivered") {
                                             ?>
-                                                <div class="col-xs-3 col-md-3 text-right">
-                                                    <span class="fa fa-star"></span><?php echo count($ratingArr) - $val; ?>
+                                                                <div class="d-flex">
+                                                                    <input type="text" class="w-100 feedback-input" id="feedback-input" placeholder="Write feedback" />
+                                                                    <button id="submit-feedback">SUBMIT</button>
+                                                                </div>
+                                                <?php
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if ($result3->num_rows > 0) {
+                                                ?>
+                                                <div class="row feedback-container">
+                                                    <?php
+                                                    while ($row3 = $result3->fetch_assoc()) {
+                                                        $user = $obj->select('*', 'userlogin', "userid=" . $row3['userlogin_userid']);
+                                                        $user = $user->fetch_assoc();
+                                                    ?>
+                                                        <div class="col-md-12 mb-2 d-flex">
+                                                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                                                <div class="d-flex">
+                                                                    <div class="mr-3">
+                                                                        <i class="fas fa-user"></i>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="d-flex">
+                                                                            <h6 class="h6 fw-bold m-0" style="letter-spacing: 1px;"><?php echo $user['user_firstname'] . " " . $user['user_lastname']; ?></h6>
+                                                                            <span class="feedback-date ml-4 text-muted"><?php echo $row3['date']; ?></span>
+                                                                        </div>
+                                                                        <p style="font-size: 15px;"><?php echo $row3['feedback']; ?></p>
+                                                                    </div>
+                                                                </div>
+                                                                <?php
+                                                                if (isset($_SESSION['userlogin'])) {
+                                                                    if ($_SESSION['userlogin'] == $row3['userlogin_userid']) {
+                                                                ?>
+                                                                        <button data-id="<?php echo $row3['feedback_id']; ?>" class="delete-feedback bg-danger text-light px-2 py-1 rounded">Delete</button>
+                                                                <?php
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </div>
+                                                        </div>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </div>
-                                                <div class="col-xs-8 col-md-9">
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $ratingArr[$val]; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $ratingArr[$val]; ?>%">
-                                                            <?php echo $ratingArr[$val]; ?>%
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <h6 class="h6">No feedbacks yet</h6>
+                                            <?php
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <div id="ratings" class="tab-pane fade p-3">
+                                        <div class="product_ratings">
+                                            <?php
+                                            if ($totalRatings > 0) {
+                                            ?>
+                                                <div class="row mb-5">
+                                                    <div class="col-xs-12 col-md-6">
+                                                        <div class="row rating-desc mx-1">
+                                                            <?php
+                                                            for ($val = 0; $val < count($ratingArr); $val++) {
+                                                            ?>
+                                                                <div class="col-xs-3 col-md-3 text-right">
+                                                                    <span class="fa fa-star"></span><?php echo count($ratingArr) - $val; ?>
+                                                                </div>
+                                                                <div class="col-xs-8 col-md-9">
+                                                                    <div class="progress">
+                                                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $ratingArr[$val]; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $ratingArr[$val]; ?>%">
+                                                                            <?php echo $ratingArr[$val]; ?>%
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <?php
+                                                            }
+                                                            ?>
+
+                                                        </div>
+                                                        <!-- end row -->
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-6 text-center">
+                                                        <h1 class="rating-num"><?php echo $rating; ?></h1>
+                                                        <div class="rating">
+                                                            <?php
+                                                            $i = round($rating);
+                                                            $j = 5 - $i;
+
+                                                            while ($i != 0) {
+                                                                echo '<i class="fa fa-star" aria-hidden="true"></i>';
+                                                                $i = $i - 1;
+                                                            }
+                                                            while ($j != 0) {
+                                                                echo '<i class="far fa-star"></i>';
+                                                                $j = $j - 1;
+                                                            }
+                                                            ?>
+                                                        </div>
+                                                        <div>
+                                                            <span class="fa fa-user"></span><?php echo $totalRatings; ?> total votes
                                                         </div>
                                                     </div>
                                                 </div>
                                             <?php
-                                            }
+                                            } else {
                                             ?>
-
-                                        </div>
-                                        <!-- end row -->
-                                    </div>
-                                    <div class="col-xs-12 col-md-6 text-center">
-                                        <h1 class="rating-num"><?php echo $rating; ?></h1>
-                                        <div class="rating">
+                                                <h6 class="h6">No ratings yet</h6>
                                             <?php
-                                            $i = round($rating);
-                                            $j = 5 - $i;
-
-                                            while ($i != 0) {
-                                                echo '<i class="fa fa-star" aria-hidden="true"></i>';
-                                                $i = $i - 1;
-                                            }
-                                            while ($j != 0) {
-                                                echo '<i class="far fa-star"></i>';
-                                                $j = $j - 1;
                                             }
                                             ?>
-                                        </div>
-                                        <div>
-                                            <span class="fa fa-user"></span><?php echo $result2->num_rows; ?> total votes
                                         </div>
                                     </div>
                                 </div>
-                            <?php
-                            } else {
-                                echo "No ratings yet";
-                            }
-                            ?>
-                        </div>
-                    </div>
 
-                    <div class="col-md-6">
-                        <h2 class="h2 mb-4 section-title">Feedback</h2>
 
-                        <?php
-                        if (isset($_SESSION['userlogin'])) {
-                            $result = $obj->select('*', 'feedback', "userlogin_userid=" . $_SESSION['userlogin'] . " AND product_id=" . $id);
 
-                            if ($result->num_rows == 0) {
-                                $result = mysqli_query($obj->connection(), "SELECT * from `order` JOIN `order_detail` ON `order`.`order_id`=`order_detail`.`order_order_id` WHERE `order_detail`.`product_id` = " . $id . " AND `order`.`userlogin_userid` = " . $_SESSION['userlogin']);
-
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        if ($row['status'] == "Delivered") {
-                        ?>
-                                            <div class="d-flex">
-                                                <input type="text" class="w-100 feedback-input" id="feedback-input" placeholder="Write feedback" />
-                                                <button id="submit-feedback">SUBMIT</button>
-                                            </div>
-                        <?php
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        ?>
-
-                        <?php
-                        $result3 = $obj->select('*', 'feedback', "product_id=" . $id);
-                        if ($result3->num_rows > 0) {
-                        ?>
-                            <div class="row feedback-container">
-                                <?php
-                                while ($row3 = $result3->fetch_assoc()) {
-                                    $user = $obj->select('*', 'userlogin', "userid=" . $row3['userlogin_userid']);
-                                    $user = $user->fetch_assoc();
-                                ?>
-                                    <div class="col-md-12 mb-2 d-flex">
-                                        <div class="d-flex w-100 justify-content-between align-items-center">
-                                            <div class="d-flex">
-                                                <div class="mr-3">
-                                                    <i class="fas fa-user"></i>
-                                                </div>
-                                                <div>
-                                                    <div class="d-flex">
-                                                        <h6 class="h6 fw-bold m-0" style="letter-spacing: 1px;"><?php echo $user['user_firstname'] . " " . $user['user_lastname']; ?></h6>
-                                                        <span class="feedback-date ml-4 text-muted"><?php echo $row3['date']; ?></span>
-                                                    </div>
-                                                    <p style="font-size: 15px;"><?php echo $row3['feedback']; ?></p>
-                                                </div>
-                                            </div>
-                                            <?php
-                                            if ($_SESSION['userlogin'] == $row3['userlogin_userid']) {
-                                            ?>
-                                                <button data-id="<?php echo $row3['feedback_id']; ?>" class="delete-feedback bg-danger text-light px-2 py-1 rounded">Delete</button>
-                                            <?php
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
-                            <?php
-                                }
-                            } else {
-                                echo '<h6 class="h6">No feedbacks yet</h6>';
-                            }
-                            ?>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
 
 
             <?php
@@ -524,7 +543,7 @@ if (!isset($_GET['id'])) {
 
                     function alert(message, type) {
                         var wrapper = document.createElement('div')
-                        wrapper.innerHTML = '<div class="h6 m-0 alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close close-alert" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                        wrapper.innerHTML = '<div class="h6 m-0 alert alert-' + type + ' alert-dismissible" role="alert">' + message;
 
                         alertPlaceholder.append(wrapper)
 
@@ -535,17 +554,21 @@ if (!isset($_GET['id'])) {
 
 
                     function addRemoveWishlist(id, operationn) {
-                        $.ajax({
+                        var x = true;
+                        $.post({
                             url: "ajax/wishlist.php",
-                            type: "POST",
                             data: {
                                 id,
                                 operation: operationn
                             },
                             success(data) {
                                 alert(data, 'success')
+                                if (data == "Try again...") {
+                                    x = false;
+                                }
                             }
                         })
+                        return x
                     }
 
                     $('#submit-feedback').on('click', () => {
@@ -618,15 +641,17 @@ if (!isset($_GET['id'])) {
                     document.addEventListener('click', (e) => {
                         if (e.target && e.target.id == "empty-heart") {
                             const id = e.target.parentElement.getAttribute("data-id");
-                            $('.heart-container').html('<i id="full-heart" class="m-0 fas fa-heart cursor-pointer"></i>');
 
-                            addRemoveWishlist(id, "addToWishlist");
+                            if (addRemoveWishlist(id, "addToWishlist")) {
+                                $('.heart-container').html('<i id="full-heart" class="m-0 fas fa-heart cursor-pointer"></i>');
+                            }
                         }
                         if (e.target && e.target.id == "full-heart") {
                             const id = e.target.parentElement.getAttribute("data-id");
-                            $('.heart-container').html('<i id="empty-heart" class="m-0 far fa-heart cursor-pointer"></i>');
 
-                            addRemoveWishlist(id, "removeFromWishlist");
+                            if (addRemoveWishlist(id, "removeFromWishlist")) {
+                                $('.heart-container').html('<i id="empty-heart" class="m-0 far fa-heart cursor-pointer"></i>');
+                            }
                         }
                         return () => {}
                     })
@@ -660,11 +685,23 @@ if (!isset($_GET['id'])) {
                                 id,
                                 operation: "addtocart"
                             },
+                            beforeSend() {
+                                $('#addToCart').attr('disabled', true);
+                            },
                             success(data) {
-                                if (data) {
-                                    alert(data, 'success')
+                                if (data == "Out of stock") {
+                                    $('#howManyLeft').html('OUT OF STOCK');
+                                    $('#addToCart').attr('disabled', true);
+                                    $('#addToCart h4').html('OUT OF STOCK');
                                 } else {
-                                    alert(data, 'danger')
+                                    if (data == "Added to Cart") {
+                                        alert(data, 'success')
+                                    } else {
+                                        alert(data, 'danger')
+                                    }
+                                    setTimeout(() => {
+                                        $('#addToCart').attr('disabled', false);
+                                    }, 3000);
                                 }
                             }
                         })

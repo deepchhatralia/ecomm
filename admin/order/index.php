@@ -48,8 +48,8 @@
                                             <th>User</th>
                                             <th>Shipping Address</th>
                                             <th>Order Date</th>
-                                            <th>CGST</th>
-                                            <th>SGST</th>
+                                            <!-- <th>CGST</th>
+                                            <th>SGST</th> -->
                                             <th>Total</th>
                                             <th>Cancelled</th>
                                             <th>Actions</th>
@@ -109,11 +109,11 @@
         </div>
     </div>
 
-
+    <script src="../../js/jquery-3.4.1.min.js"></script>
 
     <script>
         document.querySelector('.fa-tachometer-alt').parentNode.parentNode.classList.remove('active')
-        document.querySelector('.fa-sort-amount-up-alt').parentNode.parentNode.classList.add('active')
+        document.querySelector('.orderSidebarIcon').parentNode.parentNode.classList.add('active')
 
         var toastTrigger = document.getElementById('liveToastBtn')
         var toastLiveExample = document.getElementById('liveToast')

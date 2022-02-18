@@ -27,6 +27,7 @@ if (isset($_SESSION['userlogin'])) {
         <?php
         include '../admin/includee/cdn.php';
         include '../includee/navbar1.php';
+
         include '../database.php';
         $obj = new Database();
         ?>
@@ -83,16 +84,19 @@ if (isset($_SESSION['userlogin'])) {
                                                     </figure>
                                                 </td>
                                                 <td>
-                                                    <select class="form-control" class="product-cart-qty">
+                                                    <select data-id="<?php echo $productId ?>" class="form-control product-cart-qty">
                                                         <?php
-                                                        for ($i = 1; $i <= $row['cart_quantity']; $i++) {
-                                                            $selected = false;
+                                                        for ($i = 1; $i <= 10; $i++) {
                                                             if ($i == $row['cart_quantity']) {
-                                                                $selected = true;
+                                                                echo '<option selected value="' . $i . '">' . $i . '</option>';
+                                                            } else {
+                                                                echo '<option value="' . $i . '">' . $i . '</option>';
                                                             }
-                                                            echo '<option selected="' . $selected . '" value="' . $row['cart_quantity'] . '">' . $i . '</option>';
                                                         }
                                                         ?>
+                                                        <!-- <option selected value="<?php //echo $row['cart_quantity']; 
+                                                                                        ?>"><?php //echo $row['cart_quantity']; 
+                                                                                            ?></option> -->
                                                     </select>
                                                 </td>
                                                 <td>
@@ -116,15 +120,6 @@ if (isset($_SESSION['userlogin'])) {
                     </div>
                 </aside>
                 <aside class="col-lg-3">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <form>
-                                <div class="form-group"> <label>Have coupon?</label>
-                                    <div class="input-group"> <input type="text" class="form-control coupon" name="" placeholder="Coupon code"> <span class="input-group-append"> <button class="btn btn-primary btn-apply coupon">Apply</button> </span> </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                     <div class="card">
                         <div class="card-body">
                             <dl class="dlist-align">
@@ -137,12 +132,22 @@ if (isset($_SESSION['userlogin'])) {
                             </dl>
                             <dl class="dlist-align">
                                 <dt>Total:</dt>
-                                <dd class="text-right text-dark b ml-3"><strong>Rs. <?php echo $total; ?></strong></dd>
+                                <dd class="text-right text-dark b ml-3"><strong class="h5 font-bold m-0">Rs. <?php echo $total; ?></strong></dd>
                             </dl>
 
-                            <button class="btn btn-primary w-100 my-1">
-                                <h6 class="h6 m-0">Checkout</h6>
-                            </button>
+                            <form action="checkout.php" method="POST">
+                                <?php
+                                $checkCart = $obj->select('*', 'cart', "userlogin_userid=" . $_SESSION['userlogin']);
+
+                                $disabled = "disabled";
+                                if ($checkCart->num_rows > 0) {
+                                    $disabled = "dis";
+                                }
+                                ?>
+                                <button type="submit" name="checkout-btn" class="<?php echo $disabled; ?> btn btn-primary w-100 my-1">
+                                    <h6 class="h6 m-0">Checkout</h6>
+                                </button>
+                            </form>
                             <a href="../product/" class="text-light btn btn-success w-100 my-1">
                                 <h6 class="h6 m-0">Continue Shopping</h6>
                             </a>
@@ -162,6 +167,10 @@ if (isset($_SESSION['userlogin'])) {
 
         <script>
             $(document).ready(() => {
+                // $('.checkout-btn').on('click', () => {
+                //     window.location.href = "http://localhost/ecomm/cart/checkout.php";
+                // })
+
                 $('.btn-remove').on('click', (e) => {
                     const id = e.target.parentElement.parentElement.getAttribute('data-id');
 
@@ -187,9 +196,22 @@ if (isset($_SESSION['userlogin'])) {
                 })
 
                 $('.product-cart-qty').on('change', (e) => {
-                    const qty = e.currentTarget;
+                    const qty = e.target.value;
+                    const productId = e.target.getAttribute("data-id")
 
-                    console.log(qty);
+                    $.post({
+                        url: "getData.php",
+                        data: {
+                            qty,
+                            productId,
+                            operation: "update qty from cart"
+                        },
+                        success(data) {
+                            if (data == "updated") {
+                                window.location.reload()
+                            }
+                        }
+                    })
                 })
             })
         </script>

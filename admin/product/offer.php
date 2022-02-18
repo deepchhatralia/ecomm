@@ -23,6 +23,8 @@
     $obj = new Database();
     ?>
 
+    <button id="openModalBtn" class="d-none" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
+
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -143,17 +145,18 @@
             </div>
             <div class="row justify-content-end">
                 <div class="col-md-4 d-flex justify-content-end">
-                    <input type="reset" class="btn btn-secondary mx-2" id="reset">
+                    <input type="reset" class="btn btn-secondary mx-2 d-none" id="reset">
                     <button class="btn btn-primary" id="add-offer-btn">Add</button>
                 </div>
             </div>
         </form>
     </div>
 
+    <script src="../../js/jquery-3.4.1.min.js"></script>
 
     <script>
         document.querySelector('.fa-tachometer-alt').parentNode.parentNode.classList.remove('active')
-        document.querySelector('.fa-plus-square').parentNode.parentNode.classList.add('active')
+        document.querySelector('.offerSidebarIcon').parentNode.parentNode.classList.add('active')
 
         $(document).ready(() => {
             $('#alert-success').hide()
@@ -186,28 +189,33 @@
                 const discount = $('#discount').val()
 
                 if (name && desc && startDate && endDate && discount) {
-                    $.ajax({
-                        url: "ajax/addOffer.php",
-                        type: "POST",
-                        data: {
-                            name,
-                            desc,
-                            startDate,
-                            endDate,
-                            discount
-                        },
-                        success(data) {
-                            if (data == 'Added') {
-                                $('#reset').click()
+                    // for safe side we kept 50 as maximum discount 
+                    if (discount > 0 && discount < 50) {
+                        $.ajax({
+                            url: "ajax/addOffer.php",
+                            type: "POST",
+                            data: {
+                                name,
+                                desc,
+                                startDate,
+                                endDate,
+                                discount
+                            },
+                            success(data) {
+                                if (data == 'Added') {
+                                    $('#reset').click()
 
-                                showData()
-                                showNotification('Success', 'Offer added to database')
-                            } else {
-                                console.log(data);
-                                showNotification('Error', 'Please try again...')
+                                    showData()
+                                    showNotification('Success', 'Offer added to database')
+                                } else {
+                                    console.log(data);
+                                    showNotification('Error', 'Please try again...')
+                                }
                             }
-                        }
-                    })
+                        })
+                    } else {
+                        showNotification('Error', 'Invalid discount')
+                    }
                 } else {
                     showNotification('Error', 'Please fill all details')
                 }
@@ -239,6 +247,8 @@
                                 $('#modal-start-date').val(x[3])
                                 $('#modal-end-date').val(x[4])
                                 $('#modal-discount').val(x[5])
+
+                                $('#openModalBtn').click();
                             }
                         })
                     } else {
@@ -254,21 +264,16 @@
                                 url: "showData/getOffer.php",
                                 type: "POST",
                                 data: {
-                                    id: id,
+                                    id,
                                     operation: 'delete'
                                 },
                                 success(data) {
+                                    console.log(data);
                                     if (data == "deleted") {
                                         showNotification('Success', 'Offer deleted from database')
                                         showData()
                                     } else {
                                         showNotification('Error', data)
-                                        if (data) {
-                                            showNotification('Success', 'Offer deleted from database')
-                                            showData()
-                                        } else {
-                                            showNotification('Error', 'Please try again...')
-                                        }
                                     }
                                 }
                             })

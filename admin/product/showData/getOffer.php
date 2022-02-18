@@ -36,9 +36,9 @@ if (isset($_POST['id']) && $_POST['operation'] == 'update') {
 if (isset($_POST['id']) && $_POST['operation'] == 'delete') {
     $id = $_POST['id'];
 
-    $result = $obj->delete('offer', "idoffer='{$id}'");
+    $result = $obj->delete('offer', "idoffer=" . $id);
 
-    if ($obj->connection()->error) {
+    if (mysqli_errno($obj->connection()) == 1451) {
         echo "Can't delete. Product with this offer available in stock";
     } else {
         echo "deleted";

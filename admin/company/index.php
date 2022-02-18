@@ -8,9 +8,6 @@
     <title>Company Profile</title>
 
     <link rel="stylesheet" href="../modal.css">
-
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
 </head>
 
 <body>
@@ -24,45 +21,47 @@
     $obj = new Database();
     ?>
 
+    <button id="openModalBtn" class="d-none" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal myModal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <input type="number" id="hidden-id" style="display: none;">
-                <div class="modal-header my-modal-header">
+                <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Update</h5>
                     <button type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row mb-3">
-                        <label for="modal-company-id" class="col-sm-2 col-form-label">Company ID :</label>
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control" id="modal-company-id">
+                    <form>
+                        <div class="row mb-3">
+                            <label for="modal-company-id" class="col-sm-2 col-form-label">Company ID :</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" id="modal-company-id">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="modal-company-name" class="col-sm-2 col-form-label">Company Name :</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="modal-company-name">
+                        <div class="row mb-3">
+                            <label for="modal-company-name" class="col-sm-2 col-form-label">Company Name :</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="modal-company-name">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="modal-company-address" class="col-sm-2 col-form-label">Company Name :</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="modal-company-address">
+                        <div class="row mb-3">
+                            <label for="modal-company-address" class="col-sm-2 col-form-label">Company Address :</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="modal-company-address">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="modal-company-contact" class="col-sm-2 col-form-label">Contact :</label>
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control" id="modal-company-contact">
+                        <div class="row mb-3">
+                            <label for="modal-company-contact" class="col-sm-2 col-form-label">Contact :</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" id="modal-company-contact">
+                            </div>
                         </div>
-                    </div>
-                    <span id="error" style="color:red; font-size: 13px; transition: all 5s ease;"></span>
+                        <span id="error" style="color:red; font-size: 13px; transition: all 5s ease;"></span>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary modal-close-btn" data-bs-dismiss="modal">Close</button>
                     <button type="button" id="update-company-btn" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
@@ -142,26 +141,22 @@
 
     <!-- <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script> -->
 
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script> -->
+
+    <script src="../../js/jquery-3.4.1.min.js"></script>
 
     <script>
         document.querySelector('.fa-tachometer-alt').parentNode.parentNode.classList.remove('active')
-        document.querySelector('.fa-box-open').parentNode.parentNode.classList.add('active')
+        document.querySelector('.companySidebarIcon').parentNode.parentNode.classList.add('active')
 
         var toastTrigger = document.getElementById('liveToastBtn')
         var toastLiveExample = document.getElementById('liveToast')
 
         $(document).ready(() => {
-            // $('#table_id').DataTable({
-            //     ordering: false,
-            //     keys: true,
-            //     search: {
-            //         return: true
-            //     }
-            // })
-
+            $('#openModal').click(() => {
+                $('.myModal').open()
+            })
             showData()
-            $('.my-modal').fadeOut(1)
 
             function showData() {
                 $.ajax({
@@ -169,9 +164,6 @@
                     type: "POST",
                     data: {
                         operation: "select"
-                    },
-                    beforeSend() {
-                        console.log('hello world');
                     },
                     success(data) {
                         $('tbody').html(data)
@@ -197,7 +189,13 @@
                 }, 3000);
             }
 
+            $('.modal-close-btn').on('click', () => {
+                $('#modal-form-reset').click();
+                $('#error').html('');
+            })
+
             document.addEventListener('click', (e) => {
+                e.preventDefault();
                 if (e.target && e.target.id == "fa-edit") {
                     const id = e.target.parentNode.parentNode.firstChild.nextSibling.innerText;
 
@@ -215,6 +213,8 @@
                             $('#modal-company-address').val(x[2])
                             $('#modal-company-contact').val(x[3])
                             $('#hidden-id').val(x[0])
+
+                            $('#openModalBtn').click();
                         }
                     })
                 }

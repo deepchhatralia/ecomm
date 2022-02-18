@@ -59,10 +59,11 @@ if ((isset($_POST['id']) && $_POST['operation'] == 'update') || isset($_FILES['m
             // if everything is ok, try to upload file
         } else {
             if (move_uploaded_file($_FILES["modal_category_img"]["tmp_name"], $target_file)) {
-                unlink("../category_uploads/" . $oldImg);
-                echo "The file " . htmlspecialchars(basename($_FILES["modal_category_img"]["name"])) . " has been uploaded.";
+                if (unlink("../category_uploads/" . $oldImg)) {
+                    echo "The file " . htmlspecialchars(basename($_FILES["modal_category_img"]["name"])) . " has been uploaded.";
 
-                $result = $obj->update('product_category', ['category_name' => $category, 'category_img' => htmlspecialchars(basename($_FILES["modal_category_img"]["name"]))], "category_id = " . $id);
+                    $result = $obj->update('product_category', ['category_name' => $category, 'category_img' => htmlspecialchars(basename($_FILES["modal_category_img"]["name"]))], "category_id = " . $id);
+                }
             } else {
                 echo "<br/>Sorry, there was an error uploading your file.";
             }
@@ -80,17 +81,24 @@ if (isset($_POST['id']) && $_POST['operation'] == 'delete') {
 
     $result = $obj->select('*', "product_category", "category_id=" . $id);
     $row = $result->fetch_assoc();
-    $category_img = $row['category_img'];
+    $categoryImg = $row['category_img'];
+    $categoryName = $row['category_name'];
 
 
-    if ($obj->connection()->error) {
+    $result = $obj->delete("product_category", "category_id=" . $id);
+
+    if (mysqli_errno($obj->connection()) == 1451) {
         echo "Can't delete. Product with this category available in stock";
     } else {
-        if (unlink("../category_uploads/" . $category_img)) {
-            $result = $obj->delete("product_category", "category_id=" . $id);
-            echo "deleted";
+        if ($result == 1) {
+            if (unlink("../category_uploads/" . $categoryImg)) {
+                echo "deleted";
+            } else {
+                $result = $obj->insert('product_category', ['category_id' => $id, 'category_name' => $categoryName, 'category_img' => $categoryImg]);
+                echo "Try again...";
+            }
         } else {
-            echo "Try again...";
+            echo "Please try again...";
         }
     }
 }

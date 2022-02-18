@@ -6,7 +6,7 @@ if (isset($_SESSION['userlogin'])) {
     include '../database.php';
     $obj = new Database();
 
-    if (isset($_POST['id'])) {
+    if (isset($_POST['id']) && $_POST['operation'] == "return btn click") {
         $output = "";
 
         $result = $obj->select('*', 'order_detail', "order_detail_id=" . $_POST['id']);
@@ -102,6 +102,35 @@ if (isset($_SESSION['userlogin'])) {
             }
         } else {
             echo "Try again...";
+        }
+    } else if (isset($_POST['id']) && $_POST['operation'] == "cancel order") {
+
+        $result = $obj->update('order', ['isCancel' => 1, 'status' => 'Cancelled'], 'order_id=' . $_POST['id']);
+
+        if ($result) {
+
+            $result = $obj->sql("SELECT * FROM `productt` JOIN `order_detail` ON `order_detail`.`product_id`=`productt`.`product_id`");
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $orderQty = $row['order_quantity'];
+                    $productId = $row['product_id'];
+
+                    $stock = $obj->select('*', 'productt', "product_id=" . $productId);
+                    $stockRow = $stock->fetch_assoc();
+
+                    $revisedStock = $stockRow['product_stock'] + $orderQty;
+                    $updateStock = $obj->update('productt', ['product_stock' => $revisedStock], "product_id=" . $productId);
+                }
+
+                $result = $obj->update('order_detail', ['status' => 'Cancelled'], 'order_order_id=' . $_POST['id']);
+
+                if ($result) {
+                    echo "Cancelled";
+                }
+            }
+        } else {
+            echo "try again";
         }
     } else {
         include '../pagenotfound.php';

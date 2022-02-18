@@ -13,6 +13,10 @@
     <link href="../../css/index/style.css" rel="stylesheet" />
     <!-- responsive style -->
     <link href="../../css/index/responsive.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="../../css/productCard.css">
+    <link rel="stylesheet" href="../../css/headingBorder.css">
+
 </head>
 
 <body>
@@ -27,12 +31,12 @@
 
     <section class="product_section layout_padding">
         <div class="container">
-            <div class="heading_container heading_center">
-                <h2>
+            <div class="heading_container heading_center main_heading">
+                <h2 class="h2">
                     Product Category
                 </h2>
             </div>
-            <div class="row">
+            <div class="row align-items-center justify-content-between">
                 <?php
                 $result = $obj->select('*', 'product_category');
 
@@ -40,19 +44,19 @@
                     while ($row = $result->fetch_assoc()) {
                 ?>
 
-                        <div class="col-sm-6 col-lg-4">
-                            <a href="http://localhost/ecomm/product/category/category.php?id=<?php echo $row['category_id']; ?>">
-                                <div class="box" data-id="<?php echo $row['category_id']; ?>">
-                                    <div class="img-box" data-id="<?php echo $row['category_id']; ?>">
-                                        <img src="../../admin/product/category_uploads/<?php echo $row['category_img']; ?>" alt="">
-                                    </div>
-                                    <div class="detail-box" data-id="<?php echo $row['category_id']; ?>">
-                                        <h5>
-                                            <?php echo $row['category_name']; ?>
-                                        </h5>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 margin_bottom_30_all">
+                            <div class="product_list" style="min-height: 0;">
+                                <div class="product_img">
+                                    <img class="img-responsive" src="../../admin/product/category_uploads/<?php echo $row['category_img']; ?>" alt="">
+                                </div>
+                                <div class="product_detail_btm">
+                                    <div class="center">
+                                        <h4 class="h4">
+                                            <a href="http://localhost/ecomm/product/category/category.php?id=<?php echo $row['category_id']; ?>"><?php echo $row['category_name'];; ?></a>
+                                        </h4>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                 <?php
                     }

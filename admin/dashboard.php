@@ -38,22 +38,22 @@ if (isset($_SESSION['admin_loggedin'])) {
         $row = $result->fetch_assoc();
         $totalItems = $row['COUNT(*)'];
 
-        $result = $obj->select('COUNT(*)', 'order');
+        $result = $obj->select('COUNT(*)', 'order', "isCancel=0");
         $row = $result->fetch_assoc();
         $totalOrders = $row['COUNT(*)'];
 
-        $result = $obj->select('COUNT(*)', 'order', "isCancel=0");
+        $result = $obj->select('COUNT(*)', 'order', "status='Ordered'");
 
         if ($result) {
             $row = $result->fetch_assoc();
             $totalPendingOrders = $row['COUNT(*)'];
         }
 
-        // $result = $obj->select('COUNT(*)', 'order', "isCancel=0");
-        // if ($result) {
-        //     $row = $result->fetch_assoc();
-        //     $totalDeliveredOrders = $row['COUNT(*)'];
-        // }
+        $result = $obj->select('COUNT(*)', 'order', "status='Delivered'");
+        if ($result) {
+            $row = $result->fetch_assoc();
+            $totalDeliveredOrders = $row['COUNT(*)'];
+        }
 
         $result = $obj->select('SUM(total)', 'order', "isCancel=0");
         if ($result->num_rows > 0) {
@@ -72,7 +72,7 @@ if (isset($_SESSION['admin_loggedin'])) {
         <div class="container-fluid fluid-two my-4">
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-between">
-                    <h3>Welcome, Deep Chhatralia</h3>
+                    <h2 class="h2 m-0">Welcome, Deep Chhatralia</h2>
                 </div>
             </div>
 
@@ -154,7 +154,10 @@ if (isset($_SESSION['admin_loggedin'])) {
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
+        <script src="../js/jquery-3.4.1.min.js"></script>
+
 
         <script>
             $(document).ready(() => {

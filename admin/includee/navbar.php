@@ -15,12 +15,12 @@
     <nav class="navbar navbar-dark bg-gray-800" id="navbar">
         <div class="container-fluid d-flex justify-content-between">
             <a class="navbar-brand">GDRS</a>
-            <a class="btn hamburger" data-bs-toggle="offcanvas" href="#sidebar">☰</a>
+            <a class="btn hamburger" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">☰</a>
             <!-- <a href="" class="navbar-brand admin-logout-btn">Logout</a> -->
         </div>
     </nav>
 
-    <script src="../../jquery.js"></script>
+    <!-- <script src="../../js/jquery-3.4.1.min.js"></script>
 
     <script>
         $(document).ready(() => {
@@ -31,5 +31,5 @@
                 }
             });
         });
-    </script>
+    </script> -->
 </body>

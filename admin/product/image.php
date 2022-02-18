@@ -99,7 +99,7 @@
 
             <div class="row justify-content-end">
                 <div class="col-md-2">
-                    <button class="btn btn-primary w-100" id="add">Add</button>
+                    <button class="btn btn-primary w-100 addImageBtn" id="add">Add</button>
                 </div>
             </div>
         </form>
@@ -126,10 +126,11 @@
         </div>
     </div>
 
+    <script src="../../js/jquery-3.4.1.min.js"></script>
 
     <script>
         document.querySelector('.fa-tachometer-alt').parentNode.parentNode.classList.remove('active')
-        document.querySelector('.fa-plus-square').parentNode.parentNode.classList.add('active')
+        document.querySelector('.imageSidebarIcon').parentNode.parentNode.classList.add('active')
 
         $(document).ready(() => {
             showImage()
@@ -213,8 +214,13 @@
                         contentType: false,
                         cache: false,
                         processData: false,
+                        beforeSend() {
+                            $('.addImageBtn').addClass('disabled');
+                        },
                         success: function(data) {
+                            $('.addImageBtn').removeClass('disabled');
                             showNotification('Notification', data)
+
                             $('#fileToUpload').val('')
                             $('#product').val(0)
                             showImage()

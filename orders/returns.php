@@ -185,7 +185,8 @@
                             url: "getData.php",
                             type: "POST",
                             data: {
-                                id
+                                id,
+                                operation: "return btn click"
                             },
                             success(data) {
                                 $('.modal-body').html(data)

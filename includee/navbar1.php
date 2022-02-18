@@ -37,7 +37,7 @@
         }
 
         .header_section .header_top {
-            padding: 15px 0;
+            padding: 10px 0;
             background-color: #434f78;
         }
 
@@ -220,7 +220,18 @@
             transform: rotate(90deg);
             top: 0;
         }
+
+        @media screen and (max-width:490px) {
+            .contact_nav a {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                /* justify-content: center; */
+                font-size: small;
+            }
+        }
     </style>
+
 </head>
 
 <div class="hero_area">
@@ -243,22 +254,10 @@
                             </span>
                         </a>
                     </div>
-                    <from class="search_form">
-                        <input type="text" id="search" onkeyup="onKeyUp()" class="form-control" placeholder="Search here...">
-                        <button class="" type="submit">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </button>
-                    </from>
                     <div class="user_option_box">
                         <?php
                         if (isset($_SESSION['userlogin'])) {
                         ?>
-                            <a href="http://localhost/ecomm/account" class="account-link">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                                <span>
-                                    My Account
-                                </span>
-                            </a>
                             <a href="http://localhost/ecomm/auth/logout.php" id="logout-btn" class="account-link">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 <span>
@@ -279,23 +278,22 @@
                             </a>
                         <?php
                         } else {
-                            echo '<a href="http://localhost/ecomm/auth/login.php" id="login-btn" class="account-link">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            <span>
-                                Login
-                            </span>
-                        </a>
-                        <a href="http://localhost/ecomm/auth/signup.php" id="login-btn" class="account-link">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            <span>
-                                Signup
-                            </span>
-                        </a>';
+                        ?>
+                            <a href="http://localhost/ecomm/auth/login.php" id="login-btn" class="btn btn-link">
+                                <small>
+                                    Login
+                                </small>
+                            </a>
+                            <a href="http://localhost/ecomm/auth/signup.php" id="login-btn" class="btn btn-primary">
+                                <small>
+                                    Signup
+                                </small>
+                            </a>
+                        <?php
                         }
                         ?>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="header_bottom">
@@ -312,7 +310,7 @@
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ">
+                        <ul class="navbar-nav">
                             <li class="nav-item active">
                                 <a class="nav-link" href="http://localhost/ecomm/">Home</a>
                             </li>
@@ -340,9 +338,12 @@
             </div>
         </div>
     </header>
-    <!-- end header section -->
-
 </div>
+<!-- end header section -->
+
+
+
+
 
 <script>
     document.getElementById('logout-btn').addEventListener('click', () => {
@@ -351,11 +352,7 @@
         }
     })
 
-    function onKeyUp() {
-        const value = document.getElementById('search').value;
-
-        // $.ajax({
-        //     url:""
-        // })
-    }
+    // function onKeyUp() {
+    //     const value = document.getElementById('search').value;
+    // }
 </script>

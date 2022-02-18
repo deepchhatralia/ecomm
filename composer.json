@@ -1,0 +1,5 @@
+{
+    "require": {
+        "koolreport/cloudexport": "^4.0"
+    }
+}
