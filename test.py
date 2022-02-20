@@ -29,8 +29,7 @@ class InvoiceGenerator:
     URL = "https://invoice-generator.com"
     DATE_FORMAT = "%d %b %Y"
     LOCALE = "fr_FR"
-    TIMEZONE = "Europe/Paris"
-    # Below are the default template parameters that can be changed (see https://github.com/Invoiced/invoice-generator-api/)
+    TIMEZONE = "Asia/Kolkata"
     TEMPLATE_PARAMETERS = [
         "header",
         "to_title",
@@ -181,7 +180,7 @@ class CustomField:
         self.name = name
         self.value = value
 
-ig=InvoiceGenerator(to="Janvi Vijay",ship_to="Bank colony")
+ig=InvoiceGenerator()
 
 mycursor.execute("SELECT * FROM userlogin WHERE userid={0}".format(sys.argv[1]))
 myresult3=mycursor.fetchone()
