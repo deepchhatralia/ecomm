@@ -33,7 +33,7 @@
             <div style="position: absolute; top: 44%; left: 10%;">
                 <h2 class="h2 text-muted">DELL INSPIRON 5000</h2>
                 <h1 class="h1"><i>Fuel your Connections</i></h1>
-                <button class="btn btn-success">Read more</button>
+                <button type="submit" class="btn btn-success" onclick="window.location.href='http://localhost/ecomm/product/product.php?id=84'">Read more</button>
             </div>
         </div>
         <div class="carousel-item">

@@ -14,7 +14,7 @@ use \koolreport\widgets\google\ColumnChart;
 <div class="container mb-5">
     <div class='report-content'>
         <div class="text-center">
-            <h1>Sales State Wise Report</h1>
+            <h1>State Wise Sales Report</h1>
             <p class="lead">The report shows state wise sales report</p>
 
             <button type="submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesByState&type=cloudPDF'">

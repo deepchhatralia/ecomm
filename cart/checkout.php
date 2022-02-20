@@ -127,6 +127,7 @@ if (!isset($_SESSION['userlogin'])) {
                             <h4 class="h4 text-center">Ordered</h4>
                             <div class="text-center">
                                 <small class="text-muted">Redirecting you in <span id="seconds">5</span> seconds...</small>
+                                <h6 class="h6 m-0"><small>Invoice downloaded at C:\xampp\htdocs\ecomm\testing.pdf</small></h6>
                             </div>
                         </div>
                     </div>
@@ -388,7 +389,7 @@ if (!isset($_SESSION['userlogin'])) {
                                     if (data == "Please login") {
                                         window.location.href = "http://localhost/ecomm";
                                     }
-                                    if (data == "Done") {
+                                    if (data.length == 11) {
                                         $('#orderDone').click();
                                         $('#seconds').html(timer);
 

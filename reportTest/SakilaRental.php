@@ -11,7 +11,6 @@ include '../vendor/koolreport/cloudexport/Exportable.php';
 
 class SakilaRental extends KoolReport
 {
-    use \koolreport\cloudexport\Exportable;
     function settings()
     {
         return array(

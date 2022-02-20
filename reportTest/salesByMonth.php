@@ -1,4 +1,3 @@
-
 <?php
 
 require_once "../koolreport/core/autoload.php";
@@ -10,9 +9,8 @@ use \koolreport\processes\Group;
 
 include '../vendor/koolreport/cloudexport/Exportable.php';
 
-class PurchaseReport extends KoolReport
+class SaleByMonth extends KoolReport
 {
-    use \koolreport\cloudexport\Exportable;
     function settings()
     {
         return array(
@@ -29,12 +27,12 @@ class PurchaseReport extends KoolReport
     protected function setup()
     {
         $this->src('sakila_rental')
-            ->query("SELECT `purchasee`.`purchasee_date`,`purchasee`.`total`,`dealer`.`dealer_name` FROM `purchasee` JOIN `dealer` ON `purchasee`.`dealer_id`=`dealer`.`iddealer`")
+            ->query("SELECT order_date,total FROM `order`")
             ->pipe(new TimeBucket(array(
-                "purchasee_date" => "month"
+                "order_date" => "month"
             )))
             ->pipe(new Group(array(
-                "by" => "purchasee_date",
+                "by" => "order_date",
                 "sum" => "total"
             )))
             ->pipe($this->dataStore('sale_by_month'));

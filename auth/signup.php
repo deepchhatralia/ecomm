@@ -264,6 +264,7 @@ if (!isset($_SESSION['userlogin'])) {
                                     username,
                                     password,
                                     areaId,
+                                    pincode,
                                     address,
                                     squestion,
                                     sanswer,

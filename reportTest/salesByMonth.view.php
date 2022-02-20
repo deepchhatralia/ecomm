@@ -20,33 +20,8 @@ use \koolreport\widgets\google\ColumnChart;
                 <button type="submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesReport&type=cloudPDF'">Cloud PDF</button>
                 <button type=" submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesReport&type=cloudJPG'">Cloud JPG</button>
 
-                <button class="btn btn-success disabled" data-bs-toggle="modal" data-bs-target="#exampleModal">Configure</button>
             </div>
 
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="./index.php" method="POST" id="myForm">
-                                <div class="mb-3">
-                                    <label for="fromdate" class="font-bold">From</label>
-                                    <input required type="date" id="fromdate" name="fromdate" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="todate" class="font-bold">To</label>
-                                    <input required type="date" id="todate" name="todate" class="form-control">
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100 my-3">Submit</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <?php
             ColumnChart::create(array(
@@ -66,9 +41,7 @@ use \koolreport\widgets\google\ColumnChart;
                 ),
                 "width" => "100%",
             ));
-            ?>
 
-            <?php
             Table::create(array(
                 "dataStore" => $this->dataStore('sale_by_month'),
                 "columns" => array(
@@ -91,29 +64,5 @@ use \koolreport\widgets\google\ColumnChart;
             ?>
         </div>
     </div>
-
-    <!-- <script src="../js/jquery-3.4.1.min.js"></script> -->
-
-    <!-- <script>
-        $(document).ready(() => {
-            $('#myForm').on('submit', (e) => {
-                e.preventDefault();
-
-                const fromdate = $('#fromdate').val();
-                const todate = $('#todate').val();
-
-                $.post({
-                    url: "./index.php",
-                    data: {
-                        fromdate,
-                        todate
-                    },
-                    success(data) {
-                        $('#myBody').html(data);
-                    }
-                })
-            })
-        })
-    </script> -->
 
 </body>

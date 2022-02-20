@@ -38,16 +38,20 @@
                 <button class="btn btn-primary report-btn" id="salesreport">Sales Report</button>
             </div>
             <div class="col-md-3 my-3">
-                <button class="btn btn-success report-btn" id="purchasereport">Purchase Report</button>
+                <button class="btn btn-primary report-btn" id="purchasereport">Purchase Report</button>
             </div>
             <div class="col-md-3 my-3">
                 <button class="btn btn-primary report-btn" id="topproducts">Top Selling Products</button>
             </div>
             <div class="col-md-3 my-3">
-                <button class="btn btn-primary report-btn" id="salesbystate">Sales by State</button>
+                <button class="btn btn-primary report-btn" id="salesbystate">State Wise Sales</button>
             </div>
-            <div class="col-md-3 my-3"></div>
-            <div class="col-md-3 my-3"></div>
+            <div class="col-md-3 my-3">
+                <button class="btn btn-primary report-btn" id="salesbystate">State Wise Sales</button>
+            </div>
+            <div class="col-md-3 my-3">
+
+            </div>
         </div>
     </div>
 

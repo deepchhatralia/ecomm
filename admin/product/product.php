@@ -48,9 +48,6 @@
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="modal_product_feature">Feature</label>
-                        <!-- <div class="modal-product-feature">
-                            <input name="desc" id="modal_product_feature" type="text" class="form-control input">
-                        </div> -->
                         <div class="col-sm-10">
                             <textarea name="content" class="modal-product-feature"></textarea>
                         </div>
@@ -159,7 +156,20 @@
             <div class="row mb-3">
                 <label for="product_name" class="col-sm-2 col-form-label">Product Name :</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="product_name">
+                    <select class="form-select" id="product_name">
+                        <option value="0" selected disabled>Select...</option>
+                        <?php
+                        $result = $obj->select('*', 'purchasee', "product_added=0");
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                        ?>
+                                <option value="<?php echo $row['purchase_id']; ?>|<?php echo $row['product_name'] ?>|<?php echo $row['qty'] ?>"><?php echo $row['product_name'] ?></option>
+                        <?php
+                            }
+                        }
+                        ?>
+                    </select>
+                    <!-- <input type="text" class="form-control" id="product_name"> -->
                 </div>
             </div>
             <div class="row mb-3">
@@ -206,7 +216,7 @@
             <div class="row mb-3">
                 <label for="product_stock" class="col-sm-2 col-form-label">Stock :</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="product_stock">
+                    <input type="number" disabled class="form-control" id="product_stock">
                 </div>
             </div>
             <div class="row mb-3">
@@ -261,12 +271,11 @@
     <script>
         var editor;
 
-        document.querySelector('.fa-tachometer-alt').parentNode.parentNode.classList.remove('active')
-        document.querySelector('.productSidebarIcon').parentNode.parentNode.classList.add('active')
+        document.querySelector(' .fa-tachometer-alt').parentNode.parentNode.classList.remove('active');
+        document.querySelector('.productSidebarIcon').parentNode.parentNode.classList.add('active');
 
-
-        var toastTrigger = document.getElementById('liveToastBtn')
-        var toastLiveExample = document.getElementById('liveToast')
+        var toastTrigger = document.getElementById('liveToastBtn');
+        var toastLiveExample = document.getElementById('liveToast');
 
         $(document).ready(() => {
             $('#alert-success').hide()
@@ -290,14 +299,16 @@
                 for (let i = 0; i < arr.length; i++) {
                     featureContainer += '<input id="product_feature" type="text" class="mb-1 form-control input product_feature" value="' + arr[i] + '">';
                 }
-
                 $('.product-feature-container').html(featureContainer + '<input type="text" class="mb-1 form-control input product_feature">')
+            });
 
-            })
 
-            // $('.modal-close').on('click', () => {
-            //     editor.destroy()
-            // })
+            $('#product_name').on('change', () => {
+                let val = $('#product_name').val();
+                val = val.split("|");
+
+                $('#product_stock').val(val[2]);
+            });
 
             $('#update-item-btn').click((e) => {
                 const id = $('#modal_product_id').val()
@@ -423,15 +434,20 @@
 
             $('#myForm').on('submit', (e) => {
                 e.preventDefault();
-                const input = $('.input')
-                const product_name = $('#product_name').val()
+                const input = $('.input');
+
+                let product = $('#product_name').val();
+                product = product.split("|")
+                const product_name = product[1];
+                const purchaseId = product[0];
+
                 const desc = $('#product_desc').val();
-                const feature = $('.product_feature').map((i, e) => e.value).get()
-                const product_category = $('.product_category').val()
-                const product_mrp = $('#product_mrp').val()
-                const product_stock = $('#product_stock').val()
-                const company_profile = $('.company_profile').val()
-                const offer = $('#product_offer').val()
+                const feature = $('.product_feature').map((i, e) => e.value).get();
+                const product_category = $('.product_category').val();
+                const product_mrp = $('#product_mrp').val();
+                const product_stock = $('#product_stock').val();
+                const company_profile = $('.company_profile').val();
+                const offer = $('#product_offer').val();
 
                 if (product_name && feature.length >= 1 && desc && product_category && product_mrp && product_stock && company_profile && offer) {
 
@@ -440,6 +456,7 @@
                         type: 'POST',
                         data: {
                             product_name,
+                            purchaseId,
                             desc,
                             feature,
                             product_mrp,

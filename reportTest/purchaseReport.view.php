@@ -41,6 +41,7 @@ use \koolreport\widgets\google\ColumnChart;
         Table::create(array(
             "dataStore" => $this->dataStore('sale_by_month'),
             "columns" => array(
+                "dealer_name" => array("label" => "Dealer"),
                 "purchasee_date" => array(
                     "label" => "Month",
                     "type" => "datetime",

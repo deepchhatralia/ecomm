@@ -18,11 +18,12 @@ if (isset($_POST['product_name']) && isset($_POST['desc']) && isset($_POST['feat
     $company = mysqli_real_escape_string($obj->connection(), $_POST['company_profile']);
     $offer = mysqli_real_escape_string($obj->connection(), $_POST['offer']);
 
-    $uniqueId = uniqid("gdrs", true);
+    $purchaseId = $_POST['purchaseId'];
 
-    $result = $obj->insert('productt', ['product_id' => $uniqueId, 'product_desc' => $desc, 'product_feature' => $feature, 'product_category' => $category_id, 'product_name' => $product_name, 'product_price' => $product_mrp, 'product_stock' => $product_stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer]);
+    $result = $obj->insert('productt', ['product_desc' => $desc, 'product_feature' => $feature, 'product_category' => $category_id, 'product_name' => $product_name, 'product_price' => $product_mrp, 'product_stock' => $product_stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer]);
 
     if ($result) {
+        $result = $obj->update('purchasee', ['product_added' => 1], "purchase_id=" . $purchaseId);
         echo 'Added';
     } else {
         // echo 'Please try again';

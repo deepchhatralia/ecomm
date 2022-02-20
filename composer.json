@@ -1,5 +1,6 @@
 {
     "require": {
-        "koolreport/cloudexport": "^4.0"
+        "koolreport/cloudexport": "^4.0",
+        "invoiced/invoiced": "^2.1"
     }
 }

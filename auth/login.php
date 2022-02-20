@@ -65,9 +65,24 @@ if (!isset($_SESSION['userlogin'])) {
                 }
             }
         </style>
-        <!-- 
-        <link rel="stylesheet" href="../css/index/style.css">
-        <link rel="stylesheet" href="../css/index/responsive.css"> -->
+
+        <!-- Nucleo Icons -->
+        <!-- <link href="../material/assets/css/nucleo-icons.css" rel="stylesheet" /> -->
+        <!-- <link href="../material/assets/css/nucleo-svg.css" rel="stylesheet" /> -->
+        <!-- Font Awesome Icons -->
+        <!-- <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script> -->
+        <!-- Material Icons -->
+        <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"> -->
+
+        <!-- <style>
+            .header_top {
+                padding: 0 !important;
+            }
+
+            .header_bottom {
+                padding: 0 !important;
+            }
+        </style> -->
     </head>
 
     <body>
@@ -103,6 +118,45 @@ if (!isset($_SESSION['userlogin'])) {
         </div>
 
 
+        <!-- <main class="main-content">
+            <div class="page-header align-items-start min-vh-100" style="background-color: #FFFFFF;">
+                <span class="mask opacity-6"></span>
+                <div class="container my-auto">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-8 col-12 mx-auto">
+                            <div class="card z-index-0 fadeIn3 fadeInBottom">
+                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                    <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
+                                        <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Sign in</h4>
+
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form role="form" class="text-start">
+                                        <div class="input-group input-group-outline my-3">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control">
+                                        </div>
+                                        <div class="input-group input-group-outline mb-3">
+                                            <label class="form-label">Password</label>
+                                            <input type="password" class="form-control">
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="button" class="btn bg-gradient-primary w-100 my-4 mb-2">Sign in</button>
+                                        </div>
+                                        <p class="mt-4 text-sm text-center">
+                                            Don't have an account?
+                                            <a href="http://localhost/ecomm/auth/signup.php" class="text-primary text-gradient font-weight-bold">Sign up</a>
+                                        </p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main> -->
+
         <?php
         include '../includee/footer.php';
         ?>
@@ -111,6 +165,22 @@ if (!isset($_SESSION['userlogin'])) {
 
         <!-- Jquery  -->
         <script src="../jquery.js"></script>
+
+        <!-- <script src="../material/assets/js/plugins/perfect-scrollbar.min.js"></script>
+        <script src="../material/assets/js/plugins/smooth-scrollbar.min.js"></script> -->
+
+        <!-- <script>
+            var win = navigator.platform.indexOf('Win') > -1;
+            if (win && document.querySelector('#sidenav-scrollbar')) {
+                var options = {
+                    damping: '0.5'
+                }
+                Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+            }
+        </script> -->
+
+        <!-- <script src="../material/assets/js/material-dashboard.min.js?v=3.0.0"></script> -->
+
 
         <script>
             $(document).ready(() => {

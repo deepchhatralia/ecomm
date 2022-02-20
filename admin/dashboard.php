@@ -61,7 +61,7 @@ if (isset($_SESSION['admin_loggedin'])) {
             $sales = $result['SUM(total)'];
         }
 
-        $result = $obj->select('SUM(total)', 'purchasee', "isCancel=0");
+        $result = $obj->select('SUM(total)', 'purchasee');
         if ($result->num_rows > 0) {
             $result = $result->fetch_assoc();
             $purchase = $result['SUM(total)'];
@@ -152,9 +152,9 @@ if (isset($_SESSION['admin_loggedin'])) {
             </div>
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js" integrity="sha512-TW5s0IT/IppJtu76UbysrBH9Hy/5X41OTAbQuffZFU6lQ1rdcLHzpU5BzVvr/YFykoiMYZVWlr/PX1mDcfM9Qg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script src="../js/jquery-3.4.1.min.js"></script>
 
