@@ -18,9 +18,9 @@ use \koolreport\widgets\google\ColumnChart;
                 <p class="lead">This report show month wise sales</p>
 
                 <button type="submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesReport&type=cloudPDF'">Cloud PDF</button>
-                <button type=" submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesReport&type=cloudJPG'">Cloud JPG</button>
+                <button type=" submit" class="btn btn-primary d-none" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesReport&type=cloudJPG'">Cloud JPG</button>
 
-                <button class="btn btn-success disabled" data-bs-toggle="modal" data-bs-target="#exampleModal">Configure</button>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Configure</button>
             </div>
 
             <!-- Modal -->
@@ -34,12 +34,12 @@ use \koolreport\widgets\google\ColumnChart;
                         <div class="modal-body">
                             <form action="./index.php" method="POST" id="myForm">
                                 <div class="mb-3">
-                                    <label for="fromdate" class="font-bold">From</label>
-                                    <input required type="date" id="fromdate" name="fromdate" class="form-control">
+                                    <label for="salesfromdate" class="font-bold">From</label>
+                                    <input required type="date" id="salesfromdate" name="salesfromdate" class="form-control">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="todate" class="font-bold">To</label>
-                                    <input required type="date" id="todate" name="todate" class="form-control">
+                                    <label for="salestodate" class="font-bold">To</label>
+                                    <input required type="date" id="salestodate" name="salestodate" class="form-control">
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100 my-3">Submit</button>
                             </form>
@@ -91,29 +91,5 @@ use \koolreport\widgets\google\ColumnChart;
             ?>
         </div>
     </div>
-
-    <!-- <script src="../js/jquery-3.4.1.min.js"></script> -->
-
-    <!-- <script>
-        $(document).ready(() => {
-            $('#myForm').on('submit', (e) => {
-                e.preventDefault();
-
-                const fromdate = $('#fromdate').val();
-                const todate = $('#todate').val();
-
-                $.post({
-                    url: "./index.php",
-                    data: {
-                        fromdate,
-                        todate
-                    },
-                    success(data) {
-                        $('#myBody').html(data);
-                    }
-                })
-            })
-        })
-    </script> -->
 
 </body>

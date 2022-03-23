@@ -40,6 +40,27 @@ if (isset($_SESSION['userlogin'])) {
         <div id="liveAlertPlaceholder"></div>
 
 
+        <!-- Modal -->
+        <div class="modal fade" id="returnExampleModal" tabindex="-1" aria-labelledby="returnExampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Order Return</h5>
+                        <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="return-modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="close-return-modal" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="return-btn" class="btn btn-danger">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <button id="order-details-btn" class="d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">Hello</button>
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -60,6 +81,7 @@ if (isset($_SESSION['userlogin'])) {
                                             <th>Price</th>
                                             <th>Quantity</th>
                                             <th>Total</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody id="order-details-table">
@@ -99,27 +121,27 @@ if (isset($_SESSION['userlogin'])) {
                             <th>Total</th>
                             <th>Status</th>
                             <th>Cancel</th>
+                            <th>Return</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- SELECT * FROM `image` JOIN `productt` ON `image`.`product_product_id`=`productt`.`product_id` -->
                         <?php
                         $result = $obj->select('*', 'order', "userlogin_userid=" . $_SESSION['userlogin'], 'order_id DESC');
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                         ?>
-                                <tr data-bs-toggle="modal" data-bs-target="#exampleModal" class="table-row text-center" data-orderId="<?php echo $row['order_id']; ?>">
-                                    <th scope="row"><?php echo $row['order_id']; ?></th>
-                                    <td><?php
-                                        if (strlen($row['shipping_address']) > 50) {
-                                            echo substr($row['shipping_address'], 0, 50) . "...";
-                                        } else {
-                                            echo $row['shipping_address'];
-                                        }
-                                        ?></td>
-                                    <td><?php echo $row['order_date']; ?></td>
-                                    <td><?php echo $row['total']; ?></td>
-                                    <td>
+                                <tr class="table-row text-center" data-orderId="<?php echo $row['order_id']; ?>">
+                                    <th class="table-roww" scope="row"><?php echo $row['order_id']; ?></th>
+                                    <td class="table-roww"><?php
+                                                            if (strlen($row['shipping_address']) > 50) {
+                                                                echo substr($row['shipping_address'], 0, 50) . "...";
+                                                            } else {
+                                                                echo $row['shipping_address'];
+                                                            }
+                                                            ?></td>
+                                    <td class="table-roww"><?php echo $row['order_date']; ?></td>
+                                    <td class="table-roww">₹ <?php echo $row['total']; ?></td>
+                                    <td class="table-roww">
                                         <span class="badge rounded-pill bg-secondary"><?php echo $row['status']; ?></span>
                                     </td>
                                     <td>
@@ -131,7 +153,16 @@ if (isset($_SESSION['userlogin'])) {
                                         if ($row['status'] !== "Delivered" && $days <= 2 && $row['isCancel'] == 0) {
                                             echo '<button data-id="' . $row['order_id'] . '" class="cancel-order-btn btn btn-danger">Cancel</button></td>';
                                         } else {
-                                            echo 'Not Applicable';
+                                            echo '-';
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        if ($row['status'] !== "Delivered" && $days <= 7 && $row['isCancel'] == 0 && $row['status'] != "Returned") {
+                                            echo '<button data-bs-toggle="modal" data-bs-target="#returnExampleModal" data-id="' . $row['order_id'] . '" class="btn btn-danger return-btn">Return</button>';
+                                        } else {
+                                            echo '-';
                                         }
                                         ?>
                                     </td>
@@ -166,27 +197,25 @@ if (isset($_SESSION['userlogin'])) {
                     wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
 
                     alertPlaceholder.append(wrapper)
+
+                    if (message === "Order Return Initiated") {
+                        window.location.reload();
+                    }
                 }
 
-
-                // gets order details 
-                $('.table-row').click((e) => {
-                    const orderId = e.target.parentElement.getAttribute('data-orderId');
+                // Orders table return button click to open modal
+                $('.return-btn').click((e) => {
+                    const id = e.target.getAttribute("data-id")
 
                     $.ajax({
-                        url: "getOrderData.php",
+                        url: "getData.php",
                         type: "POST",
                         data: {
-                            orderId,
-                            operation: "order details data"
-                        },
-                        beforeSend() {
-                            e.target.parentElement.click()
+                            id,
+                            operation: "return btn click"
                         },
                         success(data) {
-                            const x = JSON.parse(data)
-                            $('#order-details-table').html(x[0])
-                            $('.order-details-total').html('<h6 class="h6 fw-bold">Total : ' + x[1] + '</h6>')
+                            $('.return-modal-body').html(data)
                         }
                     })
                 })
@@ -194,50 +223,67 @@ if (isset($_SESSION['userlogin'])) {
                 // Modal return button click
                 $('#return-btn').click(() => {
                     const orderDetailId = $('#order-detail-id').html()
-                    const amount = $('.price').val()
-                    const qty = $('#qty-return').val()
-                    const productId = $('#product-id').html()
+                    // const amount = $('.price').val()
+                    // const qty = $('#qty-return').val()
+                    // const productId = $('#product-id').html()
+
                     const reason = $('#return-reason').val()
+                    const check = document.getElementsByClassName("product-checkbox");
+                    let isChecked = false;
 
-                    if (reason && reason.length >= 100) {
-                        $('#return-reason').css('border-color', 'lightgray')
-
-                        $.ajax({
-                            url: "getData.php",
-                            type: "POST",
-                            data: {
-                                amount,
-                                qty,
-                                productId,
-                                orderDetailId,
-                                reason,
-                                operation: "return product"
-                            },
-                            success(data) {
-                                let msg = "";
-                                let color = "";
-                                if (data == "Inserted") {
-                                    msg = "Return request for quantity " + qty + " was requested";
-                                    color = "success";
-                                    setTimeout(() => {
-                                        window.location.reload()
-                                    }, 2000);
-                                } else {
-                                    msg = "Please try again...";
-                                    color = "danger";
-                                }
-
-                                $('.modal-close').click()
-
-                                alert(msg, color)
-                                setTimeout(() => {
-                                    $('#liveAlertPlaceholder').html('')
-                                }, 3000);
+                    if (reason.length >= 10) {
+                        for (let i = 0; i < check.length; i++) {
+                            if (check[i].checked) {
+                                $('#error-msg').text("");
+                                isChecked = true;
+                                const orderDetailId = check[i].getAttribute("data-id");
+                                $.post({
+                                    url: "./returns.php",
+                                    data: {
+                                        reason,
+                                        orderDetailId,
+                                        operation: "return product"
+                                    },
+                                    success(data) {
+                                        if (data == "Returned") {
+                                            $('#close-return-modal').click();
+                                            alert("Order Return Initiated", 'success');
+                                        } else {
+                                            $('#error-msg').text(data);
+                                        }
+                                    }
+                                })
                             }
-                        })
+                        }
+
+                        if (!isChecked) {
+                            $('#error-msg').text("Please select product");
+                        }
                     } else {
-                        $('#return-reason').css('border-color', '#ff707e')
+                        $('#error-msg').text("Please specify reason");
                     }
+                })
+
+                // gets order details 
+                $('.table-roww').click((e) => {
+                    const orderId = e.target.parentElement.getAttribute('data-orderId');
+
+                    $.ajax({
+                        url: "getOrderData.php",
+                        type: "POST",
+                        data: {
+                            orderId,
+                            offerPrice: 0,
+                            operation: "order details data"
+                        },
+                        success(data) {
+                            const x = JSON.parse(data)
+                            $('#order-details-table').html(x[0])
+                            $('.order-details-total').html('<h6 class="h6 fw-bold">Total : ₹ ' + x[1] + '</h6>')
+
+                            $('#order-details-btn').click();
+                        }
+                    })
                 })
 
                 // cancel order button 

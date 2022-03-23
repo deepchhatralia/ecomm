@@ -126,7 +126,6 @@ if (isset($_SESSION['admin_loggedin'])) {
             </div>
         </div>
 
-
         <div class="my-5">
             <div class="d-flex align-items-center justify-content-evenly">
                 <div class="chart-container" style="position: relative; height:50vh; width:40vw">

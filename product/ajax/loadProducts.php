@@ -7,9 +7,9 @@ if (isset($_POST['operation'])) {
         $output = '';
 
         if ($_POST['operation'] == "low to high") {
-            $result = $obj->select('*', 'productt', 'product_stock >= 1', "product_price");
+            $result = $obj->select('*', 'productt', 'product_stock >= 1', "offer_price");
         } else if ($_POST['operation'] == "high to low") {
-            $result = $obj->select('*', 'productt', 'product_stock >= 1', "product_price DESC");
+            $result = $obj->select('*', 'productt', 'product_stock >= 1', "offer_price DESC");
         } else {
             $result = $obj->select('*', 'productt', 'product_stock >= 1');
         }
@@ -26,7 +26,13 @@ if (isset($_POST['operation'])) {
                     $resultt = $obj->select('*', 'offer', "idoffer=" . $offerId);
                     $roww = $resultt->fetch_assoc();
 
-                    $price = round($row['product_price'] - ($row['product_price'] * $roww['offer_discount'] / 100));
+                    $todaysDate = strtotime(date('Y-m-d'));
+                    $startDate = strtotime($roww['offer_startDate']);
+                    $endDate = strtotime($roww['offer_endDate']);
+
+                    if ($todaysDate >= $startDate && $todaysDate <= $endDate) {
+                        $price = round($price - ($price * $roww['offer_discount'] / 100));
+                    }
                 }
 
                 $output .= '<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 margin_bottom_30_all">

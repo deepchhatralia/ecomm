@@ -19,7 +19,7 @@ use \koolreport\widgets\google\ColumnChart;
 
             <button type="submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesByState&type=cloudPDF'">
                 Cloud PDF</button>
-            <button type="submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesByState&type=cloudJPG'">Cloud JPG</button>
+            <button type="submit" class="btn btn-primary d-none" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesByState&type=cloudJPG'">Cloud JPG</button>
         </div>
 
 

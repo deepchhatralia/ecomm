@@ -7,79 +7,133 @@ if (isset($_SESSION['userlogin'])) {
     $obj = new Database();
 
     if (isset($_POST['id']) && $_POST['operation'] == "return btn click") {
-        $output = "";
+        $output = '<div class="container"><table class="table my-4">
+        <thead>
+            <th>-</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </thead>        
+        <tbody>';
 
-        $result = $obj->select('*', 'order_detail', "order_detail_id=" . $_POST['id']);
+        $result = $obj->select('*', 'order_detail', "order_order_id=" . $_POST['id'] . " AND status NOT LIKE 'Cancelled' AND status NOT LIKE 'Returned'");
 
         if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
+            while ($row = $result->fetch_assoc()) {
+                $productId = $row['product_id'];
 
-            $result2 = $obj->select('*', 'order', "order_id=" . $row['order_order_id']);
-            $row2 = $result2->fetch_assoc();
+                $result2 = $obj->select('*', 'productt', "product_id=" . $productId);
+                $row2 = $result2->fetch_assoc();
 
-            $result3 = $obj->select('*', 'productt', "product_id=" . $row['product_id']);
-            $row3 = $result3->fetch_assoc();
+                $offerId = $row2['offer_idoffer'];
+                $price = $row2['product_price'];
 
-            $result4 = $obj->select('*', "image", "product_product_id=" . $row['product_id']);
-            $image = "";
-            if ($result4->num_rows > 0) {
-                $row4 = $result4->fetch_assoc();
-                $image = $row4['img_path'];
+                if ($offerId != '0') {
+                    $result4 = $obj->select('*', 'offer', "idoffer=" . $offerId);
+                    $row4 = $result4->fetch_assoc();
+
+                    if ($row['offerPrice'] == 1) {
+                        $price = round($price - ($price * $row4['offer_discount'] / 100));
+                    }
+                }
+
+                $result2 = $obj->select('*', 'image', 'product_product_id=' . $productId);
+                $image = $result2->fetch_assoc();
+
+                $output .= '<tr>
+                                <td><input class="product-checkbox" type="checkbox" data-id="' . $row['order_detail_id'] . '" /></td>
+                                <td class="d-flex">
+                                    <img class="mr-3 productImg" src="../admin/product/uploads/' . $image['img_path'] . '" alt="">
+                                    <h6 class="h6 fw-bold">' . $row2['product_name'] . '</h6>
+                                </td>
+                                <td>' . $price . '</td>
+                                <td>' . $row['order_quantity'] . '</td>
+                                <td>' . $row['order_quantity'] * $price . '</td>
+                            </tr>';
             }
-
-            $price = $row3['product_price'];
-            if ($row3['offer_idoffer'] != 0) {
-                $result4 = $obj->select('*', 'offer', "idoffer=" . $row3['offer_idoffer']);
-                $row4 = $result4->fetch_assoc();
-
-                $price = round($row3['product_price'] - ($row3['product_price'] * $row4['offer_discount'] / 100));
-            }
-
-
-            $total = $row['order_quantity'] * $price;
-
-
-            $output .= '<div class="row mb-4">
-            <div class="col-md-6">
-            <div class="d-flex align-items-center">
-            <img class="productImg mr-3" src="../admin/product/uploads/' . $image . '" alt="">
-            <span class="d-none" id="product-id">' . $row3['product_id'] . '</span>
-            <span class="d-none" id="order-detail-id">' . $_POST['id'] . '</span>
-                                    <h6 class="h6 fw-bold">' . $row3['product_name'] . '</h6>
-                                    </div>
-                                    </div>
-                            <div class="col-md-6">
-                            <h5 class="h5">Shipping Address : </h5>
-                            <p style="font-size: 14px;">' . $row2['shipping_address'] . '</p>
-                            </div>
-                            </div>
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                <h6 class="h6">Quantity to return</h6>
-                                <select id="qty-return" class="form-control">
-                                <option selected value="1">1</option>';
-
-            for ($i = 2; $i <= $row['order_quantity']; $i++) {
-                $output .= '<option value="' . $i . '">' . $i . '</option>';
-            }
-
-
-            $output .= '</select>
-                            </div>
-                            <div class="col-md-6">
-                                <h6 class="h6">Price</h6>
-                                <input class="fix-price d-none" value="' . $price . '" />
-                                <input type="number" class="form-control price" disabled value="' . $price . '" />
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-12">
-                                <h6 class="h6">Reason <span class="text-muted">(Min. 100 characters)</span></h6>
-                                <textarea rows="5" id="return-reason" class="textarea form-control"></textarea>
-                            </div>
-                        </div>';
+            $output .= '</tbody></table><div class="row mb-4">
+             <div class="col-md-12">
+            <h6 class="h6">Reason <span class="text-muted">(Min. 100 characters)</span></h6>
+                                 <textarea rows="5" id="return-reason" class="textarea form-control"></textarea>
+                             </div>
+                             <p id="error-msg" class="text-danger mt-4" style="font-size:14px;"></p>
+            </div>
+            </div>';
 
             echo $output;
+
+
+
+
+            // $row = $result->fetch_assoc();
+
+            // $result2 = $obj->select('*', 'order', "order_id=" . $row['order_order_id']);
+            // $row2 = $result2->fetch_assoc();
+
+            // $result3 = $obj->select('*', 'productt', "product_id=" . $row['product_id']);
+            // $row3 = $result3->fetch_assoc();
+
+            // $result4 = $obj->select('*', "image", "product_product_id=" . $row['product_id']);
+            // $image = "";
+            // if ($result4->num_rows > 0) {
+            //     $row4 = $result4->fetch_assoc();
+            //     $image = $row4['img_path'];
+            // }
+
+            // $price = $row3['product_price'];
+            // if ($row3['offer_idoffer'] != 0) {
+            //     $result4 = $obj->select('*', 'offer', "idoffer=" . $row3['offer_idoffer']);
+            //     $row4 = $result4->fetch_assoc();
+
+            //     $price = round($row3['product_price'] - ($row3['product_price'] * $row4['offer_discount'] / 100));
+            // }
+
+
+            // $total = $row['order_quantity'] * $price;
+
+
+            // $output .= '<div class="row mb-4">
+            // <div class="col-md-6">
+            // <div class="d-flex align-items-center">
+            // <img class="productImg mr-3" src="../admin/product/uploads/' . $image . '" alt="">
+            // <span class="d-none" id="product-id">' . $row3['product_id'] . '</span>
+            // <span class="d-none" id="order-detail-id">' . $_POST['id'] . '</span>
+            //                         <h6 class="h6 fw-bold">' . $row3['product_name'] . '</h6>
+            //                         </div>
+            //                         </div>
+            //                 <div class="col-md-6">
+            //                 <h5 class="h5">Shipping Address : </h5>
+            //                 <p style="font-size: 14px;">' . $row2['shipping_address'] . '</p>
+            //                 </div>
+            //                 </div>
+            //                 <div class="row mb-4">
+            //                     <div class="col-md-6">
+            //                     <h6 class="h6">Quantity to return</h6>
+            //                     <select id="qty-return" class="form-control">
+            //                     <option selected value="1">1</option>';
+
+            // for ($i = 2; $i <= $row['order_quantity']; $i++) {
+            //     $output .= '<option value="' . $i . '">' . $i . '</option>';
+            // }
+
+
+            // $output .= '</select>
+            //                 </div>
+            //                 <div class="col-md-6">
+            //                     <h6 class="h6">Price</h6>
+            //                     <input class="fix-price d-none" value="' . $price . '" />
+            //                     <input type="number" class="form-control price" disabled value="' . $price . '" />
+            //                 </div>
+            //             </div>
+            //             <div class="row mb-4">
+            //                 <div class="col-md-12">
+            //                     <h6 class="h6">Reason <span class="text-muted">(Min. 100 characters)</span></h6>
+            //                     <textarea rows="5" id="return-reason" class="textarea form-control"></textarea>
+            //                 </div>
+            //             </div>';
+
+            // echo $output;
         } else {
             echo "Order not found";
         }

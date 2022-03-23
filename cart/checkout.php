@@ -108,6 +108,11 @@ if (!isset($_SESSION['userlogin'])) {
 
             include '../database.php';
             $obj = new Database();
+            $checkCart = $obj->select('*', 'cart', 'userlogin_userid=' . $_SESSION['userlogin']);
+            $checkCartRow = $checkCart->fetch_assoc();
+            if (!$checkCart) {
+                header("Location: http://localhost/ecomm/cart/");
+            }
             ?>
 
             <!-- Button trigger modal -->
@@ -155,7 +160,13 @@ if (!isset($_SESSION['userlogin'])) {
                                         $resultt = $obj->select('*', 'offer', "idoffer=" . $offerId);
                                         $roww = $resultt->fetch_assoc();
 
-                                        $price = round($row['product_price'] - ($row['product_price'] * $roww['offer_discount'] / 100));
+                                        $todaysDate = strtotime(date('Y-m-d'));
+                                        $startDate = strtotime($roww['offer_startDate']);
+                                        $endDate = strtotime($roww['offer_endDate']);
+
+                                        if ($todaysDate >= $startDate && $todaysDate <= $endDate) {
+                                            $price = round($price - ($price * $roww['offer_discount'] / 100));
+                                        }
                                     }
                                     $total += $price * $row['cart_quantity'];
                             ?>
@@ -386,6 +397,7 @@ if (!isset($_SESSION['userlogin'])) {
                                     $('#placeOrderBtn').addClass('disabled')
                                 },
                                 success(data) {
+                                    console.log(data);
                                     if (data == "Please login") {
                                         window.location.href = "http://localhost/ecomm";
                                     }

@@ -68,7 +68,15 @@ if (isset($_SESSION['userlogin'])) {
                                                 $result4 = $obj->select('*', 'offer', "idoffer=" . $offerId);
                                                 $offer = $result4->fetch_assoc();
 
-                                                $price = round($row2['product_price'] - ($row2['product_price'] * $offer['offer_discount'] / 100));
+                                                $todaysDate = strtotime(date('Y-m-d'));
+                                                $startDate = strtotime($offer['offer_startDate']);
+                                                $endDate = strtotime($offer['offer_endDate']);
+
+                                                if (
+                                                    $todaysDate >= $startDate && $todaysDate <= $endDate
+                                                ) {
+                                                    $price = round($price - ($price * $offer['offer_discount'] / 100));
+                                                }
                                             }
                                             $total += $row['cart_quantity'] * $price;
                                     ?>

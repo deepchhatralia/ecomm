@@ -10,7 +10,7 @@ if (isset($_SESSION['admin_loggedin'])) {
 
         if ($q == "salesreport") {
             require_once './SakilaRental.php';
-            $report = new SakilaRental;
+            $report = new SakilaRental(array("salesstartDate" => "", "salesendDate" => ""));
         } else if ($q == "topproducts") {
             require_once "./topProducts.php";
             $report = new TopProducts;
@@ -19,25 +19,20 @@ if (isset($_SESSION['admin_loggedin'])) {
             $report = new SaleByState;
         } else if ($q == "purchasereport") {
             require_once "./purchaseReport.php";
-            $report = new PurchaseReport;
+            $report = new PurchaseReport(array("purchasestartDate" => "", "purchaseendDate" => ""));
         } else {
             return include '../pagenotfound.php';
         }
-        $report->run()->render();
-    } else if (isset($_POST['fromdate']) && isset($_POST['todate'])) {
-        require_once './salesByMonth.php';
-        // $report = new SaleByMonth(array(
-        //     "fromdate" => $_POST['fromdate'],
-        //     "todate" => $_POST['todate']
-        // ));
-
-        $report = new SaleByMonth;
-        // $report->assignDate($_POST['fromdate'], $_POST['todate']);
-
-        $report->run()->render();
+    } else if (isset($_POST['salesfromdate']) && isset($_POST['salestodate'])) {
+        require_once './SakilaRental.php';
+        $report = new SakilaRental(array("salesstartDate" => $_POST['salesfromdate'], "salesendDate" => $_POST['salestodate']));
+    } else if (isset($_POST['purchasefromdate']) && isset($_POST['purchasetodate'])) {
+        require_once './purchaseReport.php';
+        $report = new PurchaseReport(array("purchasestartDate" => $_POST['purchasefromdate'], "purchaseendDate" => $_POST['purchasetodate']));
     } else {
-        include '../pagenotfound.php';
+        return '../pagenotfound.php';
     }
+    $report->run()->render();
 } else {
     include '../pagenotfound.php';
     // echo "login";

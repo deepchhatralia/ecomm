@@ -28,15 +28,32 @@ class PurchaseReport extends KoolReport
     }
     protected function setup()
     {
-        $this->src('sakila_rental')
-            ->query("SELECT `purchasee`.`purchasee_date`,`purchasee`.`total`,`dealer`.`dealer_name` FROM `purchasee` JOIN `dealer` ON `purchasee`.`dealer_id`=`dealer`.`iddealer`")
-            ->pipe(new TimeBucket(array(
-                "purchasee_date" => "month"
-            )))
-            ->pipe(new Group(array(
-                "by" => "purchasee_date",
-                "sum" => "total"
-            )))
-            ->pipe($this->dataStore('sale_by_month'));
+        if ($this->params['purchasestartDate'] && $this->params['purchaseendDate']) {
+            $this->src('sakila_rental')
+                ->query("SELECT `purchasee`.`purchasee_date`,`purchasee`.`total`,`dealer`.`dealer_name` FROM `purchasee` JOIN `dealer` ON `purchasee`.`dealer_id`=`dealer`.`iddealer` WHERE purchasee_date>= :startDate AND purchasee_date<= :endDate")
+                ->params(array(
+                    ":startDate" => $this->params["purchasestartDate"],
+                    ":endDate" => $this->params["purchaseendDate"]
+                ))
+                ->pipe(new TimeBucket(array(
+                    "purchasee_date" => "month"
+                )))
+                ->pipe(new Group(array(
+                    "by" => "purchasee_date",
+                    "sum" => "total"
+                )))
+                ->pipe($this->dataStore('sale_by_month'));
+        } else {
+            $this->src('sakila_rental')
+                ->query("SELECT `purchasee`.`purchasee_date`,`purchasee`.`total`,`dealer`.`dealer_name` FROM `purchasee` JOIN `dealer` ON `purchasee`.`dealer_id`=`dealer`.`iddealer`")
+                ->pipe(new TimeBucket(array(
+                    "purchasee_date" => "month"
+                )))
+                ->pipe(new Group(array(
+                    "by" => "purchasee_date",
+                    "sum" => "total"
+                )))
+                ->pipe($this->dataStore('sale_by_month'));
+        }
     }
 }

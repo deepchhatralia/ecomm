@@ -46,16 +46,6 @@ if (isset($_POST['operation'])) {
 
         echo $obj->update('productt', ['product_name' => $name, 'product_desc' => $desc, 'product_feature' => $feature, 'product_price' => $price, 'product_category' => $category, 'product_stock' => $stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer], "product_id='{$id}'");
     }
-
-    // if ($_POST['operation'] == "get product qty") {
-    //     $val = explode("|", $_POST['val']);
-
-    //     $result = $obj->select('*', 'purchasee', "purchase_id=" . $val[0]);
-
-    //     if ($result->num_rows > 0) {
-    //         $row = $result->fetch_assoc();
-    //     }
-    // }
 } else {
     include '../../../pagenotfound.php';
 }

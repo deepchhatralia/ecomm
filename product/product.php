@@ -154,6 +154,95 @@ if (!isset($_GET['id'])) {
                 transition: all 600ms ease;
                 font-weight: 800;
             }
+
+            .rating {
+                float: left;
+            }
+
+            /* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective */
+            .rating:not(:checked)>input {
+                position: absolute;
+                top: -9999px;
+                clip: rect(0, 0, 0, 0);
+            }
+
+            .rating:not(:checked)>label {
+                float: right;
+                width: 1em;
+                padding: 0 .1em;
+                overflow: hidden;
+                white-space: nowrap;
+                cursor: pointer;
+                font-size: 200%;
+                line-height: 1.2;
+                color: #ddd;
+                text-shadow: 1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0, 0, 0, .5);
+            }
+
+            .rating:not(:checked)>label:before {
+                content: '★ ';
+            }
+
+            .rating>input:checked~label {
+                color: #f70;
+                text-shadow: 1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0, 0, 0, .5);
+            }
+
+            .rating:not(:checked)>label:hover,
+            .rating:not(:checked)>label:hover~label {
+                color: gold;
+                text-shadow: 1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0, 0, 0, .5);
+            }
+
+            .rating>input:checked+label:hover,
+            .rating>input:checked+label:hover~label,
+            .rating>input:checked~label:hover,
+            .rating>input:checked~label:hover~label,
+            .rating>label:hover~input:checked~label {
+                color: #ea0;
+                text-shadow: 1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0, 0, 0, .5);
+            }
+
+            .rating>label:active {
+                position: relative;
+                top: 2px;
+                left: 2px;
+            }
+
+            /* end of Lea's code */
+
+            /*
+ * Clearfix from html5 boilerplate
+ */
+
+            .clearfix:before,
+            .clearfix:after {
+                content: " ";
+                /* 1 */
+                display: table;
+                /* 2 */
+            }
+
+            .clearfix:after {
+                clear: both;
+            }
+
+            /*
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+
+            .clearfix {
+                *zoom: 1;
+            }
+
+            /* my stuff */
+            #status,
+            button {
+                margin: 20px 0;
+            }
         </style>
 
         <!-- <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" /> -->
@@ -183,7 +272,13 @@ if (!isset($_GET['id'])) {
                 $result = $obj->select('*', 'offer', "idoffer=" . $offerId);
                 $row2 = $result->fetch_assoc();
 
-                $price = round($row['product_price'] - ($row['product_price'] * $row2['offer_discount'] / 100));
+                $todaysDate = strtotime(date('Y-m-d'));
+                $startDate = strtotime($row2['offer_startDate']);
+                $endDate = strtotime($row2['offer_endDate']);
+
+                if ($todaysDate >= $startDate && $todaysDate <= $endDate) {
+                    $price = round($row['product_price'] - ($row['product_price'] * $row2['offer_discount'] / 100));
+                }
             }
 
             $img = $obj->select('*', 'image', "product_product_id=" . $id);
@@ -253,7 +348,13 @@ if (!isset($_GET['id'])) {
                         </div>
 
                         <div class="price-container">
-                            <h1 class="h1">Rs. <?php echo $price; ?></h1>
+                            <?php
+                            if ($row['product_price'] != $price) {
+                                echo '<div class="d-flex align-items-end"><h1 class="h1">₹' . $price . '</h1>' . '<h4 class="h3 mx-2 text-muted"><strike>' . $row['product_price'] . '</strike></h4></div>';
+                            } else {
+                                echo '<h1 class="h1">₹' . $price . ' </h1>';
+                            }
+                            ?>
                         </div>
 
                         <div class="rating-container my-3">
@@ -367,12 +468,15 @@ if (!isset($_GET['id'])) {
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-toggle="tab" href="#reviews">
-                                            <h5 class="h5 m-0">Reviews (2)</h5>
+                                            <?php
+                                            $result3 = $obj->select('*', 'feedback', "product_id=" . $id);
+                                            ?>
+                                            <h5 class="h5 m-0">Reviews (<?php echo $result3->num_rows; ?>)</h5>
                                         </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-toggle="tab" href="#ratings">
-                                            <h5 class="h5 m-0">Ratings (5)</h5>
+                                            <h5 class="h5 m-0">Ratings (<?php echo $totalRatings; ?>)</h5>
                                         </a>
                                     </li>
                                 </ul>
@@ -386,8 +490,6 @@ if (!isset($_GET['id'])) {
                                     <div id="reviews" class="tab-pane fade p-3">
                                         <div class="product_review">
                                             <?php
-                                            $result3 = $obj->select('*', 'feedback', "product_id=" . $id);
-
                                             if (isset($_SESSION['userlogin'])) {
                                                 $result = $obj->select('*', 'feedback', "userlogin_userid=" . $_SESSION['userlogin'] . " AND product_id=" . $id);
 
@@ -457,6 +559,37 @@ if (!isset($_GET['id'])) {
                                     </div>
                                     <div id="ratings" class="tab-pane fade p-3">
                                         <div class="product_ratings">
+
+                                            <?php
+                                            if (isset($_SESSION['userlogin'])) {
+                                                $result = $obj->select('*', 'rating', "userlogin_userid=" . $_SESSION['userlogin'] . " AND product_id=" . $id);
+
+                                                if ($result->num_rows == 0) {
+                                                    $result = mysqli_query($obj->connection(), "SELECT * from `order` JOIN `order_detail` ON `order`.`order_id`=`order_detail`.`order_order_id` WHERE `order_detail`.`product_id` = " . $id . " AND `order`.`userlogin_userid` = " . $_SESSION['userlogin']);
+
+                                                    if ($result->num_rows > 0) {
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            if ($row['status'] == "Delivered") {
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            ?>
+                                            <div id="status" style="margin-bottom:50px;">
+                                                <form id="ratingForm">
+                                                    <fieldset class="rating">
+                                                        <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
+                                                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
+                                                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
+                                                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
+                                                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+                                                    </fieldset>
+                                                    <div class="clearfix"></div>
+                                                    <button class="submit clearfix">Submit</button>
+                                                </form>
+                                            </div>
+
                                             <?php
                                             if ($totalRatings > 0) {
                                             ?>
@@ -516,8 +649,6 @@ if (!isset($_GET['id'])) {
                                     </div>
                                 </div>
 
-
-
                             </div>
                         </div>
                     </div>
@@ -539,6 +670,15 @@ if (!isset($_GET['id'])) {
 
             <script>
                 $(document).ready(() => {
+                    $("form#ratingForm").submit(function(e) {
+                        e.preventDefault();
+                        if ($("#ratingForm :radio:checked").length == 0) {
+                            $('#status').html("nothing checked");
+                            return false;
+                        } else {
+                            $('#status').html('You picked ' + $('input:radio[name=rating]:checked').val());
+                        }
+                    });
                     var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 
                     function alert(message, type) {

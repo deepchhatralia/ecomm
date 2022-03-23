@@ -664,7 +664,13 @@
                             $resultt = $obj->select('*', 'offer', "idoffer=" . $offerId);
                             $roww = $resultt->fetch_assoc();
 
-                            $price = round($row['product_price'] - ($row['product_price'] * $roww['offer_discount'] / 100));
+                            $todaysDate = strtotime(date('Y-m-d'));
+                            $startDate = strtotime($roww['offer_startDate']);
+                            $endDate = strtotime($roww['offer_endDate']);
+
+                            if ($todaysDate >= $startDate && $todaysDate <= $endDate) {
+                                $price = round($price - ($price * $roww['offer_discount'] / 100));
+                            }
                         }
                 ?>
 

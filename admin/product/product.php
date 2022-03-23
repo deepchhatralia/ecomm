@@ -156,20 +156,20 @@
             <div class="row mb-3">
                 <label for="product_name" class="col-sm-2 col-form-label">Product Name :</label>
                 <div class="col-sm-10">
-                    <select class="form-select" id="product_name">
-                        <option value="0" selected disabled>Select...</option>
-                        <?php
-                        $result = $obj->select('*', 'purchasee', "product_added=0");
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                        ?>
-                                <option value="<?php echo $row['purchase_id']; ?>|<?php echo $row['product_name'] ?>|<?php echo $row['qty'] ?>"><?php echo $row['product_name'] ?></option>
-                        <?php
-                            }
-                        }
-                        ?>
-                    </select>
-                    <!-- <input type="text" class="form-control" id="product_name"> -->
+                    <!-- <select class="form-select" id="product_name">
+                        <option value="0" selected disabled>Select...</option> -->
+                    <?php
+                    // $result = $obj->select('*', 'purchasee', "product_added=0");
+                    // if ($result->num_rows > 0) {
+                    //     while ($row = $result->fetch_assoc()) {
+                    ?>
+                    <!-- <option value="<?php echo $row['purchase_id']; ?>|<?php echo $row['product_name'] ?>|<?php echo $row['qty'] ?>"><?php echo $row['product_name'] ?></option> -->
+                    <?php
+                    //     }
+                    // }
+                    ?>
+                    <!-- </select> -->
+                    <input type="text" class="form-control" id="product_name">
                 </div>
             </div>
             <div class="row mb-3">
@@ -216,7 +216,7 @@
             <div class="row mb-3">
                 <label for="product_stock" class="col-sm-2 col-form-label">Stock :</label>
                 <div class="col-sm-10">
-                    <input type="number" disabled class="form-control" id="product_stock">
+                    <input type="number" class="form-control" id="product_stock">
                 </div>
             </div>
             <div class="row mb-3">
@@ -303,12 +303,12 @@
             });
 
 
-            $('#product_name').on('change', () => {
-                let val = $('#product_name').val();
-                val = val.split("|");
+            // $('#product_name').on('change', () => {
+            //     let val = $('#product_name').val();
+            //     val = val.split("|");
 
-                $('#product_stock').val(val[2]);
-            });
+            //     $('#product_stock').val(val[2]);
+            // });
 
             $('#update-item-btn').click((e) => {
                 const id = $('#modal_product_id').val()
@@ -437,9 +437,12 @@
                 const input = $('.input');
 
                 let product = $('#product_name').val();
-                product = product.split("|")
-                const product_name = product[1];
-                const purchaseId = product[0];
+                // if (product) {
+                //     product = product.split("|")
+                //     window.alert(product);
+                //     var product_name = product[1];
+                //     var purchaseId = product[0];
+                // }
 
                 const desc = $('#product_desc').val();
                 const feature = $('.product_feature').map((i, e) => e.value).get();
@@ -450,13 +453,12 @@
                 const offer = $('#product_offer').val();
 
                 if (product_name && feature.length >= 1 && desc && product_category && product_mrp && product_stock && company_profile && offer) {
-
                     $.ajax({
                         url: 'ajax/addItemAjax.php',
                         type: 'POST',
                         data: {
                             product_name,
-                            purchaseId,
+                            // purchaseId,
                             desc,
                             feature,
                             product_mrp,

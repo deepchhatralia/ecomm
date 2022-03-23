@@ -47,7 +47,7 @@
                 <button class="btn btn-primary report-btn" id="salesbystate">State Wise Sales</button>
             </div>
             <div class="col-md-3 my-3">
-                <button class="btn btn-primary report-btn" id="salesbystate">State Wise Sales</button>
+
             </div>
             <div class="col-md-3 my-3">
 

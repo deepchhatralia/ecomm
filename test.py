@@ -180,7 +180,6 @@ class CustomField:
         self.name = name
         self.value = value
 
-ig=InvoiceGenerator()
 
 mycursor.execute("SELECT * FROM userlogin WHERE userid={0}".format(sys.argv[1]))
 myresult3=mycursor.fetchone()
@@ -190,8 +189,7 @@ mycursor.execute("SELECT * FROM area JOIN city ON area.city_idcity=city.idcity J
 myresult4=mycursor.fetchone()
 address =myresult4[1]+" "+myresult4[4]+" "+myresult4[7]
 
-ig.to=userName
-ig.ship_to=address
+ig=InvoiceGenerator(to=userName,ship_to=address)
 
 for x in myresult:
     cartQty = x[0]
@@ -214,6 +212,7 @@ ig.toggle_subtotal("2")
 # downloads_path = str(Path.home() / "Downloads")
 
 if(ig.download(r"C:\xampp\htdocs\ecomm\testing.pdf")):
+    mycursor.execute("DELETE FROM cart WHERE userlogin_userid={0}".format(sys.argv[1]))
     print("downloaded")
 else:
     print("try again")

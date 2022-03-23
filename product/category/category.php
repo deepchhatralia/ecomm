@@ -45,33 +45,39 @@ if (isset($_GET['id'])) {
 
                             $result2 = $obj->select('*', 'image', 'product_product_id = ' . $productId);
                             $row2 = $result2->fetch_assoc();
+
+                            $offerId = $row['offer_idoffer'];
+                            $price = $row['product_price'];
+                            if ($offerId != 0) {
+                                $resultt = $obj->select('*', 'offer', "idoffer=" . $offerId);
+                                $roww = $resultt->fetch_assoc();
+
+                                $todaysDate = strtotime(date('Y-m-d'));
+                                $startDate = strtotime($roww['offer_startDate']);
+                                $endDate = strtotime($roww['offer_endDate']);
+
+                                if ($todaysDate >= $startDate && $todaysDate <= $endDate) {
+                                    $price = round($price - ($price * $roww['offer_discount'] / 100));
+                                }
+                            }
                         ?>
 
-                            <div class="col-sm-6 col-lg-4">
-                                <a href="http://localhost/ecomm/product/product.php?id=<?php echo $productId; ?>">
-                                    <div class="box">
-                                        <div class="img-box">
-                                            <img src="../../admin/product/uploads/<?php echo $row2['img_path']; ?>" alt="">
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 margin_bottom_30_all">
+                                <div class="product_list">
+                                    <div class="product_img">
+                                        <img class="img-responsive" src="../../admin/product/uploads/<?php echo $row2['img_path']; ?>" alt="">
+                                    </div>
+                                    <div class="product_detail_btm">
+                                        <div class="center">
+                                            <h4 class="h4">
+                                                <a href="http://localhost/ecomm/product/product.php?id=<?php echo $productId; ?>"><?php echo $row['product_name']; ?></a>
+                                            </h4>
                                         </div>
-                                        <div class="detail-box">
-                                            <h5>
-                                                <?php echo $row['product_name']; ?>
-                                            </h5>
-                                            <div class="product_info">
-                                                <h5>
-                                                    <span>₹</span> <?php echo $row['product_price']; ?>
-                                                </h5>
-                                                <div class="star_container">
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                                </div>
-                                            </div>
+                                        <div class="product_price">
+                                            <p><span class="new_price">₹ <?php echo $price; ?></span></p>
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                             </div>
                         <?php
                         }

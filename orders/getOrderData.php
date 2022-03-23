@@ -22,11 +22,14 @@ if (isset($_SESSION['userlogin'])) {
 
                 $offerId = $row2['offer_idoffer'];
                 $price = $row2['product_price'];
+
                 if ($offerId != '0') {
                     $result4 = $obj->select('*', 'offer', "idoffer=" . $offerId);
                     $row4 = $result4->fetch_assoc();
 
-                    $price = round($row2['product_price'] - ($row2['product_price'] * $row4['offer_discount'] / 100));
+                    if ($row['offerPrice'] == 1) {
+                        $price = round($price - ($price * $row4['offer_discount'] / 100));
+                    }
                 }
 
                 $result2 = $obj->select('*', 'image', 'product_product_id=' . $productId);
@@ -40,7 +43,10 @@ if (isset($_SESSION['userlogin'])) {
                                 </td>
                                 <td>' . $price . '</td>
                                 <td>' . $row['order_quantity'] . '</td>
-                                <td>' . $row['order_quantity'] * $price . '</td>
+                                <td>₹ ' . $row['order_quantity'] * $price . '</td>
+                                <td>
+                                    <span class="badge rounded-pill bg-secondary">' . $row['status'] . '</span>
+                                </td>
                             </tr>';
                 $total += $row['order_quantity'] * $price;
             }

@@ -46,7 +46,7 @@
                         <div>
                             <h1 class="h1">G15 Gaming Laptop</h1>
                             <h4 class="h5"><i>10th Generation Intel® Core™ i5-10200H</i></h4>
-                            <button class="btn btn-success">Read more</button>
+                            <button class="btn btn-success" onclick="window.location.href='http://localhost/ecomm/product/product.php?id=8'">Read more</button>
                         </div>
                     </div>
                 </div>
