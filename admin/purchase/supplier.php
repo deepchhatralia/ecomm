@@ -89,7 +89,6 @@
 
 
     <div class="container">
-        <h1 class="h1 mt-3 text-center">Supplier's</h1>
         <div class="row">
             <table id="myTable" class="display table my-5">
                 <thead id="thead">

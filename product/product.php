@@ -72,12 +72,6 @@ if (!isset($_GET['id'])) {
                 height: 60vh;
             }
 
-            /* .main-product-img img:hover {
-            transform: scale(1.5);
-            transition: all 2s;
-        }  */
-
-
             .fa,
             .far {
                 margin-right: 5px;
@@ -559,9 +553,9 @@ if (!isset($_GET['id'])) {
                                     </div>
                                     <div id="ratings" class="tab-pane fade p-3">
                                         <div class="product_ratings">
-
                                             <?php
                                             if (isset($_SESSION['userlogin'])) {
+                                                $allowRating = 0;
                                                 $result = $obj->select('*', 'rating', "userlogin_userid=" . $_SESSION['userlogin'] . " AND product_id=" . $id);
 
                                                 if ($result->num_rows == 0) {
@@ -570,30 +564,46 @@ if (!isset($_GET['id'])) {
                                                     if ($result->num_rows > 0) {
                                                         while ($row = $result->fetch_assoc()) {
                                                             if ($row['status'] == "Delivered") {
+                                                                $allowRating = 1;
                                                             }
                                                         }
                                                     }
+
+                                                    if ($allowRating) {
+                                            ?>
+                                                        <div id="status" style="margin-bottom:50px;">
+                                                            <form data-id="<?php echo $id; ?>" id="ratingForm" class="d-flex">
+                                                                <fieldset class="rating">
+                                                                    <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
+                                                                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
+                                                                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
+                                                                    <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
+                                                                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+                                                                </fieldset>
+                                                                <button class="submit clearfix btn btn-success ml-5">Submit</button>
+                                                            </form>
+                                                        </div>
+                                                <?php
+                                                    }
+                                                } else {
+                                                    $row = $result->fetch_assoc();
+
+                                                    echo '<div class="d-flex align-items-center">
+                                                    <span class="mr-3">You rated : </span>';
+                                                    for ($i = 1; $i <= 5; $i++) {
+                                                        if ($i <= $row['rating_star']) {
+                                                            echo '<i style="font-size: 20px;" class="fa-solid fa-star"></i>';
+                                                        } else {
+                                                            echo '<i style="font-size: 20px;" class="fa-regular fa-star"></i>';
+                                                        }
+                                                    }
+                                                    echo '</div>';
                                                 }
                                             }
-                                            ?>
-                                            <div id="status" style="margin-bottom:50px;">
-                                                <form id="ratingForm">
-                                                    <fieldset class="rating">
-                                                        <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
-                                                        <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
-                                                        <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
-                                                        <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
-                                                        <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
-                                                    </fieldset>
-                                                    <div class="clearfix"></div>
-                                                    <button class="submit clearfix">Submit</button>
-                                                </form>
-                                            </div>
 
-                                            <?php
                                             if ($totalRatings > 0) {
-                                            ?>
-                                                <div class="row mb-5">
+                                                ?>
+                                                <div class="row my-5">
                                                     <div class="col-xs-12 col-md-6">
                                                         <div class="row rating-desc mx-1">
                                                             <?php
@@ -616,9 +626,9 @@ if (!isset($_GET['id'])) {
                                                         </div>
                                                         <!-- end row -->
                                                     </div>
-                                                    <div class="col-xs-12 col-md-6 text-center">
+                                                    <div class="col-xs-12 col-md-2 text-center">
                                                         <h1 class="rating-num"><?php echo $rating; ?></h1>
-                                                        <div class="rating">
+                                                        <div class="ratingg">
                                                             <?php
                                                             $i = round($rating);
                                                             $j = 5 - $i;
@@ -648,7 +658,6 @@ if (!isset($_GET['id'])) {
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -672,13 +681,28 @@ if (!isset($_GET['id'])) {
                 $(document).ready(() => {
                     $("form#ratingForm").submit(function(e) {
                         e.preventDefault();
-                        if ($("#ratingForm :radio:checked").length == 0) {
-                            $('#status').html("nothing checked");
-                            return false;
-                        } else {
-                            $('#status').html('You picked ' + $('input:radio[name=rating]:checked').val());
+                        if ($("#ratingForm :radio:checked").length > 0) {
+                            const star = $('input:radio[name=rating]:checked').val()
+                            const product = $('#ratingForm').attr("data-id");
+
+                            $.post({
+                                url: "ajax/addToCart.php",
+                                data: {
+                                    star,
+                                    product,
+                                    operation: "add rating"
+                                },
+                                success(data) {
+                                    if (data == "added") {
+                                        window.location.reload();
+                                    } else {
+                                        alert("Please try again...", 'danger');
+                                    }
+                                }
+                            })
                         }
                     });
+
                     var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
 
                     function alert(message, type) {
@@ -691,7 +715,6 @@ if (!isset($_GET['id'])) {
                             $('#liveAlertPlaceholder').html('')
                         }, 3000);
                     }
-
 
                     function addRemoveWishlist(id, operationn) {
                         var x = true;

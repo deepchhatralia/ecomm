@@ -27,23 +27,44 @@ if (isset($_POST['id']) && $_POST['operation'] == "addtocart") {
                     $howmany = $row['cart_quantity'] + 1;
 
                     $result = $obj->update('cart', ['cart_quantity' => $howmany, 'product_product_id' => $productId, 'userlogin_userid' => $userid], "userlogin_userid=" . $userid . " AND product_product_id=" . $productId);
+
+                    if ($result) {
+                        echo "Added to Cart";
+                    } else {
+                        echo "Please try again";
+                    }
                 }
             } else {
                 $result = $obj->update('productt', ["product_stock" => $row['product_stock'] - 1], 'product_id=' . $productId);
 
                 $result = $obj->insert('cart', ['cart_quantity' => $howmany, 'product_product_id' => $productId, 'userlogin_userid' => $userid]);
-            }
 
-            if ($result) {
-                echo "Added to Cart";
-            } else {
-                echo "Please try again";
+                if ($result) {
+                    echo "Added to Cart";
+                } else {
+                    echo "Please try again";
+                }
             }
         } else {
             echo "Out of stock";
         }
     } else {
         echo "Please login";
+    }
+} else if (isset($_POST['star']) && isset($_POST['product']) && $_POST['operation'] == "add rating") {
+    $star = $_POST['star'];
+    $productId = $_POST['product'];
+    $userId = $_SESSION['userlogin'];
+
+    include '../../database.php';
+    $obj = new Database();
+
+    $result = $obj->insert('rating', ["rating_star" => $star, "userlogin_userid" => $userId, "product_id" => $productId]);
+
+    if ($result) {
+        echo "added";
+    } else {
+        echo "try again";
     }
 } else {
     include '../../pagenotfound.php';

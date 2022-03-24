@@ -36,8 +36,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         <td>' . $row['product_name'] . '</td>
         <td>' . substr($row['product_desc'], 0, 40) . '...</td>
         <td>' . substr($row['product_feature'], 0, 40) . '</td>
-        <td>' . $row['product_price'] . '</td>
-        <td>' . $offerPrice . '</td>
+        <td>₹' . $row['product_price'] . '</td>
+        <td>₹' . $offerPrice . '</td>
         <td>' . $row['product_stock'] . '</td>
         <td>' . $category['category_name'] . '</td>
         <td>' . $company['company_name'] . '</td>

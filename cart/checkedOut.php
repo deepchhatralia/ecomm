@@ -9,12 +9,12 @@ if (isset($_SESSION['userlogin'])) {
 
         $result = $obj->insert('order', ['shipping_address' => $_POST['address'], 'total' => $_POST['total'], 'userlogin_userid  ' => $_SESSION['userlogin']]);
 
-
         if ($result) {
             $maxOrderId = $obj->select('max(order_id)', 'order');
             $row = $maxOrderId->fetch_assoc();
 
             $orderShipping = $obj->insert('order_shipping', ['fname' => $_POST['fname'], 'lname' => $_POST['lname'], 'email' => $_POST['email'], 'area_id' => $_POST['areaId'], 'pincode' => $_POST['pincode'], 'address' => $_POST['address'], 'order_id' => $row['max(order_id)']]);
+
 
             if ($orderShipping) {
                 $cartItems = $obj->select('*', 'cart', 'userlogin_userid=' . $_SESSION['userlogin']);
@@ -46,11 +46,10 @@ if (isset($_SESSION['userlogin'])) {
                                 'offerPrice' => $isOfferPrice
                             ]
                         );
+                        $command = escapeshellcmd('python ../test.py ' . $_SESSION['userlogin']);
+                        $output = shell_exec($command);
+                        echo $output;
                     }
-
-                    $command = escapeshellcmd('python ../test.py ' . $_SESSION['userlogin']);
-                    $output = shell_exec($command);
-                    echo $output;
                 }
             }
         }

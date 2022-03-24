@@ -43,7 +43,7 @@
                                 <table style="text-align: center;" id="order-listing" class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Transaction ID</th>
+                                            <!-- <th>Transaction ID</th> -->
                                             <th>Order ID</th>
                                             <th>User</th>
                                             <th>Shipping Address</th>
@@ -52,6 +52,7 @@
                                             <th>SGST</th> -->
                                             <th>Total</th>
                                             <th>Cancelled</th>
+                                            <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -74,7 +75,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Order Detail</h5>
@@ -135,7 +136,7 @@
                         success(data) {
                             const x = JSON.parse(data)
                             $('#order-detail-table').html(x[0])
-                            $('#totalAmount').text('Total : Rs ' + x[1])
+                            $('#totalAmount').text('Total : ₹ ' + x[1])
 
                         }
                     })

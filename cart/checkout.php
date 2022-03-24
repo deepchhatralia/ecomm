@@ -287,7 +287,9 @@ if (!isset($_SESSION['userlogin'])) {
                                 <!-- </form> -->
                             </div>
                             <hr class="mb-4">
-                            <button id="placeOrderBtn" class="btn btn-primary btn-lg btn-block w-100" type="submit">Place Order</button>
+                            <button id="placeOrderBtn" class="btn btn-primary btn-lg btn-block w-100" type="submit">
+                                Place Order
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -395,9 +397,11 @@ if (!isset($_SESSION['userlogin'])) {
                                 },
                                 beforeSend() {
                                     $('#placeOrderBtn').addClass('disabled')
+                                    $('#placeOrderBtn').html('<div class="spinner-border text-light" style="font-size: 12px;" role="status"><span class="sr-only"> Loading... </span></div>');
                                 },
                                 success(data) {
-                                    console.log(data);
+                                    console.log(data + data.length);
+
                                     if (data == "Please login") {
                                         window.location.href = "http://localhost/ecomm";
                                     }
@@ -414,6 +418,7 @@ if (!isset($_SESSION['userlogin'])) {
 
                                         setTimeout(() => {
                                             $('#placeOrderBtn').removeClass('disabled');
+                                            $('#placeOrderBtn').html('Place Order');
                                             window.location.href = "http://localhost/ecomm/orders/";
                                         }, 5000);
                                     }
