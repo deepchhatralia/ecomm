@@ -20,9 +20,6 @@ mycursor.execute("SELECT * FROM cart WHERE `userlogin_userid`="+sys.argv[1])
 
 myresult = mycursor.fetchall()
 
-
-# # 1000.161e1181695dd516bbe90017dd1efbc6.71d323b6a977dac9d7f3f02fee50e851
-
 class InvoiceGenerator:
     """ API Object for Invoice-Generator tool - https://invoice-generator.com/ """
 
