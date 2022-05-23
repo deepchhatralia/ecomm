@@ -649,54 +649,57 @@
             </div>
             <div class="row">
                 <?php
-                $result = $obj->select('*', 'productt', 'product_stock >= 1', null, 8);
+                $result = $obj->select('*', 'productt', 'product_stock >= 1', null, 4);
 
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         $productId = $row["product_id"];
                         $row2 = $obj->select('*', 'image', 'product_product_id = ' . $productId);
-                        $row2 = $row2->fetch_assoc();
 
-                        $offerId = $row['offer_idoffer'];
+                        if ($row2->num_rows > 0) {
+                            $row2 = $row2->fetch_assoc();
 
-                        $price = $row['product_price'];
-                        if ($offerId != 0) {
-                            $resultt = $obj->select('*', 'offer', "idoffer=" . $offerId);
-                            $roww = $resultt->fetch_assoc();
+                            $offerId = $row['offer_idoffer'];
 
-                            $todaysDate = strtotime(date('Y-m-d'));
-                            $startDate = strtotime($roww['offer_startDate']);
-                            $endDate = strtotime($roww['offer_endDate']);
+                            $price = $row['product_price'];
+                            if ($offerId != 0) {
+                                $resultt = $obj->select('*', 'offer', "idoffer=" . $offerId);
+                                $roww = $resultt->fetch_assoc();
 
-                            if ($todaysDate >= $startDate && $todaysDate <= $endDate) {
-                                $price = round($price - ($price * $roww['offer_discount'] / 100));
+                                $todaysDate = strtotime(date('Y-m-d'));
+                                $startDate = strtotime($roww['offer_startDate']);
+                                $endDate = strtotime($roww['offer_endDate']);
+
+                                if ($todaysDate >= $startDate && $todaysDate <= $endDate) {
+                                    $price = round($price - ($price * $roww['offer_discount'] / 100));
+                                }
                             }
-                        }
                 ?>
 
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 margin_bottom_30_all">
-                            <div class="product_list">
-                                <div class="product_img">
-                                    <img class="img-responsive" src="admin/product/uploads/<?php echo $row2['img_path']; ?>" alt="">
-                                </div>
-                                <div class="product_detail_btm">
-                                    <div class="center">
-                                        <h4 class="h4">
-                                            <a href="http://localhost/ecomm/product/product.php?id=<?php echo $productId; ?>"><?php echo $row['product_name']; ?></a>
-                                        </h4>
+                            <div class="mb-5 col-lg-3 col-md-6 col-sm-6 col-xs-12 margin_bottom_30_all">
+                                <div class="product_list">
+                                    <div class="product_img">
+                                        <img class="img-responsive" src="admin/product/uploads/<?php echo $row2['img_path']; ?>" alt="">
                                     </div>
-                                    <div class="product_price">
-                                        <p><span class="new_price">₹<?php echo $price; ?></span></p>
+                                    <div class="product_detail_btm">
+                                        <div class="center">
+                                            <h4 class="h4">
+                                                <a href="http://localhost/ecomm/product/product.php?id=<?php echo $productId; ?>"><?php echo $row['product_name']; ?></a>
+                                            </h4>
+                                        </div>
+                                        <div class="product_price">
+                                            <p><span class="new_price">₹<?php echo $price; ?></span></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
 
-                    <?php
+                        <?php
+                        }
                     }
                     if ($result->num_rows > 8) {
-                    ?>
+                        ?>
                         <div class="btn_box">
                             <a href="http://localhost/ecomm/product" class="view_more-link">
                                 View More

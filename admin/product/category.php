@@ -83,7 +83,8 @@
             <form id="my-form" method="post" enctype="multipart/form-data">
                 <div class="col-lg-10 col-sm-12 mb-3">
                     <label for="category">Category</label>
-                    <input type="text" id="category" class="form-control input" name="category">
+                    <input onkeyup="checkCategory();" type="text" id="category" class="form-control input" name="category">
+                    <span id="category-exist" style="font-size: 14px; font-style: italic; color: red;"></span>
                 </div>
                 <div class="col-lg-10 col-sm-12 mb-3">
                     <label for="fileToUpload">Category Image</label>
@@ -128,36 +129,61 @@
         var toastTrigger = document.getElementById('liveToastBtn')
         var toastLiveExample = document.getElementById('liveToast')
 
+        function checkCategory() {
+            const category = $('#category').val();
+
+            $.post({
+                url: "ajax/checkCategory.php",
+                data: {
+                    category,
+                    operation: "check category"
+                },
+                success(data) {
+                    console.log(data)
+                    if (data == "exist") {
+                        $('#category-exist').text("Category already exist");
+                    } else {
+                        $('#category-exist').text("");
+                    }
+                }
+            })
+        }
+
         $(document).ready(() => {
             showData()
+
 
             $('#my-form').on('submit', (e) => {
                 e.preventDefault();
                 const category = $('#category').val()
                 const file = $('#fileToUpload').val()
 
-                if (category && file) {
-                    $.ajax({
-                        url: "ajax/addCategoryAjax.php",
-                        type: "POST",
-                        data: new FormData(document.getElementById('my-form')),
-                        contentType: false,
-                        cache: false,
-                        processData: false,
-                        beforeSend: function() {
-                            $('#add_btn').html('<div class="spinner-border text-white" role="status">  <span class="visually-hidden">Loading...</span></div>')
-                        },
-                        success(data) {
-                            $('#reset').click()
-                            $('#add_btn').text('Add')
-
-                            showNotification('Notification', data)
-
-                            showData()
-                        }
-                    })
+                if ($('#category-exist').text().length > 0) {
+                    alert("category already exist");
                 } else {
-                    showNotification('Error', 'Please fill all details')
+                    if (category && file) {
+                        $.ajax({
+                            url: "ajax/addCategoryAjax.php",
+                            type: "POST",
+                            data: new FormData(document.getElementById('my-form')),
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            beforeSend: function() {
+                                $('#add_btn').html('<div class="spinner-border text-white" role="status">  <span class="visually-hidden">Loading...</span></div>')
+                            },
+                            success(data) {
+                                $('#reset').click()
+                                $('#add_btn').text('Add')
+
+                                showNotification('Notification', data)
+
+                                showData()
+                            }
+                        })
+                    } else {
+                        showNotification('Error', 'Please fill all details')
+                    }
                 }
             })
 

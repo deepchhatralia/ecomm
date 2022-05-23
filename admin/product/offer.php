@@ -91,7 +91,7 @@
                                             <th>Description</th>
                                             <th>Start Date</th>
                                             <th>End Date</th>
-                                            <th>Discount</th>
+                                            <th>Discount (%)</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>

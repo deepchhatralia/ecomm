@@ -20,13 +20,13 @@ if (isset($_POST['operation']) && $_POST['operation'] == 'select') {
             }
 
             $output .= '<tr class="border-b border-gray-200 hover:bg-gray-100">
-                <td>' . $row['order_id'] . '</td>
+                <td id="' . $row['order_id'] . '">' . $row['order_id'] . '</td>
                 <td>' . $user['user_firstname'] . " " . $user['user_lastname'] . '</td>
                 <td>' . $row['shipping_address'] . '</td>
                 <td>' . $row['order_date'] . '</td>
                 <td>₹ ' . $row['total'] . '</td>
                 <td>' . $cancelled . '</td>
-                <td><select class="form-select">';
+                <td><select onchange="changeStatus(' . $row["order_id"] . ')" class="status form-select">';
 
             foreach ($arr as $val) {
                 if ($row['status'] == $val) {

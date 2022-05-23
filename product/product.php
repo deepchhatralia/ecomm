@@ -812,7 +812,7 @@ if (!isset($_GET['id'])) {
                         if (e.target && e.target.id == "full-heart") {
                             const id = e.target.parentElement.getAttribute("data-id");
 
-                            if (addRemoveWishlist(id, "removeFromWishlist")) {
+                            if (addRemoveWishlist(id, "removeItem")) {
                                 $('.heart-container').html('<i id="empty-heart" class="m-0 far fa-heart cursor-pointer"></i>');
                             }
                         }

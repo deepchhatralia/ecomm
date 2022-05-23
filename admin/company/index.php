@@ -45,7 +45,7 @@
                                 <input type="text" class="form-control" id="modal-company-name">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <!-- <div class="row mb-3">
                             <label for="modal-company-address" class="col-sm-2 col-form-label">Company Address :</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="modal-company-address">
@@ -56,7 +56,7 @@
                             <div class="col-sm-10">
                                 <input type="number" class="form-control" id="modal-company-contact">
                             </div>
-                        </div>
+                        </div> -->
                         <span id="error" style="color:red; font-size: 13px; transition: all 5s ease;"></span>
                     </form>
                 </div>
@@ -83,8 +83,8 @@
                                         <tr>
                                             <th>Company ID</th>
                                             <th>Name</th>
-                                            <th>Address</th>
-                                            <th>Contact No.</th>
+                                            <!-- <th>Address</th>
+                                            <th>Contact No.</th> -->
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -118,30 +118,15 @@
                     <input type="text" class="form-control" id="company-name">
                 </div>
             </div>
-            <div class="row mb-3">
-                <label for="company-address" class="col-sm-2 col-form-label">Company Address :</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="company-address">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="company-contact" class="col-sm-2 col-form-label">Company Contact :</label>
-                <div class="col-sm-10">
-                    <input type="number" class="form-control" id="company-contact">
-                </div>
-            </div>
             <div class="row justify-content-end">
                 <div class="col-md-4 d-flex justify-content-end">
-                    <input type="reset" class="btn btn-secondary mx-2" id="reset">
+                    <!-- <input type="reset" class="btn btn-secondary mx-2" id="reset"> -->
                     <button class="btn btn-primary" id="add-company-btn">Add</button>
                 </div>
             </div>
         </form>
     </div>
 
-    <!-- <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script> -->
-
-    <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script> -->
 
     <script src="../../js/jquery-3.4.1.min.js"></script>
 
@@ -210,8 +195,8 @@
                             const x = JSON.parse(data)
                             $('#modal-company-id').val(x[0])
                             $('#modal-company-name').val(x[1])
-                            $('#modal-company-address').val(x[2])
-                            $('#modal-company-contact').val(x[3])
+                            // $('#modal-company-address').val(x[2])
+                            // $('#modal-company-contact').val(x[3])
                             $('#hidden-id').val(x[0])
 
                             $('#openModalBtn').click();
@@ -223,10 +208,10 @@
                     const myid = $('#hidden-id').val()
                     const id = $('#modal-company-id').val()
                     const name = $('#modal-company-name').val()
-                    const address = $('#modal-company-address').val()
-                    const contact = $('#modal-company-contact').val()
+                    // const address = $('#modal-company-address').val()
+                    // const contact = $('#modal-company-contact').val()
 
-                    if (id && name && address && contact) {
+                    if (id && name) {
                         $.ajax({
                             url: "ajax/getData.php",
                             type: "POST",
@@ -234,8 +219,6 @@
                                 myid,
                                 id,
                                 name,
-                                address,
-                                contact,
                                 operation: "update"
                             },
                             success(data) {
@@ -280,22 +263,19 @@
                 return () => {}
             })
 
-            $('#my-form').on('submit', (e) => {
-                e.preventDefault()
+            $('#add-company-btn').click(() => {
                 const id = $('#company-id').val()
                 const name = $('#company-name').val()
-                const address = $('#company-address').val()
-                const contact = $('#company-address').val()
+                // const address = $('#company-address').val()
+                // const contact = $('#company-address').val()
 
-                if (id && name && address && contact) {
+                if (id && name) {
                     $.ajax({
                         url: "ajax/addCompany.php",
                         type: "POST",
                         data: {
                             id,
                             name,
-                            address,
-                            contact
                         },
                         beforeSend() {
                             console.log('hello world');
@@ -308,9 +288,11 @@
                                 showNotification('Success', 'Company added to database')
                             } else {
                                 if (data == 'id') {
-                                    showNotification('Error', 'ID already exist')
+                                    showNotification('Error', 'ID already exist');
+                                } else if (data == 'company exist') {
+                                    showNotification('Error', 'Company already exist');
                                 } else {
-                                    showNotification('Error', 'Please try again...')
+                                    showNotification('Error', 'Please try again...');
                                 }
                             }
                         }

@@ -2,11 +2,11 @@
 
 use function PHPSTORM_META\type;
 
-if (isset($_POST['name']) && isset($_POST['address']) && isset($_POST['contact'])) {
+if (isset($_POST['name'])) {
     $id = (int)$_POST['id'];
     $name = $_POST['name'];
-    $address = $_POST['address'];
-    $contact = $_POST['contact'];
+    // $address = $_POST['address'];
+    // $contact = $_POST['contact'];
 
     include '../../../database.php';
     $obj = new Database();
@@ -14,12 +14,18 @@ if (isset($_POST['name']) && isset($_POST['address']) && isset($_POST['contact']
     $result = $obj->select('*', 'company_profile', "idcompany_profile=" . (int)$id);
 
     if (!$result->num_rows > 0) {
-        $result = $obj->insert('company_profile', ['idcompany_profile' => $id, 'company_name' => $name, 'company_address' => $address, 'company_contact_number' => $contact]);
-
-        if ($result) {
-            echo 'Added';
+        $result = $obj->select('*', "company_profile", "company_name LIKE '{$name}'");
+        if ($result->num_rows > 0) {
+            echo 'company exist';
         } else {
-            echo $result;
+            $result = $obj->insert('company_profile', ['idcompany_profile' => $id, 'company_name' => $name]);
+
+            if ($result) {
+                echo 'Added';
+            } else {
+                echo $result;
+                // echo mysqli_error($obj->connection());
+            }
         }
     } else {
         echo 'id';

@@ -17,7 +17,7 @@ use \koolreport\widgets\google\ColumnChart;
                 <h1>Sales Report</h1>
                 <p class="lead">This report show month wise sales</p>
 
-                <button type="submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesReport&type=cloudPDF'">Cloud PDF</button>
+                <button type="submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesReport&type=cloudPDF'">Download</button>
                 <button type=" submit" class="btn btn-primary d-none" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=salesReport&type=cloudJPG'">Cloud JPG</button>
 
                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Configure</button>

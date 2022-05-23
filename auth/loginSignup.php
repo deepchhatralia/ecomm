@@ -46,12 +46,18 @@ if (isset($_POST['operation']) && $_POST['operation'] == "login") {
         if ($result->num_rows > 0) {
             echo "Email already exist";
         } else {
-            $result = $obj->insert('userlogin', ['user_name' => $username, 'user_password' => $password, 'user_firstname' => $fname, 'user_lastname' => $lname, 'area_idarea' => $areaId, 'address' => $address, 'pincode' => $_POST['pincode'], 'user_email' => $email, 'security_question' => $squestion, 'security_answer' => $sanswer, 'user_contact_number' => $contact]);
+            $result = $obj->select('*', 'userlogin', "user_contact_number=" . $contact);
 
-            if ($result) {
-                echo "success";
+            if ($result->num_rows > 0) {
+                echo "Contact number already exist";
             } else {
-                echo "Try again...";
+                $result = $obj->insert('userlogin', ['user_name' => $username, 'user_password' => $password, 'user_firstname' => $fname, 'user_lastname' => $lname, 'area_idarea' => $areaId, 'address' => $address, 'pincode' => $_POST['pincode'], 'user_email' => $email, 'security_question' => $squestion, 'security_answer' => $sanswer, 'user_contact_number' => $contact]);
+
+                if ($result) {
+                    echo "success";
+                } else {
+                    echo "Try again...";
+                }
             }
         }
     }

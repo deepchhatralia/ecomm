@@ -17,7 +17,7 @@ use \koolreport\widgets\google\ColumnChart;
             <p class="lead">This report shows the top selling products</p>
 
             <button type="submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=topProducts&type=cloudPDF'">
-                Cloud PDF</button>
+                Download</button>
             <button type="submit" class="btn btn-primary d-none" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=topProducts&type=cloudJPG'">Cloud JPG</button>
         </div>
 

@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+$invoice = false;
 
 if (isset($_SESSION['userlogin'])) {
 ?>
@@ -62,48 +63,6 @@ if (isset($_SESSION['userlogin'])) {
 
         <button id="order-details-btn" class="d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">Hello</button>
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Order Details</h5>
-                        <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row">
-                                <table class="table table-responsive">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">ID</th>
-                                            <th>Product</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Total</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="order-details-table">
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="row d-flex justify-content-end">
-                                <div class="col-md-3 order-details-total">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <div class="container mt-3 d-none">
             <div class="d-flex align-items-center justify-content-end">
                 <h6 class="h5 m-0"><button class="btn btn-danger" id="order-return-redirect">Order Returns</button></h6>
@@ -111,6 +70,7 @@ if (isset($_SESSION['userlogin'])) {
         </div>
 
         <div class="container my-5">
+            <h1 class="h1 mb-3">Order History</h1>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -126,6 +86,8 @@ if (isset($_SESSION['userlogin'])) {
                     </thead>
                     <tbody>
                         <?php
+                        $days = 0;
+
                         $result = $obj->select('*', 'order', "userlogin_userid=" . $_SESSION['userlogin'], 'order_id DESC');
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
@@ -159,7 +121,7 @@ if (isset($_SESSION['userlogin'])) {
                                     </td>
                                     <td>
                                         <?php
-                                        if ($row['status'] !== "Delivered" && $days <= 7 && $row['isCancel'] == 0 && $row['status'] != "Returned") {
+                                        if ($row['status'] === "Delivered" && $days <= 7 && $row['isCancel'] == 0 && $row['status'] != "Returned") {
                                             echo '<button data-bs-toggle="modal" data-bs-target="#returnExampleModal" data-id="' . $row['order_id'] . '" class="btn btn-danger return-btn">Return</button>';
                                         } else {
                                             echo '-';
@@ -177,6 +139,54 @@ if (isset($_SESSION['userlogin'])) {
                 </table>
             </div>
         </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title h5" id="exampleModalLabel">Order Details</h5>
+                        <button type="button" class="btn-close modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <table class="table table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="order-details-table">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row d-flex justify-content-end">
+                                <div class="col-md-3 order-details-total">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <?php
+                        // if ($invoice) {
+                        //     echo '<button class="btn btn-danger"><i class="fa-solid fa-file-lines"></i></button>';
+                        // }
+                        ?>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <?php
         include '../includee/footer.php';
@@ -231,7 +241,7 @@ if (isset($_SESSION['userlogin'])) {
                     const check = document.getElementsByClassName("product-checkbox");
                     let isChecked = false;
 
-                    if (reason.length >= 10) {
+                    if (reason.length >= 100) {
                         for (let i = 0; i < check.length; i++) {
                             if (check[i].checked) {
                                 $('#error-msg').text("");

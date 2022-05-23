@@ -227,7 +227,7 @@ if (!isset($_SESSION['userlogin'])) {
                     setTimeout(() => {
                         $('.signupBtn').removeClass('disabled')
                         $('#liveAlertPlaceholder').html('')
-                    }, 3000);
+                    }, 10000);
                 }
 
                 $('#my-form').on('submit', (e) => {

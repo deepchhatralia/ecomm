@@ -41,60 +41,24 @@ if (isset($_SESSION['userlogin'])) {
 
         include '../includee/navbar1.php';
 
-        $result = $obj->select('*', 'wishlist', "userlogin_userid=" . $_SESSION['userlogin']);
-        if ($result->num_rows > 0) {
         ?>
 
-            <div id="liveAlertPlaceholder"></div>
+        <div id="liveAlertPlaceholder"></div>
 
-            <div class="container my-5">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr style="font-size: 2.5vh; text-align: center;">
-                                <th scope="col">Product</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="wishlist-body">
-                            <?php
-                            while ($row = $result->fetch_assoc()) {
-                                $productId = $row['product_id'];
-                                $result2 = $obj->select('*', 'image', 'product_product_id=' . $productId);
-                                $img = "";
-                                if ($result2->num_rows > 0) {
-                                    $img = $result2->fetch_assoc();
-                                    $img = $img['img_path'];
-                                }
-                                $result2 = $obj->select('*', 'productt', "product_id=" . $productId);
-                                $productname = "";
-                                if ($result2->num_rows > 0) {
-                                    $productname = $result2->fetch_assoc();
-                                    $productname = $productname['product_name'];
-                                }
-                                echo '<tr>
-                                    <td class="d-flex align-items-center">
-                                        <img class="mr-5 productImg" src="../admin/product/uploads/' . $img . '" alt="" />
-                                        <h4 class="h4 m-0">' . $productname . '</h4>
-                                    </td>
-                                    <td class="text-center">
-                                        <button class="add-to-cart btn btn-success" data-id="' . $productId . '"><i data-id="' . $productId . '" class="fa-solid fa-cart-arrow-down"></i></button>
-                                        <button class="remove-item-wishlist m-0 btn btn-danger" data-id="' . $productId . '"><i data-id="' . $productId . '" class="fa-solid fa-trash"></i></button>
-                                    </td>
-                                </tr>';
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="container my-5">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr style="font-size: 2.5vh; text-align: center;">
+                            <th scope="col">Product</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="wishlist-body">
+                    </tbody>
+                </table>
             </div>
-        <?php
-        } else {
-            echo '<div class="container my-5">
-                <h4 class="h4">No items in your wishlist</h4>
-            </div>';
-        }
-        ?>
+        </div>
 
 
         <?php
@@ -118,53 +82,83 @@ if (isset($_SESSION['userlogin'])) {
 
                     setTimeout(() => {
                         $('#liveAlertPlaceholder').html('')
-                    }, 3000);
+                    }, 10000);
                 }
 
-                $('.remove-item-wishlist').click((e) => {
-                    const id = e.target.getAttribute("data-id");
-
-                    $.ajax({
+                function loadWishlist() {
+                    $.post({
                         url: "ajax/wishlist.php",
-                        type: "POST",
                         data: {
-                            id,
-                            operation: "removeItem"
+                            operation: "load wishlist"
                         },
                         success(data) {
-                            if (data == "Removed from wishlist") {
-                                window.location.reload()
-                            } else {
-                                alert("Please try again...", 'danger');
-                            }
+                            $('.wishlist-body').html(data);
                         }
                     })
-                })
+                }
 
-                $('.add-to-cart').on('click', (e) => {
-                    const id = e.target.getAttribute("data-id");
+                loadWishlist();
 
-                    $.ajax({
-                        url: "ajax/addToCart.php",
-                        type: "POST",
-                        data: {
-                            id,
-                            operation: "addtocart"
-                        },
-                        beforeSend() {
-                            $('.add-to-cart').addClass("disabled");
-                        },
-                        success(data) {
-                            if (data) {
-                                alert(data, 'success')
-                            } else {
-                                alert(data, 'danger')
+                document.addEventListener('click', (e) => {
+                    if (e.target && e.target.classList.contains('rm')) {
+                        // $('.remove-item-wishlist').click((e) => {
+                        const id = e.target.getAttribute("data-id");
+
+                        $.ajax({
+                            url: "ajax/wishlist.php",
+                            type: "POST",
+                            data: {
+                                id,
+                                operation: "removeItem"
+                            },
+                            success(data) {
+                                if (data == "Removed from wishlist") {
+                                    // window.location.reload()
+                                    loadWishlist();
+                                } else {
+                                    alert("Please try again...", 'danger');
+                                }
                             }
-                            setTimeout(() => {
-                                $('.add-to-cart').removeClass("disabled");
-                            }, 3000);
-                        }
-                    })
+                        })
+                    }
+
+                    if (e.target && e.target.classList.contains('add')) {
+                        const id = e.target.getAttribute("data-id");
+
+                        $.ajax({
+                            url: "ajax/addToCart.php",
+                            type: "POST",
+                            data: {
+                                id,
+                                operation: "addtocart"
+                            },
+                            beforeSend() {
+                                $('.add-to-cart').addClass("disabled");
+                            },
+                            success(data) {
+                                if (data == "Added to Cart") {
+                                    $.post({
+                                        url: "ajax/wishlist.php",
+                                        data: {
+                                            id,
+                                            operation: "removeItem"
+                                        },
+                                        success(data) {
+                                            alert("Added to Cart", 'success');
+                                            loadWishlist();
+                                        }
+                                    })
+                                } else {
+                                    alert(data, 'danger')
+                                }
+                                setTimeout(() => {
+                                    $('.add-to-cart').removeClass("disabled");
+                                }, 3000);
+                            }
+                        })
+                    }
+
+                    return () => {};
                 })
             })
         </script>

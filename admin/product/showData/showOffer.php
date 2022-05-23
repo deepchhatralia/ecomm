@@ -32,7 +32,7 @@ if (isset($_POST['operation']) && $_POST['operation'] == "select") {
             <td>' . $row['offer_detail'] . '</td>
             <td>' . $startDate . '</td>
             <td>' . $endDate . '</td>
-            <td>' . $row['offer_discount'] . '</td>
+            <td>' . $row['offer_discount'] . '%</td>
             ' . $buttonGroup . '
         </tr>';
     }

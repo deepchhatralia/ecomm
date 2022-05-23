@@ -46,10 +46,16 @@ if (isset($_SESSION['userlogin'])) {
                                 'offerPrice' => $isOfferPrice
                             ]
                         );
-                        $command = escapeshellcmd('python ../test.py ' . $_SESSION['userlogin']);
-                        $output = shell_exec($command);
-                        echo $output;
                     }
+
+                    // command to download invoice by running python script
+                    $command = escapeshellcmd('python ../test.py ' . $_SESSION['userlogin']);
+                    $output = shell_exec($command);
+                    // echo $output;
+                    // $result = $obj->delete("cart", "userlogin_userid=" . $_SESSION['userlogin']);
+                    // if ($result) {
+                    // }
+                    echo "ordered";
                 }
             }
         }

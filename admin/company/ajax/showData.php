@@ -9,12 +9,14 @@ if (isset($_POST['operation']) && $_POST['operation'] == 'select') {
     if ($result->num_rows > 0) {
         $output = "";
 
+
+        // <td>' . $row['company_address'] . '</td>
+        // <td>' . $row['company_contact_number'] . '</td>
+
         while ($row = $result->fetch_assoc()) {
             $output .= '<tr class="border-b border-gray-200 hover:bg-gray-100">
                 <td>' . $row['idcompany_profile'] . '</td>
                 <td>' . $row['company_name'] . '</td>
-                <td>' . $row['company_address'] . '</td>
-                <td>' . $row['company_contact_number'] . '</td>
                 <td style="font-size: 13px;">
                     <button id="fa-edit" class="mb-1 my-btn bg-success edit-btn"><i class="far fa-edit mx-1"></i> Edit</button> 
                     <button id="fa-trash-alt" class="mb-1 my-btn bg-danger delete-btn"><i class="fas fa-trash-alt mx-1"></i> Delete</button>

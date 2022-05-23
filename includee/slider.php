@@ -63,7 +63,7 @@
                         <div>
                             <h1 class="h1">OptiPlex 5090 Micro Desktop</h1>
                             <h4 class="h4"><i>11th Generation Intel® Core™ i5-11500T</i></h4>
-                            <button class="btn btn-success">Read more</button>
+                            <button class="btn btn-success" onclick="window.location.href='http://localhost/ecomm/product/product.php?id=87'">Read more</button>
                         </div>
                     </div>
                 </div>

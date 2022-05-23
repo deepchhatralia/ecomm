@@ -42,7 +42,7 @@ use \koolreport\widgets\google\ColumnChart;
             <h1>Purchase Report</h1>
             <p class="lead text-center">This report shows month wise purchase</p>
 
-            <button type="submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=purchaseReport&type=cloudPDF'">Cloud PDF</button>
+            <button type="submit" class="btn btn-primary" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=purchaseReport&type=cloudPDF'">Download</button>
             <button type=" submit" class="btn btn-primary d-none" onclick="window.location.href='http://localhost/ecomm/reportTest/export.php?q=purchaseReport&type=cloudJPG'">Cloud JPG</button>
 
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Configure</button>

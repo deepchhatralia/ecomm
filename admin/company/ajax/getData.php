@@ -12,19 +12,19 @@ if (isset($_POST['id']) && isset($_POST['operation']) && $_POST['operation'] == 
         $row = $result->fetch_assoc();
 
         $name = $row['company_name'];
-        $address = $row['company_address'];
-        $contact = $row['company_contact_number'];
+        // $address = $row['company_address'];
+        // $contact = $row['company_contact_number'];
 
-        $arr = array($id, $name, $address, $contact);
+        $arr = array($id, $name);
         $arr = json_encode($arr);
         echo $arr;
     }
-} else if (isset($_POST['myid']) && isset($_POST['id']) && isset($_POST['name']) && isset($_POST['address']) && isset($_POST['contact']) && $_POST['operation'] == "update") {
+} else if (isset($_POST['myid']) && isset($_POST['id']) && isset($_POST['name']) && $_POST['operation'] == "update") {
     $myid = $_POST['myid'];
     $id = $_POST['id'];
     $name = $_POST['name'];
-    $address = $_POST['address'];
-    $contact = $_POST['contact'];
+    // $address = $_POST['address'];
+    // $contact = $_POST['contact'];
 
     $result = $obj->select('*', 'company_profile', "idcompany_profile=" . $id);
 
@@ -32,7 +32,10 @@ if (isset($_POST['id']) && isset($_POST['operation']) && $_POST['operation'] == 
         echo "ID already exist";
         echo $myid . $id;
     } else {
-        $result = $obj->update('company_profile', ['idcompany_profile' => $id, 'company_name' => $name, 'company_address' => $address, 'company_contact_number' => $contact], "idcompany_profile={$myid}");
+        $result = $obj->update('company_profile', ['idcompany_profile' => $id, 'company_name' => $name], "idcompany_profile={$myid}");
+
+
+        // 'company_address' => $address, 'company_contact_number' => $contact
 
         if ($result) {
             echo "updated";

@@ -92,7 +92,7 @@ if (isset($_GET['id'])) {
         } else {
             echo '<div class="container my-5">
                 <div class="row text-center">
-                <h4 class="h4">No products in this category</h4>
+                <h4 class="h4">No products available in this category</h4>
                 </div>
                 </div>';
             // include '../../pagenotfound.php';

@@ -30,21 +30,29 @@ if (isset($_POST['operation'])) {
     if (isset($_POST['id']) && $_POST['operation'] == 'delete') {
         $productId = $_POST['id'];
 
-        echo $obj->delete('productt', "product_id='{$productId}'");
+        $result = $obj->delete('productt', "product_id='{$productId}'");
+
+        if (mysqli_errno($obj->connection()) == 1451) {
+            echo "Cant delete. Product id being used at many places";
+        } else {
+            echo 'deleted';
+        }
     }
 
     if ($_POST['operation'] == 'update') {
         $id = $_POST['id'];
         $name = $_POST['name'];
-        $desc = $_POST['desc'];
-        $feature = $_POST['feature'];
+        $desc = mysqli_real_escape_string($obj->connection(), $_POST['desc']);
+        $feature = mysqli_real_escape_string($obj->connection(), $_POST['feature']);
         $price = $_POST['price'];
         $category = $_POST['category'];
         $stock = $_POST['stock'];
         $company = $_POST['company'];
         $offer = $_POST['offer'];
 
-        echo $obj->update('productt', ['product_name' => $name, 'product_desc' => $desc, 'product_feature' => $feature, 'product_price' => $price, 'product_category' => $category, 'product_stock' => $stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer], "product_id='{$id}'");
+        $result = $obj->update('productt', ['product_name' => $name, 'product_desc' => $desc, 'product_feature' => $feature, 'product_price' => $price, 'product_category' => $category, 'product_stock' => $stock, 'company_profile_idcompany_profile' => $company, 'offer_idoffer' => $offer], "product_id='{$id}'");
+        echo $result;
+        // echo mysqli_error($obj->connection());
     }
 } else {
     include '../../../pagenotfound.php';

@@ -41,7 +41,7 @@ if (isset($_SESSION['userlogin'])) {
                                     <img class="mr-3 productImg" src="../admin/product/uploads/' . $image['img_path'] . '" alt="">
                                     <h6 class="h6 fw-bold">' . $row2['product_name'] . '</h6>
                                 </td>
-                                <td>' . $price . '</td>
+                                <td>₹ ' . $price . '</td>
                                 <td>' . $row['order_quantity'] . '</td>
                                 <td>₹ ' . $row['order_quantity'] * $price . '</td>
                                 <td>

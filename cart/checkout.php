@@ -132,7 +132,7 @@ if (!isset($_SESSION['userlogin'])) {
                             <h4 class="h4 text-center">Ordered</h4>
                             <div class="text-center">
                                 <small class="text-muted">Redirecting you in <span id="seconds">5</span> seconds...</small>
-                                <h6 class="h6 m-0"><small>Invoice downloaded at C:\xampp\htdocs\ecomm\testing.pdf</small></h6>
+                                <!-- <h6 class="h6 m-0"><small>Invoice downloaded at C:\xampp\htdocs\ecomm\testing.pdf</small></h6> -->
                             </div>
                         </div>
                     </div>
@@ -174,7 +174,7 @@ if (!isset($_SESSION['userlogin'])) {
                                         <div>
                                             <h6 class="my-0"><?php echo $row['product_name']; ?></h6>
                                             <small class="text-muted">Qty : <?php echo $row['cart_quantity']; ?></small><br>
-                                            <small class="text-muted">Price : <?php echo $price; ?></small>
+                                            <small class="text-muted">Price : ₹ <?php echo $price; ?></small>
                                         </div>
                                         <span class="text-muted">₹<?php echo $price * $row['cart_quantity']; ?></span>
                                     </li>
@@ -182,7 +182,7 @@ if (!isset($_SESSION['userlogin'])) {
                                 }
                                 echo '<li class="list-group-item d-flex justify-content-between">
                                 <span>Total (INR)</span>
-                                <strong>₹<span id="total">' . $total . '</span></strong>
+                                <strong>₹ <span id="total">' . $total . '</span></strong>
                             </li>';
                             }
                             ?>
@@ -400,12 +400,11 @@ if (!isset($_SESSION['userlogin'])) {
                                     $('#placeOrderBtn').html('<div class="spinner-border text-light" style="font-size: 12px;" role="status"><span class="sr-only"> Loading... </span></div>');
                                 },
                                 success(data) {
-                                    console.log(data + data.length);
 
                                     if (data == "Please login") {
                                         window.location.href = "http://localhost/ecomm";
                                     }
-                                    if (data.length == 11) {
+                                    if (data == "ordered") {
                                         $('#orderDone').click();
                                         $('#seconds').html(timer);
 

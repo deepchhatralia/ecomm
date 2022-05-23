@@ -92,7 +92,9 @@
                         </h5>
                         <p class="mb-2">
                             <i class="fas fa-map-marker-alt"></i>
-                            A/29, Bapukrupa Society, Near Chinmay Tower, Opp. Upganda Park, Memnagar, Ahmedabad
+                            <a target="blank" style="color:white; text-decoration:none;" href="https://www.google.com/maps/place/G.D.R.S./@23.0535069,72.5313053,17z/data=!3m1!4b1!4m5!3m4!1s0x395e853d37e44497:0xf934b7373bbbb74e!8m2!3d23.053502!4d72.533494">
+                                A/29, Bapukrupa Society, Near Chinmay Tower, Opp. Upganda Park, Memnagar, Ahmedabad
+                            </a>
                         </p>
                         <p class="mb-2">
                             <i class="fa fa-phone" aria-hidden="true"></i>

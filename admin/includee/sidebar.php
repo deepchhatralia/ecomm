@@ -96,7 +96,7 @@
                     <span class="sidebar-item-name">Manage Offer</span>
                 </div>
             </a>
-            <a href="http://localhost/ecomm/admin/company">
+            <a href="http://localhost/ecomm/admin/company/">
                 <div class="sidebar-items">
                     <span class="mr-2"><i class="fas fa-box-open companySidebarIcon"></i></span>
                     <span class="sidebar-item-name">Company Profile</span>

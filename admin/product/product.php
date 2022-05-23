@@ -30,7 +30,7 @@
     <button id="openModalBtn" class="d-none" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
@@ -392,17 +392,18 @@
                                 operation: 'delete'
                             },
                             success(data) {
-                                if (data) {
+                                if (data == 'deleted') {
                                     showNotification('Success', 'Product deleted from database')
                                     showData()
                                 } else {
-                                    showNotification('Error', 'Please try again...')
+                                    showNotification('Error', data)
                                 }
                             }
                         })
                     }
                 }
             })
+
 
             function showNotification(msgHeader, msgBody) {
                 var toast = new bootstrap.Toast(toastLiveExample)
@@ -436,7 +437,6 @@
                 e.preventDefault();
                 const input = $('.input');
 
-                let product = $('#product_name').val();
                 // if (product) {
                 //     product = product.split("|")
                 //     window.alert(product);
@@ -444,6 +444,7 @@
                 //     var purchaseId = product[0];
                 // }
 
+                const product_name = $('#product_name').val();
                 const desc = $('#product_desc').val();
                 const feature = $('.product_feature').map((i, e) => e.value).get();
                 const product_category = $('.product_category').val();
@@ -451,6 +452,7 @@
                 const product_stock = $('#product_stock').val();
                 const company_profile = $('.company_profile').val();
                 const offer = $('#product_offer').val();
+
 
                 if (product_name && feature.length >= 1 && desc && product_category && product_mrp && product_stock && company_profile && offer) {
                     $.ajax({
@@ -467,9 +469,16 @@
                             company_profile,
                             offer
                         },
+                        beforeSend() {
+                            console.log("before send")
+                        },
                         success(data) {
                             if (data !== 'Added') {
-                                showNotification('Error', 'Please try again...')
+                                if (data == 'product exist') {
+                                    showNotification('Error', 'Product already exist');
+                                } else {
+                                    showNotification('Error', 'Please try again...');
+                                }
                             } else {
                                 showData();
                                 $('.product-feature-container').html('<input type="text" id="product_feature" class="mb-1 form-control input product_feature">')

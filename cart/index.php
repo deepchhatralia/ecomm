@@ -43,7 +43,8 @@ if (isset($_SESSION['userlogin'])) {
                                     <tr class="small text-uppercase">
                                         <th scope="col">Product</th>
                                         <th scope="col" width="120">Quantity</th>
-                                        <th scope="col" width="120">Price</th>
+                                        <th scope="col" width="100">Price</th>
+                                        <th scope="col" width="120">Total</th>
                                         <!-- <th scope="col" class="text-right d-none d-md-block" width="200"></th> -->
                                     </tr>
                                 </thead>
@@ -109,7 +110,12 @@ if (isset($_SESSION['userlogin'])) {
                                                 </td>
                                                 <td>
                                                     <div class="price-wrap">
-                                                        <var class="price"><?php echo $row['cart_quantity'] * $price; ?></var>
+                                                        <var class="price">₹ <?php echo $price; ?></var>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="price-wrap">
+                                                        <var class="price">₹ <?php echo $row['cart_quantity'] * $price; ?></var>
                                                     </div>
                                                 </td>
                                                 <td class="text-right">
@@ -130,17 +136,17 @@ if (isset($_SESSION['userlogin'])) {
                 <aside class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <dl class="dlist-align">
+                            <!-- <dl class="dlist-align">
                                 <dt>Total price:</dt>
-                                <dd class="text-right ml-3">Rs. <?php echo $total; ?></dd>
-                            </dl>
-                            <dl class="dlist-align">
+                                <dd class="text-right ml-3">₹ <?php echo $total; ?></dd>
+                            </dl> -->
+                            <!-- <dl class="dlist-align">
                                 <dt>Discount:</dt>
-                                <dd class="text-right text-danger ml-3">- Rs. 0</dd>
-                            </dl>
+                                <dd class="text-right text-danger ml-3">- ₹ 0</dd>
+                            </dl> -->
                             <dl class="dlist-align">
                                 <dt>Total:</dt>
-                                <dd class="text-right text-dark b ml-3"><strong class="h5 font-bold m-0">Rs. <?php echo $total; ?></strong></dd>
+                                <dd class="text-right text-dark b ml-3"><strong class="h5 font-bold m-0">₹ <?php echo $total; ?></strong></dd>
                             </dl>
 
                             <form action="checkout.php" method="POST">
